@@ -76,7 +76,7 @@ application keeps its own tables, prompts, and vocabulary.
 ## Install
 
 ```
-pip install "excalicore @ git+https://github.com/<owner>/excalicore@v0.1.0#subdirectory=python"
+pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.1.0#subdirectory=python"
 ```
 
 Pin by tag. Canvas behaviour is the kind of thing that should only ever change
