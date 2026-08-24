@@ -1,0 +1,2 @@
+An operator at the console.
+{"elements": [{"stamp": "Operator", "x": 240, "y": 180, "label": "Duty operator"}]}

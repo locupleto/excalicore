@@ -1,0 +1,151 @@
+{
+ "type": "excalidraw",
+ "version": 2,
+ "elements": [
+  {
+   "angle": 0,
+   "strokeColor": "#1e1e1e",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "isDeleted": false,
+   "boundElements": null,
+   "link": null,
+   "locked": false,
+   "id": "stamp-a1",
+   "type": "ellipse",
+   "x": 100,
+   "y": 100,
+   "width": 40,
+   "height": 40,
+   "index": "a0",
+   "seed": 111,
+   "version": 7,
+   "versionNonce": 222,
+   "updated": 1756000000001,
+   "customData": {
+    "stamp": "Operator",
+    "stampGroup": "sg-77"
+   }
+  },
+  {
+   "angle": 0,
+   "strokeColor": "#1e1e1e",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "isDeleted": false,
+   "boundElements": null,
+   "link": null,
+   "locked": false,
+   "id": "stamp-a2",
+   "type": "line",
+   "x": 120,
+   "y": 140,
+   "width": 0,
+   "height": 50,
+   "index": "a1",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     50
+    ]
+   ],
+   "seed": 333,
+   "version": 9,
+   "versionNonce": 444,
+   "updated": 1756000000002,
+   "customData": {
+    "stamp": "Operator",
+    "stampGroup": "sg-77"
+   }
+  },
+  {
+   "angle": 0,
+   "strokeColor": "#1e1e1e",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "isDeleted": false,
+   "boundElements": null,
+   "link": null,
+   "locked": false,
+   "id": "stamp-a3",
+   "type": "line",
+   "x": 95,
+   "y": 160,
+   "width": 50,
+   "height": 0,
+   "index": "a2",
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     50,
+     0
+    ]
+   ],
+   "seed": 555,
+   "version": 4,
+   "versionNonce": 666,
+   "updated": 1756000000003,
+   "customData": {
+    "stamp": "Operator",
+    "stampGroup": "sg-77"
+   }
+  },
+  {
+   "angle": 0,
+   "strokeColor": "#1e1e1e",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "isDeleted": false,
+   "boundElements": null,
+   "link": null,
+   "locked": false,
+   "id": "box-next-to-stamp",
+   "type": "rectangle",
+   "x": 220,
+   "y": 100,
+   "width": 160,
+   "height": 80,
+   "index": "a3",
+   "seed": 777,
+   "version": 3,
+   "versionNonce": 888,
+   "updated": 1756000000004
+  }
+ ],
+ "files": {}
+}

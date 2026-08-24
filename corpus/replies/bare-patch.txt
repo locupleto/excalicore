@@ -1,0 +1,2 @@
+Dropping the stale node.
+{"elements": [], "delete": ["n7"]}

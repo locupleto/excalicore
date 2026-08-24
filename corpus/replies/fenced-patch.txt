@@ -1,0 +1,9 @@
+Two boxes and an arrow between them, then.
+
+```excalidraw
+{"elements": [
+  {"id": "n1", "type": "rectangle", "x": 100, "y": 100, "width": 180, "height": 90, "label": {"text": "Ingest"}},
+  {"id": "n2", "type": "rectangle", "x": 400, "y": 100, "width": 180, "height": 90, "label": {"text": "Store"}},
+  {"id": "e1", "type": "arrow", "start": {"id": "n1"}, "end": {"id": "n2"}}
+], "delete": []}
+```

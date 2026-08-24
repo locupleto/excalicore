@@ -1,0 +1,91 @@
+{
+ "type": "excalidraw",
+ "version": 2,
+ "elements": [
+  {
+   "angle": 0,
+   "strokeColor": "#1e1e1e",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "isDeleted": false,
+   "boundElements": null,
+   "link": null,
+   "locked": false,
+   "id": "img-01",
+   "type": "image",
+   "x": 40,
+   "y": 40,
+   "width": 200,
+   "height": 150,
+   "index": "a0",
+   "seed": 999,
+   "version": 2,
+   "versionNonce": 1010,
+   "updated": 1756000000005,
+   "fileId": "f-abc123",
+   "scale": [
+    1,
+    1
+   ],
+   "status": "saved",
+   "crop": null
+  },
+  {
+   "angle": 0,
+   "strokeColor": "#1e1e1e",
+   "backgroundColor": "transparent",
+   "fillStyle": "solid",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roughness": 1,
+   "opacity": 100,
+   "groupIds": [],
+   "frameId": null,
+   "roundness": null,
+   "isDeleted": true,
+   "boundElements": null,
+   "link": null,
+   "locked": false,
+   "id": "img-02",
+   "type": "image",
+   "x": 300,
+   "y": 40,
+   "width": 100,
+   "height": 100,
+   "index": "a1",
+   "seed": 1011,
+   "version": 2,
+   "versionNonce": 1012,
+   "updated": 1756000000006,
+   "fileId": "f-orphan",
+   "scale": [
+    1,
+    1
+   ],
+   "status": "saved",
+   "crop": null
+  }
+ ],
+ "files": {
+  "f-abc123": {
+   "mimeType": "image/png",
+   "id": "f-abc123",
+   "dataURL": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg==",
+   "created": 1756000000000,
+   "lastRetrieved": 1756000000000
+  },
+  "f-unreferenced": {
+   "mimeType": "image/png",
+   "id": "f-unreferenced",
+   "dataURL": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUg==",
+   "created": 1756000000000
+  }
+ }
+}

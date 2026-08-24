@@ -1,0 +1,4 @@
+First thought:
+{"elements": [{"id": "a", "type": "rectangle", "x": 0, "y": 0, "width": 10, "height": 10}]}
+On reflection, this one:
+{"elements": [{"id": "b", "type": "ellipse", "x": 50, "y": 50, "width": 20, "height": 20}]}
