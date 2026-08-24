@@ -156,6 +156,15 @@ class TestPatchValidation(unittest.TestCase):
         self.assertIsNotNone(scene.valid_patch({"elements": [{"stamp": "Operator", "x": 1, "y": 2}]}))
         self.assertIsNone(scene.valid_patch({"elements": [{"stamp": "Operator", "x": 1}]}))
 
+    def test_a_blank_name_is_not_a_placement(self):
+        # Whitespace is not a symbol name, so this falls back to needing a
+        # type — and having none, it takes the whole patch down with it.
+        self.assertIsNone(scene.valid_patch({"elements": [{"stamp": "   ", "x": 1, "y": 2}]}))
+
+    def test_a_placement_obeys_the_same_bounds_as_anything_else(self):
+        far = {"stamp": "Operator", "x": scene.MAX_COORD + 1, "y": 0}
+        self.assertIsNone(scene.valid_patch({"elements": [far]}))
+
     def test_non_string_delete_ids_are_discarded(self):
         patch = scene.valid_patch({"delete": ["a", 7, None, "b"]})
         self.assertEqual(patch["delete"], ["a", "b"])
