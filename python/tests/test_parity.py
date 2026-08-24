@@ -1,14 +1,22 @@
-"""Differential test against the implementations this package was lifted from.
+"""Check this package against an existing implementation of the same code.
 
-Extraction is only safe if the extracted code behaves EXACTLY like the copies
-still running in the applications. This test loads the original private
-functions straight out of the sibling repositories and runs the whole corpus
-through both, so "adoption is a pure deletion" is a measured claim rather than
-an intention.
+Anyone migrating a project onto excalicore has a working copy of these
+functions already, and the only migration worth doing is one that changes no
+behaviour. This test runs the whole corpus through both implementations and
+asserts identical output, which turns "the switch is safe" into a measurement
+rather than a hope.
 
-It skips when the sibling repositories are not checked out beside this one, so
-the suite stays green on a machine that only has excalicore. Once every
-application has adopted the package, this test has done its job and can go.
+Point it at your own files:
+
+    EXCALICORE_PARITY_SOURCES=/path/to/your/scene_code.py python -m unittest ...
+
+Several sources may be given, separated by commas. Each is expected to define
+private functions named ``_compact``, ``_extract_scene``, ``_rdp``,
+``_stroke_summary``, ``_sane_geometry`` and ``_valid_scene``. They are compiled
+out of the file's syntax tree in isolation rather than imported, so a module
+that also pulls in databases or network clients still works as a source.
+
+The test skips when no source is configured.
 """
 
 from __future__ import annotations
@@ -16,6 +24,7 @@ from __future__ import annotations
 import ast
 import json
 import math
+import os
 import pathlib
 import re
 import unittest
@@ -25,13 +34,9 @@ from excalicore import scene
 
 from . import corpus
 
-SIBLINGS = {
-    "armory": pathlib.Path("the-armory/backend/sketch.py"),
-    "academy": pathlib.Path("the-academy/backend/board.py"),
-}
-GIT_ROOT = corpus.ROOT.parent.parent  # the directory the repositories are cloned into
+SOURCES_ENV = "EXCALICORE_PARITY_SOURCES"
 
-# Module-level names the lifted functions close over.
+# Module-level names the functions under test close over.
 _CONSTANTS = {
     "_KEEP", "_OPAQUE_TYPES", "_MAX_STROKE_POINTS", "_MAX_COORD",
     "_LABEL_TAIL", "_FENCE_HEAD", "_decoder",
@@ -43,11 +48,7 @@ _FUNCTIONS = {
 
 
 def _load(path: pathlib.Path) -> dict[str, Any] | None:
-    """The pure functions from an application module, without importing it.
-
-    The real modules pull in databases, SSH, and HTTP clients; only these few
-    functions are wanted, so they are compiled out of the AST in isolation.
-    """
+    """The functions under test, compiled from a file without importing it."""
     if not path.exists():
         return None
     tree = ast.parse(path.read_text())
@@ -62,38 +63,50 @@ def _load(path: pathlib.Path) -> dict[str, Any] | None:
     return namespace if _FUNCTIONS <= set(namespace) else None
 
 
-ORIGINALS = {name: _load(GIT_ROOT / path) for name, path in SIBLINGS.items()}
+def _configured() -> dict[str, dict[str, Any]]:
+    found: dict[str, dict[str, Any]] = {}
+    for raw in (os.environ.get(SOURCES_ENV) or "").split(","):
+        entry = raw.strip()
+        if not entry:
+            continue
+        path = pathlib.Path(entry).expanduser()
+        loaded = _load(path)
+        if loaded:
+            found[path.name] = loaded
+    return found
+
+
+ORIGINALS = _configured()
 
 
 class TestParity(unittest.TestCase):
-    def _originals(self):
-        found = {k: v for k, v in ORIGINALS.items() if v}
-        if not found:
-            self.skipTest("no sibling application checked out beside excalicore")
-        return found
+    def setUp(self):
+        if not ORIGINALS:
+            self.skipTest(f"set {SOURCES_ENV} to compare against an implementation")
 
-    def test_compact_matches_every_original(self):
-        for app, original in self._originals().items():
+    def test_compact_matches(self):
+        for source, original in ORIGINALS.items():
             for name in corpus.scene_names():
-                with self.subTest(app=app, scene=name):
+                with self.subTest(source=source, scene=name):
                     elements = corpus.elements(name)
                     self.assertEqual(scene.compact(elements),
                                      original["_compact"](elements))
 
-    def test_patch_extraction_matches_every_original(self):
-        for app, original in self._originals().items():
+    def test_patch_extraction_matches(self):
+        for source, original in ORIGINALS.items():
             for path in sorted(corpus.REPLIES.glob("*.txt")):
-                with self.subTest(app=app, reply=path.stem):
+                with self.subTest(source=source, reply=path.stem):
                     message = path.read_text()
                     self.assertEqual(scene.extract_patch(message),
                                      original["_extract_scene"](message))
 
-    def test_simplification_matches_every_original(self):
+    def test_simplification_matches(self):
         points = corpus.elements("freedraw")[0]["points"]
-        for app, original in self._originals().items():
+        for source, original in ORIGINALS.items():
             for eps in (0.5, 1.0, 4.0, 32.0):
-                with self.subTest(app=app, eps=eps):
-                    self.assertEqual(scene.rdp(points, eps), original["_rdp"](points, eps))
+                with self.subTest(source=source, eps=eps):
+                    self.assertEqual(scene.rdp(points, eps),
+                                     original["_rdp"](points, eps))
 
 
 if __name__ == "__main__":

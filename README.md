@@ -1,94 +1,129 @@
 # excalicore
 
 The parts of an Excalidraw-backed application that are the same in every
-Excalidraw-backed application — written once, tested once, and depended on by
-name instead of copied.
+Excalidraw-backed application.
 
-## Why it exists
+Excalidraw is a canvas library. It hands you an array of elements and leaves
+everything else to you — and "everything else" turns out to be the same short
+list of problems each time: how to show a board to a language model without
+drowning it in bookkeeping, how to accept the model's answer without letting a
+garbled reply wreck the canvas, and how to store elements in a database and get
+them back unbroken.
 
-Three applications in this estate put Excalidraw in front of a model or a
-database. Before this package, they shared their canvas handling by copying it.
-Comparing function bodies with comments and docstrings stripped:
+None of that is application logic, but all of it is subtle enough to get wrong
+quietly. This package is that list, solved once.
+
+## `excalicore.scene` — between a canvas and a language model
+
+A raw Excalidraw scene is far too wide to put in a prompt, and most of its
+width is bookkeeping a model must never author. `compact()` projects it onto a
+prompt-sized *skeleton dialect*:
+
+- text bound to a container folds into that container's `label`, so an echoed
+  label cannot detach from its shape or duplicate;
+- arrow bindings become `start`/`end` id references, and their raw points are
+  dropped, because bound arrows are re-routed on conversion anyway;
+- freehand strokes become a bounded, simplified polyline in absolute board
+  coordinates, so a 900-point scribble costs no more than a 40-point one;
+- grouped symbols appear as a single entry, addressable by the group id rather
+  than as the dozen primitives they are drawn from;
+- images and other content a model cannot faithfully re-emit appear as
+  read-only geometry: visible and deletable, but not re-drawable.
+
+`extract_patch()` handles the return trip. A reply is prose that may end in one
+JSON object, and that object is a **merge patch** — added or changed elements
+plus ids to delete — never a whole board. The inversion is the point: with a
+patch, a lazy partial reply is correct behaviour and destruction requires
+explicit intent, where a whole-board reply silently deletes everything the model
+forgot to mention.
+
+Validation is strict all-or-nothing. One malformed element, or a single
+coordinate far enough out to be a hallucination rather than a layout, rejects
+the entire patch. A half-garbled reply can never half-apply.
+
+## `excalicore.fidelity` — storing elements without breaking them
+
+An element carries fields no application should author and none may discard.
+`seed` and `versionNonce` feed the rough-renderer and the conflict resolver,
+`version` and `updated` order concurrent edits, `index` fixes z-order, and
+`boundElements` holds the back-references that keep labels attached to shapes.
+
+Normalize one away and the canvas does not raise. It fails **silently**: a
+label detaches, a shape re-renders with a different hand, an edit is quietly
+dropped on the next merge. The damage surfaces days later, in a board nobody
+was watching.
+
+So `explode()` extracts only the few fields worth querying — id, type, and
+bounds — and keeps everything else verbatim; `reassemble()` is its exact
+inverse. The verbatim remainder is the arbiter, which makes the round trip
+exact by construction rather than by an ever-growing list of fields somebody
+has to remember to update. A key the element never carried is not invented, a
+key it set to null is not lost, and a field added by a future Excalidraw
+release passes through untouched.
+
+`file_ids()` and `unreferenced_files()` give asset collection its roots.
+Deleted elements count as references: Excalidraw keeps them in the array so
+undo can restore them, and an undo that restores an image whose file was
+collected restores a broken image.
+
+## What is deliberately not here
+
+No UI components, no Excalidraw wrapper, no prompt text, no HTTP layer, no
+database schema, and no layout engine. Both modules are pure functions — no
+I/O, no framework, and no opinion about what the elements mean. Your
+application keeps its own tables, prompts, and vocabulary.
+
+## Install
 
 ```
-_compact          IDENTICAL CODE      _sane_geometry    IDENTICAL CODE
-_extract_scene    IDENTICAL CODE      _stroke_summary   IDENTICAL CODE
-_rdp              IDENTICAL CODE      _valid_scene      IDENTICAL CODE
+pip install "excalicore @ git+https://github.com/<owner>/excalicore@v0.1.0#subdirectory=python"
 ```
 
-Two copies of one idea, plus a 379-line frontend module duplicated with four
-differing comment lines. Nothing had diverged yet — but a fix applied to one
-copy would never have reached the other, and neither copy carried the element
-fidelity rules the third application learned the hard way.
+Pin by tag. Canvas behaviour is the kind of thing that should only ever change
+when you decide it does, never on an unrelated `git pull`.
 
-## What is in it
+## Use
 
-### `excalicore.scene` — the canvas/model bridge
+```python
+from excalicore import scene, fidelity
 
-`compact()` projects a raw scene onto a prompt-sized skeleton: the binding
-graph folded into skeleton form, bound labels folded into their containers,
-stamp groups shown as one symbol, strokes simplified to a bounded polyline.
+skeleton = scene.compact(elements)            # -> put in the prompt
+prose, patch = scene.extract_patch(reply)     # -> patch is None if nothing valid
 
-`extract_patch()` takes a model's reply and returns `(prose, patch)`. The patch
-is a MERGE PATCH — added or changed elements plus ids to delete — never a whole
-board. That inversion matters: a lazy partial reply is then correct behaviour,
-and destruction requires explicit intent. Validation is strict all-or-nothing,
-so a half-garbled reply can never half-apply.
+rows = fidelity.explode(elements)             # -> insert as you like
+elements = fidelity.reassemble(rows)          # -> exactly what went in
+```
 
-### `excalicore.fidelity` — storing elements without breaking them
+Every tuning constant — which fields to keep, which types are read-only, the
+polyline budget, the coordinate bound — is a keyword argument with a sensible
+default, so a dialect can be adjusted without forking the module.
 
-An element carries fields no application should author and none may discard:
-`seed`, `versionNonce`, `version`, `updated`, `index`, `boundElements`.
-Normalize one away and the canvas does not raise — it fails silently.
-
-So `explode()` extracts the few columns worth querying and keeps everything
-else verbatim; `reassemble()` is its exact inverse. The remainder is the
-arbiter, which makes the round trip exact by construction rather than by an
-ever-growing list of known fields. `file_ids()` and `unreferenced_files()`
-give asset collection its roots.
-
-Both modules are pure: no I/O, no database, no framework, and no opinion about
-what the elements mean. Applications keep their own tables, prompts, and
-vocabulary.
-
-## What is deliberately not in it
-
-React components, an Excalidraw wrapper, prompt text or personas, an HTTP
-layer, and any layout engine. The moment the core knows what a "zone" or a
-"beat" is, it has stopped being a core.
-
-## Verification
+## Tests
 
 ```
 cd python && python -m unittest discover -s tests -t .
 ```
 
-Beyond the unit tests, `tests/test_parity.py` runs the whole corpus through the
-original private functions still living in the sibling applications and asserts
-identical output — so "adopting this package is a pure deletion" is measured,
-not hoped for. It skips when those repositories are not checked out alongside.
+The suite runs against a corpus of real captured scenes and real model replies
+at `corpus/`, shared with the TypeScript half so both agree about the same
+fixtures. See `corpus/README.md`.
 
-## Using it
-
-Pin it by tag, per application, so adopting a new version is always a
-deliberate act and never a surprise on a `git pull`:
-
-```
-excalicore @ git+https://github.com/locupleto/excalicore@v0.1.0#subdirectory=python
-```
+`tests/test_parity.py` is a tool for anyone migrating off their own copy of
+this code: point it at your existing implementation and it asserts that this
+package produces identical output across the whole corpus. It skips when no
+source is configured.
 
 ## Status
 
-`0.x`. The two modules here have two or more consumers each and are stable in
-shape. The view-store layer described in `docs/` — per-diagram object rows over
-a generic core, with application rules as separate droppable constraints — has
-one consumer so far and is not in this release; it should not set the API
-tone for code that is already shared.
+`0.x` — the API may still change. A module is added here when a second
+independent use has proved its shape; until then it stays in the application
+that needs it, because a design with one user is not yet a general one.
 
 ## Layout
 
 ```
 python/       the installable package and its tests
-typescript/   the browser half — measured, not yet extracted
+typescript/   the browser half — planned, see its README
 corpus/       golden scenes and model replies, shared by both halves
+docs/         design rationale
 ```

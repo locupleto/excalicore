@@ -1,95 +1,101 @@
-# Design and adoption plan
+# Design notes
 
-## Evidence this package is built on
+Why the two modules are shaped the way they are. These are the decisions that
+took a while to arrive at and would otherwise be re-litigated by every reader
+who finds them surprising.
 
-Measured 2026-08-24 across the three applications.
+## A merge patch, not a scene
 
-Python, comparing function bodies with docstrings and comments stripped
-(`the-armory/backend/sketch.py` vs `the-academy/backend/board.py`):
+A model asked to modify a board can reply in two ways: with the whole board, or
+with only what changes. Whole-board replies fail badly. The model summarizes,
+drops what it considers unimportant, and every omission is a deletion — so a
+lazy reply silently destroys work, and the failure is invisible until someone
+looks for a shape that is no longer there.
 
-```
-_compact          IDENTICAL CODE      _sane_geometry    IDENTICAL CODE
-_extract_scene    IDENTICAL CODE      _stroke_summary   IDENTICAL CODE
-_rdp              IDENTICAL CODE      _valid_scene      IDENTICAL CODE
-```
+A merge patch inverts the failure mode. Unmentioned elements stay. A lazy reply
+is then *correct behaviour*, and destruction requires an explicit `delete` list.
+The worst case becomes "nothing happened" rather than "the board is gone".
 
-TypeScript: `sketchGeometry.ts` and `boardGeometry.ts` are 379 lines each and
-differ on four lines, all of them inside comments.
+## All-or-nothing validation
 
-Schema: one mechanism — the one-step wipe guard — exists in three shapes.
-`sketch_boards.prev_scene` columns in the Armory, a `board_stash` table in the
-Academy, a `diagram_annotation_stash` table in the Bastion.
+A patch is accepted whole or rejected whole. The alternative — applying the
+elements that parse and skipping the rest — produces a board that is neither
+what the model meant nor what the user had, and it does so without any signal
+that something went wrong. Partial application is how a canvas ends up in a
+state no one designed.
 
-The applications had not diverged in behaviour. They had diverged in prose, and
-they were one bug fix away from diverging in behaviour.
+Coordinate bounds are part of this. A model that emits `x: 4000000` has not
+made a layout decision; it has hallucinated. Such a value is rejected rather
+than clamped, because clamping produces a plausible-looking board built on a
+number nobody chose.
 
-## Module plan
+## Read-only element types
 
-Shipped in 0.1.0:
+Some elements cannot survive an echo through a language model:
 
-- `excalicore.scene` — canvas to model and back. Two consumers today.
-- `excalicore.fidelity` — exact element storage and asset roots. One consumer
-  today, but the other two are exposed to the failure it prevents.
+- **Freehand strokes** are point clouds of hundreds of coordinates. A model
+  cannot reproduce one, and asking it to try wastes an enormous number of
+  tokens to get back a caricature of the user's own ink.
+- **Images** carry a `fileId` pointing into a separate asset store. An echoed
+  image loses that reference and becomes a broken rectangle.
+- **Stamped symbols** are groups of primitives that mean one thing. A model
+  should address the symbol, not redraw its anatomy.
 
-Planned, in order of evidence:
+These are shown as read-only geometry — id, bounding box, and for strokes a
+simplified polyline — so the model can *align to* and *delete* them, which is
+everything it legitimately needs. Elements of these types appearing in a patch
+are dropped silently while the rest of the patch stands, because the client
+still holds the real ones.
 
-- `excalicore.store` — scene persistence and the wipe guard, over a
-  caller-supplied connection and a small table descriptor. Not a mini-ORM: the
-  applications keep their tables and their migrations, and the package owns
-  only the rule (stash one step deep, only on a wipe, swap self-inversely).
-  Three consumers, three current shapes.
-- `excalicore.stencils` — symbol-library footprints, menu rendering, and
-  placement expansion. Expansion currently exists only in the two frontends;
-  having it server-side lets a headless test verify a placement.
-- TypeScript `geometry`, `contrast`, `stamps` — see `typescript/README.md`.
-- `excalicore.viewstore` — `diagrams` / `diagram_objects` /
-  `annotation_elements` / `diagram_files` plus a `Profile` object that declares
-  an application's subject kinds and the fields each may carry, rendered into
-  database triggers so the constraints are enforced below the language. One
-  consumer. Held back deliberately: a single-consumer design must not set the
-  API tone for code that is already shared.
+## The verbatim remainder
 
-## Adoption order
+The tempting way to store elements is a column per interesting field. It is
+also the way to lose data, because Excalidraw elements carry fields whose
+purpose is not obvious and whose absence is not an error — it is a silent
+behaviour change.
 
-1. **The Academy first.** It holds the copy, not the original, so a bad
-   extraction cannot reach the Control Center, and adopting in a non-origin
-   application is the only real test of whether the API is generic. Success is
-   `board.py` losing roughly 200 lines with its existing tests untouched and
-   still passing.
-2. **Then the Armory**, the same deletion with higher stakes, now de-risked.
-3. **Then the Bastion**, for `fidelity` only in this release.
+So storage extracts only what is worth querying and keeps the rest verbatim,
+and reassembly treats the remainder as the arbiter. Three properties follow for
+free, none of which require anyone to maintain a list:
 
-`tests/test_parity.py` is the safety net for steps 1 and 2: it runs the corpus
-through the original private functions and asserts identical output. It has
-already confirmed byte-identical behaviour for `compact`, `extract_patch`, and
-`rdp` against both applications. Once every application has adopted, that test
-has done its job and can go.
+- a field this package has never heard of round-trips untouched, including
+  whatever a future Excalidraw release adds;
+- a key the element never carried is not invented on the way back;
+- a key the element explicitly set to null keeps its null.
 
-## Distribution
+That last one is why a null-valued field stays in the remainder rather than
+being extracted to a NULL column: a NULL column cannot distinguish "the element
+said null" from "the element never said it", and collapsing that difference is
+exactly the silent damage this module exists to prevent.
 
-Pinned by tag per application, so adopting a new version is a deliberate act:
+## Deleted elements still own their files
 
-```
-excalicore @ git+https://github.com/locupleto/excalicore@v0.1.0#subdirectory=python
-```
+Excalidraw keeps `isDeleted` elements in the array so undo can restore them.
+Asset collection must therefore count deleted elements as references, or an
+undo restores an image whose file has been swept — a broken image, produced by
+a correct-looking garbage collector.
 
-No submodules. The applications already clone over HTTPS on the host, so this
-adds no deploy machinery.
+## Pure functions, no storage
 
-## Deviations from the code as lifted
+Neither module touches a database, a filesystem, or a network. `explode()`
+returns rows and `reassemble()` accepts them; the application owns its table,
+its SQL, and its transaction.
 
-Recorded so a reviewer comparing against the originals is not surprised.
+This is a deliberate limit rather than an unfinished edge. A storage layer that
+travels with the library forces every user onto one schema, one migration
+style, and one connection discipline — and those are precisely the parts an
+application already has opinions about. Pure functions compose with any of
+them.
 
-- `_valid_scene` is now `valid_patch`. Both copies validate a merge patch, not
-  a scene; the old name was a bug waiting for a reader to believe it.
-- Module constants (`KEEP`, `OPAQUE_TYPES`, `MAX_STROKE_POINTS`, `MAX_COORD`)
-  became keyword defaults, so an application tunes the dialect instead of
-  forking the module.
-- `compact` handles every opaque type through one branch. The originals
-  special-cased `image` and let a raw element typed `stamp` fall through to the
-  generic path. Unified; the corpus confirms identical output on every fixture.
-- `fidelity.explode` leaves a key whose value is `None` in the verbatim
-  remainder rather than extracting it to a NULL column. A NULL column cannot
-  distinguish "the element said null" from "the element never said it", and the
-  Bastion's version silently dropped such keys on the way back. Found by the
-  round-trip test on the first run.
+## Constants as keyword arguments
+
+Every tuning value — the fields worth showing a model, which types are
+read-only, the polyline budget, the coordinate bound — is a module constant
+*and* a keyword default. An application that needs a different dialect passes
+an argument. Nobody should have to fork a module to change a number.
+
+## The corpus lives at the repository root
+
+Not under `python/`. The fixtures are read by every language binding, and the
+day one half of the library is fixed against a scene the other half cannot see
+is the day the two halves start to disagree.

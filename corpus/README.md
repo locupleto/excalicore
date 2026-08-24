@@ -28,5 +28,7 @@ Add a fixture when a real board breaks something. A corpus grown from actual
 failures is worth more than one grown from imagination, and every entry here
 should be traceable to a case some application had to handle.
 
-Never add a fixture containing content from a real engagement, lecture, or
-private board. These files are committed; the boards they came from are not.
+Never add a fixture containing anyone's private or confidential content.
+These files are committed and travel with the repository; the boards they were
+captured from do not. Neutralize the text before adding a captured scene — the
+structure is what the fixture is for, and the words never are.

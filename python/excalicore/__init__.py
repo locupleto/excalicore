@@ -1,8 +1,6 @@
 """excalicore — the parts of an Excalidraw-backed application that are the same
 in every Excalidraw-backed application.
 
-Two modules ship in this release:
-
 ``scene``
     The bridge between a canvas and a language model: compacting a scene into a
     prompt-sized skeleton, and extracting a validated merge patch from a reply.
