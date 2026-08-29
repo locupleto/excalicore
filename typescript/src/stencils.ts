@@ -14,7 +14,8 @@
  *   4. Everything else is a `decoration`, hung on the body by an anchor: a
  *      point on the body's box in unit coordinates, a pixel offset that never
  *      scales, and a size mode — `fit` (ratios of the body) or `fixed` (pixels).
- *   5. All parts of an instance share one `groupIds` entry, the instance id.
+ *   5. All parts of an instance share one `groupIds` entry, the instance id
+ *      (an instance of one part is left ungrouped: a group of one buys nothing).
  *   6. Tags live in `customData.stencil`, beside the application's own
  *      namespace, which this module never reads.
  *
@@ -238,6 +239,9 @@ export function validateStencil(elements: Element[]): string[] {
   if (labels.length > 1) {
     errors.push(`At most one element may carry role "label"; found ${labels.length} (${labels.map(idOf).join(', ')}).`)
   }
+  if (labels.length && body && body.label && typeof body.label === 'object') {
+    errors.push(`The body "${idOf(body)}" already carries a label property; a label element on top of it is one label too many.`)
+  }
   for (const label of labels) {
     if (label.type !== 'text') {
       errors.push(`The label must be a text element; "${idOf(label)}" is a ${String(label.type)}.`)
@@ -420,11 +424,16 @@ export function instantiate(
     return to ? { ...(binding as object), elementId: to } : null
   }
 
+  // A group of one buys nothing and makes a plain box select as a group, so
+  // a single-part instance is left ungrouped; the tag still names its
+  // instance, which is what instances() and sweep() read.
+  const group = parts.length > 1 ? [instance] : undefined
   return parts.map((el, index) => {
     const tag = tagOf(el)!
     const out: Element = { ...el }
     out.id = ids.get(typeof el.id === 'string' ? el.id : `#${index}`) ?? freshId('e-')
-    out.groupIds = [instance]
+    if (group) out.groupIds = group
+    else delete out.groupIds
 
     if (tag.role === 'body') {
       out.x = bodyAt.x
@@ -460,6 +469,12 @@ export function instantiate(
       out.text = options.label
       if ('originalText' in out) out.originalText = options.label
     }
+    // A skeleton for Excalidraw's converter may carry its bound label as a
+    // `label: {text}` property on the container instead of a text element;
+    // that is a label slot too.
+    if (tag.role === 'body' && options.label !== undefined && el.label && typeof el.label === 'object') {
+      out.label = { ...(el.label as object), text: options.label }
+    }
 
     if (typeof el.containerId === 'string') out.containerId = remap(el.containerId)
     if (typeof el.frameId === 'string') out.frameId = remap(el.frameId)
@@ -494,6 +509,15 @@ function restyleOne(el: Element, style: Style): Element {
   const out = { ...el }
   for (const field of fields) {
     if (style[field] !== undefined) out[field] = style[field]
+  }
+  // A label carried as a property on the body is a label all the same, and
+  // takes the tint.
+  if (tag.role === 'body' && el.label && typeof el.label === 'object') {
+    const label: Element = { ...(el.label as Element) }
+    for (const field of TINT_FIELDS) {
+      if (style[field] !== undefined && field in label) label[field] = style[field]
+    }
+    out.label = label
   }
   return out
 }

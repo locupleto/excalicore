@@ -166,6 +166,31 @@ test('the actor keeps its proportions at another size, and the frame still comes
   close(back.width, box.w, 'frame.w'); close(back.height, box.h, 'frame.h')
 })
 
+test('a single-part instance is not put in a group of its own', () => {
+  const one: Stencil = { name: 'one', elements: [
+    { type: 'rectangle', id: 'b', x: 0, y: 0, width: 10, height: 10, label: { text: 'Box', fontSize: 16 },
+      customData: { stencil: { role: 'body', frame: { dx: 0, dy: 0, sw: 1, sh: 1 } } } },
+  ] }
+  const parts = instantiate(one, { x: 1, y: 2 }, { label: 'Named', instance: 'i-1' })
+  assert.equal(parts.length, 1)
+  assert.equal('groupIds' in parts[0], false)
+  assert.equal(tagOf(parts[0])!.instance, 'i-1')
+  assert.deepEqual(parts[0].label, { text: 'Named', fontSize: 16 }, 'a label property on the body is a label slot')
+  const tinted = restyle([{ ...parts[0], label: { text: 'Named', strokeColor: '#000' } }], { strokeColor: '#f00', backgroundColor: '#0f0' })
+  assert.deepEqual(tinted[0].label, { text: 'Named', strokeColor: '#f00' }, 'the label property takes the tint, not the fill')
+  assert.deepEqual([...instances(parts).keys()], ['i-1'])
+})
+
+test('a label element beside a body that already carries a label property is refused', () => {
+  const errors = validateStencil([
+    { type: 'rectangle', id: 'b', x: 0, y: 0, width: 10, height: 10, label: { text: 'Box' },
+      customData: { stencil: { role: 'body', frame: { dx: 0, dy: 0, sw: 1, sh: 1 } } } },
+    { type: 'text', id: 't', x: 0, y: 0, text: 'x', containerId: 'b', customData: { stencil: { role: 'label' } } },
+  ])
+  assert.equal(errors.length, 1)
+  assert.match(errors[0], /one label too many/)
+})
+
 test('a plain box is the identity, its label bound, and no ghosts unless asked', () => {
   const parts = instantiate(stencil('bastion-process'), { x: 816, y: 202, width: 200, height: 88 }, {
     label: 'MID Server\nMID', id: (src, role) => (role === 'body' ? 'c-mid' : `cp-mid-${src.id}`),
