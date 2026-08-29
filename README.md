@@ -66,10 +66,23 @@ Deleted elements count as references: Excalidraw keeps them in the array so
 undo can restore them, and an undo that restores an image whose file was
 collected restores a broken image.
 
+### `stencils` — the contract a vocabulary element keeps (TypeScript)
+
+An application has a graphical vocabulary — a data store, a person, a server.
+What such an element *means* belongs to the application; what it looks like
+belongs to whoever drew it; what it must *provide* — one bindable body, a
+frame back to the subject's box, a label slot, decorations anchored to the
+body, one group, one tag namespace — is the contract in
+`typescript/src/stencils.ts`. `instantiate()` places a stencil so that
+`frameOf()` gives the subject's box back; `fromLibraryItem()` turns a symbol
+drawn on any canvas into one; `sweep()` removes an instance whole. See
+`typescript/README.md` and `docs/design.md`.
+
 ## What is deliberately not here
 
 No UI components, no Excalidraw wrapper, no prompt text, no HTTP layer, no
-database schema, and no layout engine. Both modules are pure functions — no
+database schema, no layout engine, no palette, and no shelf of stencils —
+the library defines what a stencil must provide and stores none. Both modules are pure functions — no
 I/O, no framework, and no opinion about what the elements mean. Your
 application keeps its own tables, prompts, and vocabulary.
 
@@ -123,7 +136,7 @@ that needs it, because a design with one user is not yet a general one.
 
 ```
 python/       the installable package and its tests
-typescript/   the browser half — planned, see its README
+typescript/   the browser half — stencils written, geometry and contrast planned; see its README
 corpus/       golden scenes and model replies, shared by both halves
 docs/         design rationale
 ```

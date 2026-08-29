@@ -1,0 +1,157 @@
+{
+ "name": "bastion-actor",
+ "elements": [
+  {
+   "type": "ellipse",
+   "id": "head",
+   "x": 43.2,
+   "y": 6.0,
+   "width": 33.6,
+   "height": 33.6,
+   "strokeColor": "#1b1914",
+   "backgroundColor": "transparent",
+   "strokeWidth": 2,
+   "customData": {
+    "stencil": {
+     "role": "body",
+     "frame": {
+      "dx": -43.2,
+      "dy": -6.0,
+      "sw": 3.571428571428571,
+      "sh": 3.8095238095238093
+     }
+    }
+   }
+  },
+  {
+   "type": "line",
+   "id": "spine",
+   "x": 60.0,
+   "y": 39.6,
+   "width": 0,
+   "height": 38.4,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     38.4
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 2,
+   "customData": {
+    "stencil": {
+     "role": "decoration",
+     "anchor": {
+      "u": 0.4999999999999999,
+      "v": 1.0
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   }
+  },
+  {
+   "type": "line",
+   "id": "arms",
+   "x": 33.6,
+   "y": 49.84,
+   "width": 52.8,
+   "height": 0,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     52.8,
+     0
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 2,
+   "customData": {
+    "stencil": {
+     "role": "decoration",
+     "anchor": {
+      "u": -0.28571428571428575,
+      "v": 1.3047619047619048
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   }
+  },
+  {
+   "type": "line",
+   "id": "legs",
+   "x": 60.0,
+   "y": 78.0,
+   "width": 40.800000000000004,
+   "height": 30.72,
+   "points": [
+    [
+     -20.400000000000002,
+     30.72
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     20.400000000000002,
+     30.72
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 2,
+   "customData": {
+    "stencil": {
+     "role": "decoration",
+     "anchor": {
+      "u": 0.4999999999999999,
+      "v": 2.142857142857143
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   }
+  },
+  {
+   "type": "text",
+   "id": "name",
+   "x": 60.0,
+   "y": 110.0,
+   "text": "Actor",
+   "fontSize": 16,
+   "textAlign": "center",
+   "strokeColor": "#1b1914",
+   "customData": {
+    "stencil": {
+     "role": "label",
+     "anchor": {
+      "u": 0.5,
+      "v": 3.630952380952381
+     },
+     "offset": {
+      "dx": 0,
+      "dy": -18
+     },
+     "size": "fixed"
+    }
+   }
+  }
+ ]
+}

@@ -14,6 +14,23 @@ can read is how the two halves drift apart.
 | `freedraw.json` | A 220-point hand stroke with pressures, well over the polyline budget. |
 | `stamp-group.json` | Three primitives sharing `customData.stampGroup`, plus an unrelated neighbour that must not be swallowed. |
 | `image-and-files.json` | An image with a `fileId`, a deleted image still holding its file, and a file no element references. |
+| `stencil-instances.json` | Two stencil instances placed under the contract (an actor of five parts, a data store of four), a flow arrow bound to the data store's body, and a neighbour nothing owns. |
+
+## Stencils (`stencils/*.json`)
+
+Stencil definitions the TypeScript `stencils` module is fixed against.
+
+| File | What it is for |
+| --- | --- |
+| `bastion-actor.json` | A stick figure at its layout size (120×128): the head is the body and carries the frame; limbs are `fit` decorations; the name is a `fixed` label pinned 18px above the subject's bottom edge. |
+| `bastion-process.json`, `bastion-external-service.json` | A box (200×88) with a bound label; the external service is dashed. Both carry the multiplicity ghost stack as a `variant`. |
+| `bastion-datastore.json` | The open-ended DFD store (200×76): the rectangle is the body, two rules are decorations anchored to its top and bottom edges. |
+| `armory-stick-man.json`, `armory-server.json` | Two of the Armory's hand-drawn symbols as raw Excalidraw library items, plus the role map that makes them stencils — everything but the body is derived. |
+| `rejected.json` | Definitions the validator must refuse, each with the reason: no body, two bodies, a body that cannot be bound to, a body without a frame, two labels, a label bound to a decoration, an untagged part. |
+
+The Bastion fixtures mirror `the-bastion/frontend/src/render.ts` at the sizes
+`backend/layout.py` produces, and the TypeScript tests check the placed
+geometry against that renderer's formulas.
 
 ## Replies (`replies/*.txt`)
 

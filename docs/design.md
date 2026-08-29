@@ -99,3 +99,48 @@ an argument. Nobody should have to fork a module to change a number.
 Not under `python/`. The fixtures are read by every language binding, and the
 day one half of the library is fixed against a scene the other half cannot see
 is the day the two halves start to disagree.
+
+## The stencil contract
+
+Every Excalidraw application here draws a vocabulary — the Bastion's actor and
+data store, the Armory's hand-drawn people and machines — and each did it
+without a contract. The Bastion's glyph code carried one in disguise: a
+"body" stamp on the one element that stands for a component, a way back from
+that element to the component's box, a label that follows the model. The
+Armory's stamps carried none, so its protocol had to tell the model *not to
+bind arrows to a stamp*. That sentence is the cost of artwork without a
+contract, and the reason the contract is here rather than in either
+application.
+
+**One body, and it is bindable.** A stick figure is five elements; an arrow
+must bind to exactly one, and it must be a type Excalidraw can bind to. Naming
+the body is what lets an arrow to a person mean something.
+
+**The body carries the frame.** The way back from an element to what it
+stands for is a stamp on the body — origin offset and size ratio — and nothing
+else is ever read. Reading the geometry off whichever tagged part came last
+is how an actor once walked down the sheet by its own height on every sync.
+
+**Decorations are anchored, not scaled by a flag.** A glyph needs three
+behaviours at once: limbs that grow with the figure, a ghost stack that keeps
+a fixed pixel offset while matching the body's size, a caption that keeps its
+size and pins to a point. A boolean cannot say that; an anchor in unit
+coordinates, a pixel offset that never scales, and a `fit`/`fixed` size mode
+can.
+
+**Variants are decorations with a name.** Multiplicity draws two ghost
+rectangles behind a box; it is not a different stencil. A decoration that
+carries a `variant` is drawn only when the instantiation asks for it, which
+keeps one stencil per kind and the choice with the model.
+
+**The tag namespace is the library's; the subject is the application's.**
+`customData.stencil` says what the part is; `customData.bastion` (or nothing
+at all, for a sketch) says what it stands for. The library never reads the
+second, which is how it can carry a kind without knowing what one means.
+
+**Validated at load, never at draw.** A stencil with no body is an error with
+a sentence, not a component that silently cannot be connected to.
+
+**No shelf.** The library defines what a stencil must provide and validates
+one; where stencils live, which one a view uses, and what a kind means stay
+with the application.

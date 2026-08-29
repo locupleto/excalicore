@@ -1,0 +1,396 @@
+{
+ "type": "excalidraw",
+ "version": 2,
+ "elements": [
+  {
+   "type": "ellipse",
+   "id": "c-itil",
+   "x": 169.2,
+   "y": 147,
+   "width": 33.6,
+   "height": 33.6,
+   "strokeColor": "#1b1914",
+   "backgroundColor": "transparent",
+   "strokeWidth": 2,
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "itil"
+    },
+    "stencil": {
+     "name": "bastion-actor",
+     "instance": "g-c-itil",
+     "role": "body",
+     "frame": {
+      "dx": -43.2,
+      "dy": -6,
+      "sw": 3.571428571428571,
+      "sh": 3.8095238095238093
+     }
+    }
+   },
+   "groupIds": [
+    "g-c-itil"
+   ]
+  },
+  {
+   "type": "line",
+   "id": "cp-itil-spine",
+   "x": 186,
+   "y": 180.6,
+   "width": 0,
+   "height": 38.4,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     38.4
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 2,
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "itil"
+    },
+    "stencil": {
+     "name": "bastion-actor",
+     "instance": "g-c-itil",
+     "role": "decoration",
+     "anchor": {
+      "u": 0.4999999999999999,
+      "v": 1
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   },
+   "groupIds": [
+    "g-c-itil"
+   ]
+  },
+  {
+   "type": "line",
+   "id": "cp-itil-arms",
+   "x": 159.6,
+   "y": 190.84,
+   "width": 52.8,
+   "height": 0,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     52.8,
+     0
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 2,
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "itil"
+    },
+    "stencil": {
+     "name": "bastion-actor",
+     "instance": "g-c-itil",
+     "role": "decoration",
+     "anchor": {
+      "u": -0.28571428571428575,
+      "v": 1.3047619047619048
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   },
+   "groupIds": [
+    "g-c-itil"
+   ]
+  },
+  {
+   "type": "line",
+   "id": "cp-itil-legs",
+   "x": 186,
+   "y": 219,
+   "width": 40.800000000000004,
+   "height": 30.72,
+   "points": [
+    [
+     -20.400000000000002,
+     30.72
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     20.400000000000002,
+     30.72
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 2,
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "itil"
+    },
+    "stencil": {
+     "name": "bastion-actor",
+     "instance": "g-c-itil",
+     "role": "decoration",
+     "anchor": {
+      "u": 0.4999999999999999,
+      "v": 2.142857142857143
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   },
+   "groupIds": [
+    "g-c-itil"
+   ]
+  },
+  {
+   "type": "text",
+   "id": "cp-itil-name",
+   "x": 186,
+   "y": 251,
+   "text": "ITIL Users",
+   "fontSize": 16,
+   "textAlign": "center",
+   "strokeColor": "#1b1914",
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "itil"
+    },
+    "stencil": {
+     "name": "bastion-actor",
+     "instance": "g-c-itil",
+     "role": "label",
+     "anchor": {
+      "u": 0.5,
+      "v": 3.630952380952381
+     },
+     "offset": {
+      "dx": 0,
+      "dy": -18
+     },
+     "size": "fixed"
+    }
+   },
+   "groupIds": [
+    "g-c-itil"
+   ]
+  },
+  {
+   "type": "rectangle",
+   "id": "c-cmdb",
+   "x": 502,
+   "y": 202,
+   "width": 200,
+   "height": 76,
+   "strokeColor": "#1b1914",
+   "backgroundColor": "transparent",
+   "strokeWidth": 2,
+   "strokeStyle": "solid",
+   "roundness": null,
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "cmdb"
+    },
+    "stencil": {
+     "name": "bastion-datastore",
+     "instance": "g-c-cmdb",
+     "role": "body",
+     "frame": {
+      "dx": 0,
+      "dy": 0,
+      "sw": 1,
+      "sh": 1
+     }
+    }
+   },
+   "groupIds": [
+    "g-c-cmdb"
+   ]
+  },
+  {
+   "type": "text",
+   "id": "cp-cmdb-label",
+   "x": 502,
+   "y": 230,
+   "width": 200,
+   "height": 20,
+   "text": "CMDB",
+   "fontSize": 16,
+   "textAlign": "center",
+   "verticalAlign": "middle",
+   "containerId": "c-cmdb",
+   "strokeColor": "#1b1914",
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "cmdb"
+    },
+    "stencil": {
+     "name": "bastion-datastore",
+     "instance": "g-c-cmdb",
+     "role": "label"
+    }
+   },
+   "groupIds": [
+    "g-c-cmdb"
+   ]
+  },
+  {
+   "type": "line",
+   "id": "cp-cmdb-rule-top",
+   "x": 502,
+   "y": 202,
+   "width": 200,
+   "height": 0,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     200,
+     0
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 3,
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "cmdb"
+    },
+    "stencil": {
+     "name": "bastion-datastore",
+     "instance": "g-c-cmdb",
+     "role": "decoration",
+     "anchor": {
+      "u": 0,
+      "v": 0
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   },
+   "groupIds": [
+    "g-c-cmdb"
+   ]
+  },
+  {
+   "type": "line",
+   "id": "cp-cmdb-rule-bottom",
+   "x": 502,
+   "y": 278,
+   "width": 200,
+   "height": 0,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     200,
+     0
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeWidth": 3,
+   "customData": {
+    "bastion": {
+     "kind": "component",
+     "key": "cmdb"
+    },
+    "stencil": {
+     "name": "bastion-datastore",
+     "instance": "g-c-cmdb",
+     "role": "decoration",
+     "anchor": {
+      "u": 0,
+      "v": 1
+     },
+     "offset": {
+      "dx": 0,
+      "dy": 0
+     },
+     "size": "fit"
+    }
+   },
+   "groupIds": [
+    "g-c-cmdb"
+   ]
+  },
+  {
+   "type": "arrow",
+   "id": "f-read",
+   "x": 246,
+   "y": 205,
+   "width": 256,
+   "height": 35,
+   "points": [
+    [
+     0,
+     0
+    ],
+    [
+     256,
+     35
+    ]
+   ],
+   "strokeColor": "#1b1914",
+   "strokeStyle": "dotted",
+   "startBinding": {
+    "elementId": "c-itil",
+    "focus": 0,
+    "gap": 6
+   },
+   "endBinding": {
+    "elementId": "c-cmdb",
+    "focus": 0,
+    "gap": 6
+   },
+   "customData": {
+    "bastion": {
+     "kind": "flow",
+     "key": "read"
+    }
+   }
+  },
+  {
+   "type": "rectangle",
+   "id": "neighbour",
+   "x": 800,
+   "y": 100,
+   "width": 120,
+   "height": 60,
+   "strokeColor": "#1b1914"
+  }
+ ],
+ "files": {}
+}

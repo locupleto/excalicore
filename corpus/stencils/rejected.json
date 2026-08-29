@@ -1,0 +1,269 @@
+{
+ "cases": [
+  {
+   "reason": "no body",
+   "elements": [
+    {
+     "type": "line",
+     "id": "a",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ]
+     ],
+     "customData": {
+      "stencil": {
+       "role": "decoration"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "reason": "two bodies",
+   "elements": [
+    {
+     "type": "rectangle",
+     "id": "a",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 10,
+     "customData": {
+      "stencil": {
+       "role": "body",
+       "frame": {
+        "dx": 0,
+        "dy": 0,
+        "sw": 1,
+        "sh": 1
+       }
+      }
+     }
+    },
+    {
+     "type": "rectangle",
+     "id": "b",
+     "x": 20,
+     "y": 0,
+     "width": 10,
+     "height": 10,
+     "customData": {
+      "stencil": {
+       "role": "body",
+       "frame": {
+        "dx": 0,
+        "dy": 0,
+        "sw": 1,
+        "sh": 1
+       }
+      }
+     }
+    }
+   ]
+  },
+  {
+   "reason": "body is a line",
+   "elements": [
+    {
+     "type": "line",
+     "id": "a",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ]
+     ],
+     "customData": {
+      "stencil": {
+       "role": "body",
+       "frame": {
+        "dx": 0,
+        "dy": 0,
+        "sw": 1,
+        "sh": 1
+       }
+      }
+     }
+    }
+   ]
+  },
+  {
+   "reason": "body without a frame",
+   "elements": [
+    {
+     "type": "rectangle",
+     "id": "a",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 10,
+     "customData": {
+      "stencil": {
+       "role": "body"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "reason": "two labels",
+   "elements": [
+    {
+     "type": "rectangle",
+     "id": "a",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 10,
+     "customData": {
+      "stencil": {
+       "role": "body",
+       "frame": {
+        "dx": 0,
+        "dy": 0,
+        "sw": 1,
+        "sh": 1
+       }
+      }
+     }
+    },
+    {
+     "type": "text",
+     "id": "t1",
+     "x": 0,
+     "y": 0,
+     "text": "one",
+     "containerId": "a",
+     "customData": {
+      "stencil": {
+       "role": "label"
+      }
+     }
+    },
+    {
+     "type": "text",
+     "id": "t2",
+     "x": 0,
+     "y": 0,
+     "text": "two",
+     "containerId": "a",
+     "customData": {
+      "stencil": {
+       "role": "label"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "reason": "label bound to a decoration",
+   "elements": [
+    {
+     "type": "rectangle",
+     "id": "a",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 10,
+     "customData": {
+      "stencil": {
+       "role": "body",
+       "frame": {
+        "dx": 0,
+        "dy": 0,
+        "sw": 1,
+        "sh": 1
+       }
+      }
+     }
+    },
+    {
+     "type": "rectangle",
+     "id": "d",
+     "x": 20,
+     "y": 0,
+     "width": 10,
+     "height": 10,
+     "customData": {
+      "stencil": {
+       "role": "decoration"
+      }
+     }
+    },
+    {
+     "type": "text",
+     "id": "t",
+     "x": 0,
+     "y": 0,
+     "text": "one",
+     "containerId": "d",
+     "customData": {
+      "stencil": {
+       "role": "label"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "reason": "untagged part",
+   "elements": [
+    {
+     "type": "rectangle",
+     "id": "a",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 10,
+     "customData": {
+      "stencil": {
+       "role": "body",
+       "frame": {
+        "dx": 0,
+        "dy": 0,
+        "sw": 1,
+        "sh": 1
+       }
+      }
+     }
+    },
+    {
+     "type": "line",
+     "id": "loose",
+     "x": 0,
+     "y": 0,
+     "width": 10,
+     "height": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       10,
+       0
+      ]
+     ]
+    }
+   ]
+  }
+ ]
+}

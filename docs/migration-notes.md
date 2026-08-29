@@ -72,10 +72,17 @@ against both applications on 2026-08-24, across every corpus fixture.
 
 ## Still to extract
 
-The TypeScript half, per `typescript/README.md`. Its sources are
+The `geometry` and `contrast` modules of the TypeScript half, per
+`typescript/README.md`. Their sources are
 `the-armory/frontend/src/pages/{sketchGeometry,sketchColors}.ts` and
 `Sketch.tsx`, against `the-academy/frontend/src/pages/{boardGeometry,chalkColors}.ts`
 and `Board.tsx`.
+
+`stencils` (2026-08-29) was not extracted from a copy; it was designed as the
+contract under the Bastion's glyph code (`frontend/src/render.ts`) and the
+Armory's stamp shelf (`Sketch.tsx` `expandStamp`), which each held half of
+it. The applications still draw their own way; moving them onto the module is
+the next step, and `stamp` / `stampGroup` are read as aliases until they do.
 
 The view-store layer — per-diagram object rows over a generic core, with
 application rules as separately droppable database constraints — lives in
