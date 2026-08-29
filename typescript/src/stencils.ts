@@ -118,8 +118,14 @@ export interface InstantiateOptions {
   instance?: string
   /** Element ids. Omitted: fresh ones. Called once per part, with the
    *  stencil's own element and its role, so an application can derive stable
-   *  ids from the stencil's. */
+   *  ids from the stencil's. A caption made by `caption` is called with a
+   *  source whose id is `caption`. */
   id?: (source: Element, role: Role) => string
+  /** When the stencil has no label part and `label` is given, a caption is
+   *  drawn beneath the subject: a text element with these fields on top of
+   *  the defaults (`fontSize` 16), centred under the box. Omitted: no
+   *  caption, and the label goes nowhere. */
+  caption?: Element
 }
 
 export class StencilError extends Error {
@@ -293,6 +299,42 @@ export function frameOf(elements: Element[]): Box | null {
 
 // --- from a library item -----------------------------------------------------
 
+function area(el: Element): number {
+  return Math.abs(num(el.width)) * Math.abs(num(el.height))
+}
+
+/** The role map a library item implies on its own: whatever roles its
+ *  elements already carry in `customData.stencil.role`, and — when none of
+ *  them is a body — the largest element of a bindable type as the body. A
+ *  symbol drawn by hand has one obvious thing to attach an arrow to (the
+ *  head of a figure, the chassis of a machine) and that is usually its
+ *  biggest closed shape; the map is a default a user can override by marking
+ *  a role, never a decision the library insists on. Returns an empty map for
+ *  an item with nothing bindable, which `fromLibraryItem` then refuses. */
+export function defaultRoles(item: LibraryItem): RoleMap {
+  const roles: RoleMap = {}
+  const live = (item.elements ?? []).filter(
+    (e): e is Element => Boolean(e) && typeof e === 'object' && !(e as Element).isDeleted,
+  )
+  let hasBody = false
+  for (const el of live) {
+    const tag = tagOf(el)
+    if (tag && typeof el.id === 'string') {
+      roles[el.id] = tag
+      if (tag.role === 'body') hasBody = true
+    }
+  }
+  if (!hasBody) {
+    let best: Element | null = null
+    for (const el of live) {
+      if (!BINDABLE_TYPES.includes(String(el.type)) || typeof el.id !== 'string') continue
+      if (!best || area(el) > area(best)) best = el
+    }
+    if (best) roles[best.id as string] = 'body'
+  }
+  return roles
+}
+
 /** A stencil from an Excalidraw library item and a role map, so a symbol
  *  drawn on any canvas can become one. The map names the body (and the label,
  *  if any) by element id; anything not named is a decoration. Fields the map
@@ -428,7 +470,7 @@ export function instantiate(
   // a single-part instance is left ungrouped; the tag still names its
   // instance, which is what instances() and sweep() read.
   const group = parts.length > 1 ? [instance] : undefined
-  return parts.map((el, index) => {
+  const placed = parts.map((el, index) => {
     const tag = tagOf(el)!
     const out: Element = { ...el }
     out.id = ids.get(typeof el.id === 'string' ? el.id : `#${index}`) ?? freshId('e-')
@@ -497,7 +539,43 @@ export function instantiate(
     }
     out.customData = { ...(options.tags ?? {}), stencil: stencilTag }
     return out
-  }).map((el) => (options.style ? restyleOne(el, options.style) : el))
+  })
+
+  if (options.label !== undefined && options.caption && !parts.some((el) => tagOf(el)!.role === 'label')) {
+    const text = options.label
+    const fontSize = typeof options.caption.fontSize === 'number' ? options.caption.fontSize : 16
+    const subject: Box = { x: at.x, y: at.y, width: natural.width * sx, height: natural.height * sy }
+    const cx = subject.x + subject.width / 2
+    const dx = -text.length * fontSize * 0.3  // the usual guess at half a string's width
+    const dy = 8
+    const source: Element = { id: 'caption', type: 'text' }
+    const caption: Element = {
+      type: 'text',
+      fontSize,
+      ...options.caption,
+      id: options.id ? options.id(source, 'label') : freshId('e-'),
+      text,
+      originalText: text,
+      x: cx + dx,
+      y: subject.y + subject.height + dy,
+      customData: {
+        ...(options.tags ?? {}),
+        stencil: {
+          name: stencil.name, instance, role: 'label',
+          anchor: {
+            u: bodyAt.width ? (cx - bodyAt.x) / bodyAt.width : 0.5,
+            v: bodyAt.height ? (subject.y + subject.height - bodyAt.y) / bodyAt.height : 1,
+          },
+          offset: { dx, dy },
+          size: 'fixed',
+        } satisfies StencilTag,
+      },
+    }
+    placed.push(caption)
+    if (placed.length > 1) for (const el of placed) el.groupIds = [instance]
+  }
+
+  return placed.map((el) => (options.style ? restyleOne(el, options.style) : el))
 }
 
 // --- style -------------------------------------------------------------------

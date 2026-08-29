@@ -14,6 +14,7 @@ import assert from 'node:assert/strict'
 import {
   BINDABLE_TYPES,
   bindToBodies,
+  defaultRoles,
   StencilError,
   bodyOf,
   frameOf,
@@ -378,4 +379,38 @@ test('an arrow the model bound to an instance id is bound to its body', () => {
   assert.deepEqual(out[0].end, { id: 'c-cmdb' })
   assert.deepEqual(out[1], patch[1], 'refs to real elements or to nothing are untouched')
   assert.equal(out[2], patch[2])
+})
+
+test('defaultRoles picks the largest bindable shape as the body', () => {
+  const server = corpus.stencilFixture('armory-server') as { item: LibraryItem; roles: RoleMap }
+  assert.deepEqual(defaultRoles(server.item), server.roles, 'the chassis, as the fixture says')
+  const man = corpus.stencilFixture('armory-stick-man') as { item: LibraryItem; roles: RoleMap }
+  assert.deepEqual(defaultRoles(man.item), man.roles, 'the head')
+  assert.deepEqual(defaultRoles({ name: 'lines', elements: [{ id: 'a', type: 'line', x: 0, y: 0, width: 9, height: 0 }] }), {})
+  assert.throws(() => fromLibraryItem({ name: 'lines', elements: [{ id: 'a', type: 'line', x: 0, y: 0, width: 9, height: 0 }] }, {}), StencilError)
+})
+
+test('a role already marked on an element wins over the heuristic', () => {
+  const item: LibraryItem = { name: 'two', elements: [
+    { id: 'big', type: 'rectangle', x: 0, y: 0, width: 100, height: 100 },
+    { id: 'small', type: 'ellipse', x: 0, y: 0, width: 10, height: 10, customData: { stencil: { role: 'body' } } },
+  ] }
+  assert.deepEqual(defaultRoles(item), { small: { role: 'body' } })
+})
+
+test('a caption is drawn beneath a stencil that has no label slot', () => {
+  const s = armory('armory-server')
+  const parts = instantiate(s, { x: 100, y: 50 }, { label: 'Web tier', instance: 'i-9', caption: { strokeColor: '#000000', fontFamily: 5 } })
+  const caption = parts.at(-1)!
+  assert.equal(caption.type, 'text')
+  assert.equal(caption.text, 'Web tier')
+  assert.equal(caption.fontFamily, 5)
+  assert.equal(tagOf(caption)!.role, 'label')
+  assert.equal(tagOf(caption)!.instance, 'i-9')
+  assert.deepEqual(caption.groupIds, ['i-9'])
+  const box = frameOf(parts)!
+  close(caption.y, box.y + box.height + 8, 'beneath the subject')
+  close(caption.x, box.x + box.width / 2 - 'Web tier'.length * 16 * 0.3, 'centred by the usual guess')
+  assert.equal(instantiate(s, { x: 0, y: 0 }, { label: 'x' }).length, s.elements.length, 'no caption template, no caption')
+  assert.equal(instantiate(stencil('bastion-actor'), { x: 0, y: 0 }, { label: 'x', caption: {} }).length, 5, 'a stencil with a label slot gets no caption')
 })
