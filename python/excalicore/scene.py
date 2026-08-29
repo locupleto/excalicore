@@ -36,14 +36,20 @@ KEEP: tuple[str, ...] = (
     "angle", "arrowhead",
 )
 
-# Read-only to the model: hand strokes, images, and stamped symbols. It cannot
+# Read-only to the model: hand strokes, images, and placed stencils. It cannot
 # re-draw a stroke (raw payloads are huge point clouds), an echoed image would
-# lose its fileId and break skeleton conversion, and a stamp is a group of
-# primitives it should address as one symbol. Patch elements of these types are
-# dropped and the client preserves the real ones. The model still SEES them:
-# compact() emits each as id + bbox (+ a simplified polyline for strokes),
-# which is enough to align new shapes to the ink and to delete by id.
-OPAQUE_TYPES: frozenset[str] = frozenset({"freedraw", "image", "stamp"})
+# lose its fileId and break skeleton conversion, and a stencil instance is a
+# group of primitives it should address as one symbol. Patch elements of these
+# types are dropped and the client preserves the real ones. The model still
+# SEES them: compact() emits each as id + bbox (+ a simplified polyline for
+# strokes), which is enough to align new shapes to the ink and to delete by id.
+# ``stamp`` is the name the stencil entry went by before the contract
+# (2026-08-29) and is kept as an alias for one release.
+OPAQUE_TYPES: frozenset[str] = frozenset({"freedraw", "image", "stencil", "stamp"})
+
+# The customData keys a stencil instance is recognised by: the excalicore
+# namespace, and the two tags the Armory and the Academy wrote before it.
+_STENCIL_KEYS: frozenset[str] = frozenset({"stencil", "stamp", "stampGroup"})
 
 MAX_STROKE_POINTS = 32     # polyline budget per stroke; tolerance coarsens to fit
 MAX_COORD = 1_000_000      # beyond this it is a hallucination, not a layout
@@ -121,6 +127,88 @@ def stroke_summary(element: dict[str, Any], *,
     return slim
 
 
+def instance_of(element: dict[str, Any]) -> str | None:
+    """The stencil instance an element belongs to, or None.
+
+    ``customData.stencil.instance`` is where excalicore writes it; the older
+    ``customData.stampGroup`` is read as an alias for one release.
+    """
+    cd = element.get("customData")
+    if not isinstance(cd, dict):
+        return None
+    tag = cd.get("stencil")
+    if isinstance(tag, dict) and tag.get("instance"):
+        return str(tag["instance"])
+    if cd.get("stampGroup"):
+        return str(cd["stampGroup"])
+    return None
+
+
+def stencil_summary(instance: str, members: list[dict[str, Any]]) -> dict[str, Any]:
+    """One placed stencil as the read-only entry the model sees.
+
+    ``{"id", "type": "stencil", "name", "x", "y", "width", "height"}`` plus a
+    ``label`` when a part carries one (the part with role ``label``, else the
+    first text in the group) and a ``subject`` when the application tagged the
+    parts with namespaces of its own beside ``stencil`` — those are passed
+    through untouched, so a prompt can say what the symbol stands for without
+    the application re-deriving it from a rectangle and two lines.
+    """
+    def _tag(m: dict[str, Any]) -> dict[str, Any]:
+        cd = m.get("customData")
+        tag = cd.get("stencil") if isinstance(cd, dict) else None
+        return tag if isinstance(tag, dict) else {}
+
+    cd0 = members[0].get("customData") or {}
+    tag0 = _tag(members[0])
+    entry: dict[str, Any] = {
+        "id": instance, "type": "stencil",
+        "name": tag0.get("name") or cd0.get("stamp"),
+    }
+    # The box the model sees is the SUBJECT's — read off the body and its
+    # frame, the only way back — so a stick figure is reported as the box it
+    # stands for, not as the union of its limbs and a centred caption with no
+    # width. Only an instance without a frame (a stamp placed before the
+    # contract) falls back to the footprint of its parts.
+    body = next((m for m in members if _tag(m).get("role") == "body"), None)
+    frame = _tag(body).get("frame") if body is not None else None
+    box: tuple[float, float, float, float] | None = None
+    if isinstance(frame, dict):
+        try:
+            box = (
+                float(body.get("x") or 0) + float(frame["dx"]),
+                float(body.get("y") or 0) + float(frame["dy"]),
+                float(body.get("width") or 0) * float(frame["sw"]),
+                float(body.get("height") or 0) * float(frame["sh"]),
+            )
+        except (KeyError, TypeError, ValueError):
+            box = None
+    if box is None:
+        xs = [m.get("x") or 0 for m in members]
+        ys = [m.get("y") or 0 for m in members]
+        x2 = [(m.get("x") or 0) + (m.get("width") or 0) for m in members]
+        y2 = [(m.get("y") or 0) + (m.get("height") or 0) for m in members]
+        box = (min(xs), min(ys), max(x2) - min(xs), max(y2) - min(ys))
+    entry.update({"x": round(box[0]), "y": round(box[1]),
+                  "width": round(box[2]), "height": round(box[3])})
+    label = None
+    for m in members:
+        if _tag(m).get("role") == "label":
+            label = m
+            break
+        if m.get("type") == "text" and label is None:
+            label = m
+    text = (label.get("originalText") or label.get("text")) if label is not None else None
+    if not text and body is not None and isinstance(body.get("label"), dict):
+        text = body["label"].get("text")  # a label carried as a property on the body
+    if text:
+        entry["label"] = text
+    subject = {k: v for k, v in cd0.items() if k not in _STENCIL_KEYS}
+    if subject:
+        entry["subject"] = subject
+    return entry
+
+
 def bbox(elements: list[Any]) -> tuple[float, float]:
     """(width, height) of a group of elements — a stamp's natural footprint."""
     xs: list[float] = []
@@ -153,10 +241,14 @@ def compact(elements: list[Any] | None, *,
     - arrow ``startBinding``/``endBinding`` become skeleton ``start``/``end``
       id refs, and raw ``points`` are dropped there, because conversion
       re-routes bound arrows anyway;
-    - elements stamped from a symbol library carry
-      ``customData {stamp, stampGroup}``; each group folds into ONE read-only
-      ``{"type": "stamp"}`` entry, addressable and deletable by its group id,
-      so the model sees a symbol rather than the dozen primitives it is made of;
+    - elements placed from a stencil carry ``customData.stencil {name,
+      instance, role, ...}`` (or the older ``{stamp, stampGroup}``); each
+      instance folds into ONE read-only ``{"type": "stencil"}`` entry — its
+      id the instance id, its ``label`` the label part's text, its ``subject``
+      whatever other namespaces the application tagged the parts with — so the
+      model sees a symbol rather than the dozen primitives it is made of, and
+      can bind an arrow to it by that one id (the client resolves the id to
+      the stencil's body);
     - the remaining opaque types appear as read-only geometry.
     """
     els = [e for e in elements or [] if isinstance(e, dict) and not e.get("isDeleted")]
@@ -166,28 +258,19 @@ def compact(elements: list[Any] | None, *,
         for e in els
         if e.get("type") == "text" and e.get("containerId") in by_id
     }
-    stamp_groups: dict[str, list[dict[str, Any]]] = {}
+    instances: dict[str, list[dict[str, Any]]] = {}
     for e in els:
-        cd = e.get("customData")
-        if isinstance(cd, dict) and cd.get("stampGroup"):
-            stamp_groups.setdefault(str(cd["stampGroup"]), []).append(e)
-    stamped_ids = {e.get("id") for g in stamp_groups.values() for e in g}
+        gid = instance_of(e)
+        if gid:
+            instances.setdefault(gid, []).append(e)
+    placed_ids = {e.get("id") for g in instances.values() for e in g}
 
     out: list[dict[str, Any]] = []
-    for gid, members in stamp_groups.items():
-        xs = [m.get("x") or 0 for m in members]
-        ys = [m.get("y") or 0 for m in members]
-        x2 = [(m.get("x") or 0) + (m.get("width") or 0) for m in members]
-        y2 = [(m.get("y") or 0) + (m.get("height") or 0) for m in members]
-        cd0 = members[0].get("customData") or {}
-        out.append({
-            "id": gid, "type": "stamp", "name": cd0.get("stamp"),
-            "x": round(min(xs)), "y": round(min(ys)),
-            "width": round(max(x2) - min(xs)), "height": round(max(y2) - min(ys)),
-        })
+    for gid, members in instances.items():
+        out.append(stencil_summary(gid, members))
     for el in els:
-        if el.get("id") in stamped_ids:
-            continue  # summarized as its group's stamp entry above
+        if el.get("id") in placed_ids:
+            continue  # summarized as its instance's stencil entry above
         kind = el.get("type")
         if kind == "freedraw":
             out.append(stroke_summary(el, max_points=max_points))
@@ -238,6 +321,7 @@ def valid_patch(obj: Any, *,
     """Validate a parsed block as a merge patch, or return None.
 
     A patch is ``{elements: [{type, ...}, ...]}`` and/or ``{delete: [id, ...]}``.
+    An element may instead be a stencil placement, ``{"stencil": name, x, y}``.
     Strict all-or-nothing: one malformed element, or one insane coordinate,
     rejects the WHOLE patch, so a half-garbled reply can never half-apply.
 
@@ -258,11 +342,14 @@ def valid_patch(obj: Any, *,
     def _ok(e: Any) -> bool:
         if not (isinstance(e, dict) and sane_geometry(e, max_coord=max_coord)):
             return False
-        stamp = e.get("stamp")
-        if isinstance(stamp, str) and stamp.strip():
-            # A stamp placement: {"stamp": name, "x", "y"[, "label"]}. It carries
-            # no "type" — the client supplies the real elements from the library,
-            # so the position is the whole payload.
+        name = e.get("stencil")
+        if not (isinstance(name, str) and name.strip()):
+            name = e.get("stamp")  # the placement's old spelling, one release
+        if isinstance(name, str) and name.strip():
+            # A placement: {"stencil": name, "x", "y"[, "label"][, "subject"]}.
+            # It carries no "type" — the client supplies the real elements
+            # from its shelf, so the position is the whole payload. Which
+            # stencils exist is the application's business, not this module's.
             return _num(e.get("x")) and _num(e.get("y"))
         return bool(e.get("type"))
 

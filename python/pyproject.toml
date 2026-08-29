@@ -1,6 +1,6 @@
 [project]
 name = "excalicore"
-version = "0.1.0"
+version = "0.3.0"
 description = "Shared Excalidraw scene handling: model bridge and element fidelity"
 requires-python = ">=3.12"
 dependencies = []

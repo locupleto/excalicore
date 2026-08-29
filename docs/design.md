@@ -38,8 +38,10 @@ Some elements cannot survive an echo through a language model:
   tokens to get back a caricature of the user's own ink.
 - **Images** carry a `fileId` pointing into a separate asset store. An echoed
   image loses that reference and becomes a broken rectangle.
-- **Stamped symbols** are groups of primitives that mean one thing. A model
-  should address the symbol, not redraw its anatomy.
+- **Placed stencils** are groups of primitives that mean one thing. A model
+  should address the symbol, not redraw its anatomy — and it may bind an
+  arrow to it by the one id it is shown, which the client resolves to the
+  stencil's body (`bindToBodies`).
 
 These are shown as read-only geometry — id, bounding box, and for strokes a
 simplified polyline — so the model can *align to* and *delete* them, which is

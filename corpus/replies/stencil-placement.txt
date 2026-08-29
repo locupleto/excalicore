@@ -1,0 +1,2 @@
+A data store beside the console.
+{"elements": [{"stencil": "cylinder", "x": 240, "y": 180, "label": "Orders", "subject": {"bastion": {"kind": "datastore"}}}]}

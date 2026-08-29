@@ -49,6 +49,7 @@ sweep(board, ['g-c-cmdb']) // every part gone, arrows that bound to it unbound
 | `instances(elements)` | every instance on a board, by id (the old `stampGroup` tag is read as an alias for one release) |
 | `sweep(elements, ids)` | the board without those instances, bindings to them removed |
 | `restyle(parts, style)` | the paint on the body, the tint on everything else |
+| `bindToBodies(skeletons, board)` | arrows a model bound to an instance id, re-pointed at that instance's body |
 
 The contract in full, and why it is shaped this way, is in `docs/design.md`.
 

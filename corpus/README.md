@@ -35,8 +35,8 @@ geometry against that renderer's formulas.
 ## Replies (`replies/*.txt`)
 
 Model replies as they actually arrive: fenced and unfenced patches, two patches
-in one message, prose with no patch, an echoed read-only stroke, a stamp
-placement, and one patch whose second element is out of bounds — which must
+in one message, prose with no patch, an echoed read-only stroke, a stencil
+placement (and the same under its old name, `stamp`), and one patch whose second element is out of bounds — which must
 reject the whole patch, never half of it.
 
 ## Adding to it

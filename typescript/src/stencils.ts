@@ -580,3 +580,28 @@ export function sweep(elements: Element[], instanceIds: Iterable<string>): Eleme
     return out
   })
 }
+
+// --- binding to an instance ------------------------------------------------------
+
+/** Skeleton arrows with `start`/`end` refs that name an INSTANCE re-pointed
+ *  at that instance's body, so a language model can bind to the one id the
+ *  skeleton dialect shows it for a placed stencil. Refs that already name an
+ *  element, or nothing on the board, are left as they are. */
+export function bindToBodies(skeletons: Element[], board: Element[]): Element[] {
+  const bodies = new Map<string, string>()
+  for (const [id, parts] of instances(board)) {
+    const body = bodyOf(parts)
+    if (body && typeof body.id === 'string') bodies.set(id, body.id)
+  }
+  if (!bodies.size) return skeletons
+  return skeletons.map((el) => {
+    let out = el
+    for (const side of ['start', 'end'] as const) {
+      const ref = el[side] as { id?: unknown } | undefined
+      if (ref && typeof ref === 'object' && typeof ref.id === 'string' && bodies.has(ref.id)) {
+        out = { ...out, [side]: { ...ref, id: bodies.get(ref.id) } }
+      }
+    }
+    return out
+  })
+}

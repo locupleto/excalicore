@@ -13,6 +13,7 @@ import assert from 'node:assert/strict'
 
 import {
   BINDABLE_TYPES,
+  bindToBodies,
   StencilError,
   bodyOf,
   frameOf,
@@ -363,4 +364,18 @@ test('restyle() on an instance: paint on the body, tint elsewhere', () => {
     if (tagOf(el)!.role === 'body') assert.equal(el.backgroundColor, '#00ff00')
     else assert.notEqual(el.backgroundColor, '#00ff00')
   }
+})
+
+test('an arrow the model bound to an instance id is bound to its body', () => {
+  const board = corpus.elements('stencil-instances')
+  const patch = [
+    { type: 'arrow', id: 'a1', x: 0, y: 0, points: [[0, 0], [10, 10]], start: { id: 'g-c-itil' }, end: { id: 'g-c-cmdb' } },
+    { type: 'arrow', id: 'a2', x: 0, y: 0, points: [[0, 0], [10, 10]], start: { id: 'neighbour' }, end: { id: 'nowhere' } },
+    { type: 'rectangle', id: 'r', x: 0, y: 0, width: 1, height: 1 },
+  ]
+  const out = bindToBodies(patch, board)
+  assert.deepEqual(out[0].start, { id: 'c-itil' })
+  assert.deepEqual(out[0].end, { id: 'c-cmdb' })
+  assert.deepEqual(out[1], patch[1], 'refs to real elements or to nothing are untouched')
+  assert.equal(out[2], patch[2])
 })

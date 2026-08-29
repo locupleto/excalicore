@@ -88,3 +88,13 @@ The view-store layer — per-diagram object rows over a generic core, with
 application rules as separately droppable database constraints — lives in
 the-bastion's `backend/db.py` (`_VIEW_SCHEMA` and `_VIEW_CONSTRAINTS`). It has
 one consumer and stays there until a second application needs it.
+
+## 0.3.0 — the fold speaks stencil
+
+`compact()` folds every stencil instance (`customData.stencil.instance`)
+into one `{"type": "stencil"}` entry at the SUBJECT's box, with `label` and
+`subject` passed through; `valid_patch()` accepts `{"stencil": name, x, y}`
+placements. The `stamp` / `stampGroup` tags and the `{"stamp": name}`
+placement are read as aliases for this one release; `"type": "stamp"` no
+longer appears in the dialect, so a protocol prompt that names it must
+change with the pin.

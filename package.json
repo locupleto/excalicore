@@ -1,6 +1,6 @@
 {
   "name": "excalicore",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared Excalidraw scene handling, browser half: the stencil contract",
   "license": "UNLICENSED",
   "private": true,

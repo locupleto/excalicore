@@ -64,9 +64,42 @@ class TestCompact(unittest.TestCase):
         first = summary["points"][0]
         self.assertAlmostEqual(first[0], round(raw["x"] + raw["points"][0][0]), delta=1)
 
+    def test_a_stencil_instance_appears_once_with_its_label_and_subject(self):
+        out = scene.compact(corpus.elements("stencil-instances"))
+        placed = {e["id"]: e for e in out if e.get("type") == "stencil"}
+        self.assertEqual(set(placed), {"g-c-itil", "g-c-cmdb"})
+        actor = placed["g-c-itil"]
+        self.assertEqual(actor["name"], "bastion-actor")
+        self.assertEqual(actor["label"], "ITIL Users")
+        self.assertEqual(actor["subject"], {"bastion": {"kind": "component", "key": "itil"}})
+        self.assertEqual((actor["x"], actor["y"]), (126, 141))
+        store = placed["g-c-cmdb"]
+        self.assertEqual(store["label"], "CMDB", "a label carried as a property on the body counts")
+        ids = {e.get("id") for e in out}
+        self.assertNotIn("c-itil", ids, "the parts are folded away")
+        self.assertIn("neighbour", ids)
+        arrow = next(e for e in out if e.get("type") == "arrow")
+        self.assertEqual(arrow["end"], {"id": "c-cmdb"}, "an arrow bound to a body keeps the binding")
+
+    def test_a_stencil_placement_is_a_valid_patch(self):
+        prose, patch = scene.extract_patch(corpus.reply("stencil-placement"))
+        self.assertEqual(prose, "A data store beside the console.")
+        self.assertEqual(patch["elements"][0]["stencil"], "cylinder")
+        self.assertEqual(patch["elements"][0]["subject"], {"bastion": {"kind": "datastore"}})
+        self.assertIsNone(scene.valid_patch({"elements": [{"stencil": "cylinder", "x": 1}]}),
+                          "a placement without both coordinates is no placement")
+
+    def test_the_old_stamp_tags_fold_the_same_way(self):
+        out = scene.compact(corpus.elements("stamp-group"))
+        stamps = [e for e in out if e.get("type") == "stencil"]
+        self.assertEqual(len(stamps), 1)
+        self.assertEqual(stamps[0]["id"], "sg-77")
+        self.assertEqual(stamps[0]["name"], "Operator")
+        self.assertNotIn("subject", stamps[0])
+
     def test_a_stamp_group_appears_once(self):
         out = scene.compact(corpus.elements("stamp-group"))
-        stamps = [e for e in out if e.get("type") == "stamp"]
+        stamps = [e for e in out if e.get("type") == "stencil"]
         self.assertEqual(len(stamps), 1)
         self.assertEqual(stamps[0]["id"], "sg-77")
         self.assertEqual(stamps[0]["name"], "Operator")
