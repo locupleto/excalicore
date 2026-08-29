@@ -1,0 +1,25 @@
+{
+  "name": "excalicore",
+  "version": "0.2.0",
+  "description": "Shared Excalidraw scene handling, browser half: the stencil contract",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "files": ["typescript/dist"],
+  "exports": {
+    "./stencils": {
+      "types": "./typescript/dist/stencils.d.ts",
+      "default": "./typescript/dist/stencils.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test typescript/tests/*.test.ts",
+    "check": "tsc -p typescript",
+    "build": "tsc -p typescript/tsconfig.build.json",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "typescript": "~6.0.2"
+  }
+}

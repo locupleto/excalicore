@@ -135,8 +135,9 @@ that needs it, because a design with one user is not yet a general one.
 ## Layout
 
 ```
-python/       the installable package and its tests
+python/       the installable Python package and its tests
 typescript/   the browser half — stencils written, geometry and contrast planned; see its README
+package.json  the npm package (root, so a git dependency can find it); builds typescript/dist on install
 corpus/       golden scenes and model replies, shared by both halves
 docs/         design rationale
 ```

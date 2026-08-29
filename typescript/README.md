@@ -55,9 +55,21 @@ The contract in full, and why it is shaped this way, is in `docs/design.md`.
 ## Tests
 
 ```
-cd typescript && npm install && npm test     # node --test, no build step
-npm run check                                 # tsc --noEmit
+npm install && npm test     # at the repository root; node --test, no build step
+npm run check               # tsc --noEmit
 ```
+
+The `package.json` sits at the repository root — not under `typescript/` —
+because npm can install a git dependency but not a subdirectory of one. An
+application pins it by tag, as the Python half is pinned:
+
+```
+"excalicore": "git+ssh://git@github.com/locupleto/excalicore.git#v0.2.0"
+```
+
+The `prepare` script compiles `typescript/src` to `typescript/dist` on
+install, which is what the package exports; Node refuses to strip types from
+anything under `node_modules`, so the source cannot be exported as it is.
 
 Tests read `../corpus`, the same fixtures the Python suite uses. That is why
 the corpus sits at the repository root: the day one half is fixed against a
