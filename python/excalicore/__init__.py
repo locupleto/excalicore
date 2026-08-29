@@ -20,3 +20,4 @@ from . import fidelity, scene
 __all__ = ["fidelity", "scene", "__version__"]
 
 __version__ = "0.1.0"
+from . import stencils  # noqa: E402,F401

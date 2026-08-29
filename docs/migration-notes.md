@@ -98,3 +98,10 @@ placements. The `stamp` / `stampGroup` tags and the `{"stamp": name}`
 placement are read as aliases for this one release; `"type": "stamp"` no
 longer appears in the dialect, so a protocol prompt that names it must
 change with the pin.
+
+## 0.4.0 — the validator on the server too
+
+`excalicore.stencils` (Python) mirrors the TypeScript module's `validate`,
+`default_roles` and `from_library_item`, so an application can accept a
+symbol into its shelf server-side and refuse a bad one at load time. No
+behaviour change for existing users.

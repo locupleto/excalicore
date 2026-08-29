@@ -66,7 +66,7 @@ Deleted elements count as references: Excalidraw keeps them in the array so
 undo can restore them, and an undo that restores an image whose file was
 collected restores a broken image.
 
-### `stencils` — the contract a vocabulary element keeps (TypeScript)
+### `stencils` — the contract a vocabulary element keeps (both halves)
 
 An application has a graphical vocabulary — a data store, a person, a server.
 What such an element *means* belongs to the application; what it looks like
@@ -75,8 +75,11 @@ frame back to the subject's box, a label slot, decorations anchored to the
 body, one group, one tag namespace — is the contract in
 `typescript/src/stencils.ts`. `instantiate()` places a stencil so that
 `frameOf()` gives the subject's box back; `fromLibraryItem()` turns a symbol
-drawn on any canvas into one; `sweep()` removes an instance whole. See
-`typescript/README.md` and `docs/design.md`.
+drawn on any canvas into one; `sweep()` removes an instance whole. The Python
+`excalicore.stencils` holds the same validator and the same derivations
+(`validate`, `default_roles`, `from_library_item`, `subject_box`), so a server
+can refuse a symbol at import time with a sentence — both halves are tested
+against `corpus/stencils`. See `typescript/README.md` and `docs/design.md`.
 
 ## What is deliberately not here
 
