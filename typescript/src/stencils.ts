@@ -170,8 +170,27 @@ function num(v: unknown, fallback = 0): number {
   return typeof v === 'number' && Number.isFinite(v) ? v : fallback
 }
 
+/** An element's box. A linear element (line, arrow, freedraw) keeps its
+ *  origin at its FIRST point and its points relative to it, so a stroke drawn
+ *  right-to-left has an origin at its right end and points that run negative;
+ *  its box starts at the least point, not at the origin. Reading `x` as the
+ *  left edge is how a hand-drawn symbol got a frame a stroke's width off. */
 function boxOf(el: Element): Box {
-  return { x: num(el.x), y: num(el.y), width: num(el.width), height: num(el.height) }
+  let x = num(el.x)
+  let y = num(el.y)
+  if (Array.isArray(el.points) && el.points.length) {
+    let minX = Infinity
+    let minY = Infinity
+    for (const p of el.points as unknown[]) {
+      if (Array.isArray(p) && p.length >= 2) {
+        minX = Math.min(minX, num(p[0]))
+        minY = Math.min(minY, num(p[1]))
+      }
+    }
+    if (Number.isFinite(minX)) x += minX
+    if (Number.isFinite(minY)) y += minY
+  }
+  return { x, y, width: num(el.width), height: num(el.height) }
 }
 
 function bbox(els: Element[]): Box | null {
@@ -376,10 +395,11 @@ export function fromLibraryItem(item: LibraryItem, roles: RoleMap): Stencil {
     } else {
       const bound = spec.role === 'label' && typeof el.containerId === 'string'
       if (!bound && !tag.anchor && bodyBox) {
-        const b = boxOf(el)
+        // The anchor is where the part's ORIGIN sits on the body — the origin
+        // is what instantiate() places — not where its box starts.
         tag.anchor = {
-          u: bodyBox.width ? (b.x - bodyBox.x) / bodyBox.width : 0,
-          v: bodyBox.height ? (b.y - bodyBox.y) / bodyBox.height : 0,
+          u: bodyBox.width ? (num(el.x) - bodyBox.x) / bodyBox.width : 0,
+          v: bodyBox.height ? (num(el.y) - bodyBox.y) / bodyBox.height : 0,
         }
       }
       if (!bound && !tag.offset) tag.offset = { dx: 0, dy: 0 }

@@ -68,7 +68,15 @@ def _finite(*values: Any) -> bool:
 
 
 def _box(el: dict[str, Any]) -> tuple[float, float, float, float]:
-    return _num(el.get("x")), _num(el.get("y")), _num(el.get("width")), _num(el.get("height"))
+    """An element's box. A linear element keeps its origin at its FIRST point
+    with the rest relative, so a stroke drawn right-to-left has points that run
+    negative and a box that starts before its origin."""
+    x, y = _num(el.get("x")), _num(el.get("y"))
+    pts = [p for p in (el.get("points") or []) if isinstance(p, (list, tuple)) and len(p) >= 2]
+    if pts:
+        x += min(_num(p[0]) for p in pts)
+        y += min(_num(p[1]) for p in pts)
+    return x, y, _num(el.get("width")), _num(el.get("height"))
 
 
 def _bbox(els: list[dict[str, Any]]) -> tuple[float, float, float, float] | None:
@@ -238,8 +246,10 @@ def from_library_item(item: dict[str, Any], roles: dict[str, Any]) -> dict[str, 
         else:
             bound = spec.get("role") == "label" and isinstance(el.get("containerId"), str)
             if not bound and "anchor" not in tag and body_box is not None:
+                # Where the part's ORIGIN sits on the body — the origin is
+                # what instantiation places — not where its box starts.
                 bx, by, bw, bh = body_box
-                x, y, _, _ = _box(el)
+                x, y = _num(el.get("x")), _num(el.get("y"))
                 tag["anchor"] = {"u": (x - bx) / bw if bw else 0, "v": (y - by) / bh if bh else 0}
             if not bound and "offset" not in tag:
                 tag["offset"] = {"dx": 0, "dy": 0}

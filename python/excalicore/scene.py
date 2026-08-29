@@ -219,6 +219,13 @@ def bbox(elements: list[Any]) -> tuple[float, float]:
         x, y = e.get("x"), e.get("y")
         if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
             continue
+        # A linear element's origin is its first point; drawn right-to-left
+        # its points run negative and its box starts before the origin.
+        pts = [p for p in (e.get("points") or []) if isinstance(p, (list, tuple)) and len(p) >= 2
+               and all(isinstance(c, (int, float)) for c in p[:2])]
+        if pts:
+            x += min(p[0] for p in pts)
+            y += min(p[1] for p in pts)
         xs += [x, x + (e.get("width") or 0)]
         ys += [y, y + (e.get("height") or 0)]
     if not xs:

@@ -414,3 +414,20 @@ test('a caption is drawn beneath a stencil that has no label slot', () => {
   assert.equal(instantiate(s, { x: 0, y: 0 }, { label: 'x' }).length, s.elements.length, 'no caption template, no caption')
   assert.equal(instantiate(stencil('bastion-actor'), { x: 0, y: 0 }, { label: 'x', caption: {} }).length, 5, 'a stencil with a label slot gets no caption')
 })
+
+test('a stroke drawn right-to-left does not push the frame off by its own width', () => {
+  // Excalidraw keeps a line's origin at its first point; drawn from the right
+  // its points run negative. The symbol's box must start where the ink
+  // starts, and the derived frame must lead back to that box.
+  const item: LibraryItem = { name: 'lid', elements: [
+    { id: 'box', type: 'rectangle', x: 0, y: 10, width: 80, height: 50 },
+    { id: 'lid', type: 'line', x: 80, y: 10, width: 80, height: 0, points: [[0, 0], [-80, 0]] },
+    { id: 'tail', type: 'line', x: 40, y: 60, width: 0, height: 20, points: [[0, 0], [0, 20]] },
+  ] }
+  const s = fromLibraryItem(item, defaultRoles(item))
+  assert.deepEqual(frameOf(s.elements), { x: 0, y: 10, width: 80, height: 70 }, 'the lid does not widen the box')
+  const parts = instantiate(s, { x: 100, y: 100 }, { id: (src) => String(src.id) })
+  const lid = parts.find((p) => p.id === 'lid')!
+  assert.deepEqual([lid.x, lid.y], [180, 100], 'the lid keeps its origin at its right end')
+  assert.deepEqual(frameOf(parts), { x: 100, y: 100, width: 80, height: 70 })
+})

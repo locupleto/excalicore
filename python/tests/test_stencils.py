@@ -92,3 +92,16 @@ class TestFromLibraryItem(unittest.TestCase):
         parts = [e for e in corpus.elements("stencil-instances")
                  if (e.get("customData") or {}).get("stencil", {}).get("instance") == "g-c-cmdb"]
         self.assertEqual(stencils.subject_box(parts), (502.0, 202.0, 200.0, 76.0))
+
+
+class TestLinearOrigins(unittest.TestCase):
+    def test_a_stroke_drawn_right_to_left_does_not_widen_the_box(self):
+        item = {"name": "lid", "elements": [
+            {"id": "box", "type": "rectangle", "x": 0, "y": 10, "width": 80, "height": 50},
+            {"id": "lid", "type": "line", "x": 80, "y": 10, "width": 80, "height": 0, "points": [[0, 0], [-80, 0]]},
+            {"id": "tail", "type": "line", "x": 40, "y": 60, "width": 0, "height": 20, "points": [[0, 0], [0, 20]]},
+        ]}
+        s = stencils.from_library_item(item, stencils.default_roles(item))
+        self.assertEqual(stencils.subject_box(s["elements"]), (0.0, 10.0, 80.0, 70.0))
+        lid = next(e for e in s["elements"] if e["id"] == "lid")
+        self.assertEqual(lid["customData"]["stencil"]["anchor"], {"u": 1.0, "v": 0.0}, "anchored at its origin")
