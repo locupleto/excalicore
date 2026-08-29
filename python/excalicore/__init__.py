@@ -9,15 +9,18 @@ in every Excalidraw-backed application.
     Storing elements without silently breaking them: exact explode/reassemble,
     and the asset references that decide what may be collected.
 
+``stencils``
+    The contract a vocabulary element keeps, held on the server: validating a
+    stencil, choosing a body for a library item, deriving the frame and anchors.
+
 Both are pure — no I/O, no database, no framework, no opinion about what the
 elements mean. Applications keep their own tables, prompts, and vocabulary.
 """
 
 from __future__ import annotations
 
-from . import fidelity, scene
+from . import fidelity, scene, stencils
 
-__all__ = ["fidelity", "scene", "__version__"]
+__all__ = ["fidelity", "scene", "stencils", "__version__"]
 
-__version__ = "0.1.0"
-from . import stencils  # noqa: E402,F401
+__version__ = "0.4.0"
