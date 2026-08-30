@@ -19,6 +19,7 @@ import {
   bodyOf,
   frameOf,
   fromLibraryItem,
+  instanceOf,
   instances,
   instantiate,
   restyle,
@@ -347,13 +348,22 @@ test('sweep() removes every part and unbinds the arrow that pointed at it', () =
   assert.ok(withoutStore.some((e) => e.id === 'neighbour'), 'the neighbour is untouched')
 })
 
-test('the old stamp tags are read as an instance for one release', () => {
-  const board = corpus.elements('stamp-group')
+test('an instance without a frame falls back to its footprint', () => {
+  const board = corpus.elements('instance-group')
   const found = instances(board)
   assert.deepEqual([...found.keys()], ['sg-77'])
   assert.equal(found.get('sg-77')!.length, 3)
   const swept = sweep(board, ['sg-77'])
-  assert.deepEqual(swept.map((e) => e.id), ['box-next-to-stamp'])
+  assert.deepEqual(swept.map((e) => e.id), ['box-next-to-instance'])
+})
+
+test('the old stamp tags are no longer read as an instance', () => {
+  const el = {
+    id: 'e1', type: 'ellipse', x: 0, y: 0, width: 10, height: 10,
+    customData: { stamp: 'Operator', stampGroup: 'sg-77' },
+  } as unknown as Element
+  assert.equal(instanceOf(el), null)
+  assert.deepEqual(instances([el]), new Map())
 })
 
 test('restyle() on an instance: paint on the body, tint elsewhere', () => {

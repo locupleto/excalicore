@@ -27,7 +27,7 @@ class TestRoundTrip(unittest.TestCase):
                     self.assertEqual(now.get(key), was[key], f"{key} on {was.get('id')}")
 
     def test_paint_order_is_preserved_when_rows_come_back_shuffled(self):
-        original = corpus.elements("stamp-group")
+        original = corpus.elements("instance-group")
         rows = fidelity.explode(original)
         back = fidelity.reassemble(list(reversed(rows)))
         self.assertEqual([e["id"] for e in back], [e["id"] for e in original])

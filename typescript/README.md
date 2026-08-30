@@ -48,7 +48,7 @@ sweep(board, ['g-c-cmdb']) // every part gone, arrows that bound to it unbound
 | `instantiate(stencil, at, options)` | places a stencil so that `frameOf()` gives `at` back; `fit` parts stretch with the subject, `fixed` parts keep their pixels; optional decorations are drawn only for the `variants` asked for; a `label` on a stencil with no label slot becomes a `caption` beneath when a template is given |
 | `frameOf(parts)` | the subject's box, from the body and its frame — the only way back |
 | `bodyOf(parts)` | the one element an arrow may bind to |
-| `instances(elements)` | every instance on a board, by id (the old `stampGroup` tag is read as an alias for one release) |
+| `instances(elements)` | every instance on a board, by id |
 | `sweep(elements, ids)` | the board without those instances, bindings to them removed |
 | `restyle(parts, style)` | the paint on the body, the tint on everything else |
 | `bindToBodies(skeletons, board)` | arrows a model bound to an instance id, re-pointed at that instance's body |

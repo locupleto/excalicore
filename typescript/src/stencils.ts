@@ -149,20 +149,10 @@ export function tagOf(el: Element): StencilTag | null {
   return typeof role === 'string' ? (tag as StencilTag) : null
 }
 
-/** The instance an element belongs to, or null.
- *
- *  Reads the `stamp` / `stampGroup` tags the Armory and the Academy wrote
- *  before this contract existed as an alias, so a board placed under the old
- *  scheme is still one object to `instances()` and `sweep()`. The alias is
- *  kept for one release. */
+/** The instance an element belongs to, or null. */
 export function instanceOf(el: Element): string | null {
   const tag = tagOf(el)
   if (tag?.instance) return String(tag.instance)
-  const cd = el.customData
-  if (cd && typeof cd === 'object') {
-    const legacy = (cd as { stampGroup?: unknown }).stampGroup
-    if (typeof legacy === 'string' && legacy) return legacy
-  }
   return null
 }
 

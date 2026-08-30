@@ -105,3 +105,10 @@ change with the pin.
 `default_roles` and `from_library_item`, so an application can accept a
 symbol into its shelf server-side and refuse a bad one at load time. No
 behaviour change for existing users.
+
+## 0.6.0 — the aliases go (2026-08-30)
+
+The `stamp` / `stampGroup` tags and the `{"stamp": name}` placement, read as
+aliases for one release starting in 0.3.0, are no longer read. A breaking
+change: a board or a reply still carrying the pre-contract spelling is now
+ordinary geometry, not a stencil instance.

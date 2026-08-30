@@ -89,28 +89,31 @@ class TestCompact(unittest.TestCase):
         self.assertIsNone(scene.valid_patch({"elements": [{"stencil": "cylinder", "x": 1}]}),
                           "a placement without both coordinates is no placement")
 
-    def test_the_old_stamp_tags_fold_the_same_way(self):
-        out = scene.compact(corpus.elements("stamp-group"))
-        stamps = [e for e in out if e.get("type") == "stencil"]
-        self.assertEqual(len(stamps), 1)
-        self.assertEqual(stamps[0]["id"], "sg-77")
-        self.assertEqual(stamps[0]["name"], "Operator")
-        self.assertNotIn("subject", stamps[0])
+    def test_the_old_stamp_tags_are_no_longer_read(self):
+        els = [{
+            "id": "e1", "type": "ellipse", "x": 0, "y": 0, "width": 10, "height": 10,
+            "customData": {"stamp": "Operator", "stampGroup": "sg-77"},
+        }]
+        out = scene.compact(els)
+        # an element carrying only the old tags is an ordinary element now,
+        # not folded into a stencil instance
+        self.assertEqual([e.get("type") for e in out], ["ellipse"])
 
-    def test_a_stamp_group_appears_once(self):
-        out = scene.compact(corpus.elements("stamp-group"))
-        stamps = [e for e in out if e.get("type") == "stencil"]
-        self.assertEqual(len(stamps), 1)
-        self.assertEqual(stamps[0]["id"], "sg-77")
-        self.assertEqual(stamps[0]["name"], "Operator")
+    def test_an_instance_without_a_frame_falls_back_to_its_footprint(self):
+        out = scene.compact(corpus.elements("instance-group"))
+        instances = [e for e in out if e.get("type") == "stencil"]
+        self.assertEqual(len(instances), 1)
+        self.assertEqual(instances[0]["id"], "sg-77")
+        self.assertEqual(instances[0]["name"], "Operator")
+        self.assertNotIn("subject", instances[0])
         # the primitives it is made of are not shown separately
-        self.assertNotIn("stamp-a1", {e.get("id") for e in out})
+        self.assertNotIn("instance-a1", {e.get("id") for e in out})
         # the group's footprint covers all its members
-        self.assertEqual((stamps[0]["width"], stamps[0]["height"]), (50, 90))
+        self.assertEqual((instances[0]["width"], instances[0]["height"]), (50, 90))
 
-    def test_a_stamp_group_does_not_swallow_its_neighbours(self):
-        out = scene.compact(corpus.elements("stamp-group"))
-        self.assertIn("box-next-to-stamp", {e.get("id") for e in out})
+    def test_an_instance_group_does_not_swallow_its_neighbours(self):
+        out = scene.compact(corpus.elements("instance-group"))
+        self.assertIn("box-next-to-instance", {e.get("id") for e in out})
 
     def test_an_image_is_geometry_only(self):
         out = scene.compact(corpus.elements("image-and-files"))
@@ -185,17 +188,19 @@ class TestPatchValidation(unittest.TestCase):
     def test_an_element_needs_a_type(self):
         self.assertIsNone(scene.valid_patch({"elements": [{"x": 1, "y": 2}]}))
 
-    def test_a_stamp_placement_needs_a_position_not_a_type(self):
-        self.assertIsNotNone(scene.valid_patch({"elements": [{"stamp": "Operator", "x": 1, "y": 2}]}))
-        self.assertIsNone(scene.valid_patch({"elements": [{"stamp": "Operator", "x": 1}]}))
+    def test_the_old_stamp_placement_is_refused_like_any_malformed_entry(self):
+        # The pre-contract spelling names no type and no "stencil" key, so it
+        # falls back to needing a type — and having none, it takes the whole
+        # patch down with it, exactly like any other malformed element.
+        self.assertIsNone(scene.valid_patch({"elements": [{"stamp": "Operator", "x": 1, "y": 2}]}))
 
     def test_a_blank_name_is_not_a_placement(self):
         # Whitespace is not a symbol name, so this falls back to needing a
         # type — and having none, it takes the whole patch down with it.
-        self.assertIsNone(scene.valid_patch({"elements": [{"stamp": "   ", "x": 1, "y": 2}]}))
+        self.assertIsNone(scene.valid_patch({"elements": [{"stencil": "   ", "x": 1, "y": 2}]}))
 
     def test_a_placement_obeys_the_same_bounds_as_anything_else(self):
-        far = {"stamp": "Operator", "x": scene.MAX_COORD + 1, "y": 0}
+        far = {"stencil": "Operator", "x": scene.MAX_COORD + 1, "y": 0}
         self.assertIsNone(scene.valid_patch({"elements": [far]}))
 
     def test_non_string_delete_ids_are_discarded(self):
@@ -229,9 +234,11 @@ class TestExtraction(unittest.TestCase):
         self.assertIsNone(patch)
         self.assertEqual(prose, message.strip())
 
-    def test_a_stamp_placement_survives_extraction(self):
-        _, patch = scene.extract_patch(corpus.reply("stamp-placement"))
-        self.assertEqual(patch["elements"][0]["stamp"], "Operator")
+    def test_a_stamp_placement_is_no_longer_read(self):
+        message = corpus.reply("stamp-placement")
+        prose, patch = scene.extract_patch(message)
+        self.assertIsNone(patch)
+        self.assertEqual(prose, message.strip())
 
 
 if __name__ == "__main__":

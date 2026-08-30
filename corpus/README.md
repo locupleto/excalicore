@@ -12,7 +12,7 @@ can read is how the two halves drift apart.
 | `bound-labels.json` | A real editor export (Excalidraw 0.18.x): six labels bound to containers via `containerId` + `boundElements`, full bookkeeping fields, hand-placed arrows. |
 | `arrow-bindings.json` | Arrows bound by `{elementId, focus, gap}` — including one binding pointing at an element that is no longer on the board. |
 | `freedraw.json` | A 220-point hand stroke with pressures, well over the polyline budget. |
-| `stamp-group.json` | Three primitives sharing `customData.stampGroup`, plus an unrelated neighbour that must not be swallowed. |
+| `instance-group.json` | Three primitives sharing a `customData.stencil.instance` with no frame on the body, plus an unrelated neighbour that must not be swallowed. |
 | `image-and-files.json` | An image with a `fileId`, a deleted image still holding its file, and a file no element references. |
 | `stencil-instances.json` | Two stencil instances placed under the contract (an actor of five parts, a data store of four), a flow arrow bound to the data store's body, and a neighbour nothing owns. |
 
@@ -50,8 +50,9 @@ by both halves' tests.
 
 Model replies as they actually arrive: fenced and unfenced patches, two patches
 in one message, prose with no patch, an echoed read-only stroke, a stencil
-placement (and the same under its old name, `stamp`), and one patch whose second element is out of bounds — which must
-reject the whole patch, never half of it.
+placement, a placement under the pre-contract `stamp` spelling (now rejected
+like any other malformed entry), and one patch whose second element is out of
+bounds — which must reject the whole patch, never half of it.
 
 ## Adding to it
 

@@ -43,13 +43,10 @@ KEEP: tuple[str, ...] = (
 # types are dropped and the client preserves the real ones. The model still
 # SEES them: compact() emits each as id + bbox (+ a simplified polyline for
 # strokes), which is enough to align new shapes to the ink and to delete by id.
-# ``stamp`` is the name the stencil entry went by before the contract
-# (2026-08-29) and is kept as an alias for one release.
-OPAQUE_TYPES: frozenset[str] = frozenset({"freedraw", "image", "stencil", "stamp"})
+OPAQUE_TYPES: frozenset[str] = frozenset({"freedraw", "image", "stencil"})
 
-# The customData keys a stencil instance is recognised by: the excalicore
-# namespace, and the two tags the Armory and the Academy wrote before it.
-_STENCIL_KEYS: frozenset[str] = frozenset({"stencil", "stamp", "stampGroup"})
+# The customData key a stencil instance is recognised by.
+_STENCIL_KEYS: frozenset[str] = frozenset({"stencil"})
 
 MAX_STROKE_POINTS = 32     # polyline budget per stroke; tolerance coarsens to fit
 MAX_COORD = 1_000_000      # beyond this it is a hallucination, not a layout
@@ -130,8 +127,7 @@ def stroke_summary(element: dict[str, Any], *,
 def instance_of(element: dict[str, Any]) -> str | None:
     """The stencil instance an element belongs to, or None.
 
-    ``customData.stencil.instance`` is where excalicore writes it; the older
-    ``customData.stampGroup`` is read as an alias for one release.
+    ``customData.stencil.instance`` is where excalicore writes it.
     """
     cd = element.get("customData")
     if not isinstance(cd, dict):
@@ -139,8 +135,6 @@ def instance_of(element: dict[str, Any]) -> str | None:
     tag = cd.get("stencil")
     if isinstance(tag, dict) and tag.get("instance"):
         return str(tag["instance"])
-    if cd.get("stampGroup"):
-        return str(cd["stampGroup"])
     return None
 
 
@@ -163,13 +157,13 @@ def stencil_summary(instance: str, members: list[dict[str, Any]]) -> dict[str, A
     tag0 = _tag(members[0])
     entry: dict[str, Any] = {
         "id": instance, "type": "stencil",
-        "name": tag0.get("name") or cd0.get("stamp"),
+        "name": tag0.get("name"),
     }
     # The box the model sees is the SUBJECT's — read off the body and its
     # frame, the only way back — so a stick figure is reported as the box it
     # stands for, not as the union of its limbs and a centred caption with no
-    # width. Only an instance without a frame (a stamp placed before the
-    # contract) falls back to the footprint of its parts.
+    # width. Only an instance without a frame falls back to the footprint of
+    # its parts.
     body = next((m for m in members if _tag(m).get("role") == "body"), None)
     frame = _tag(body).get("frame") if body is not None else None
     box: tuple[float, float, float, float] | None = None
@@ -210,7 +204,7 @@ def stencil_summary(instance: str, members: list[dict[str, Any]]) -> dict[str, A
 
 
 def bbox(elements: list[Any]) -> tuple[float, float]:
-    """(width, height) of a group of elements — a stamp's natural footprint."""
+    """(width, height) of a group of elements — an instance's natural footprint."""
     xs: list[float] = []
     ys: list[float] = []
     for e in elements or []:
@@ -249,9 +243,9 @@ def compact(elements: list[Any] | None, *,
       id refs, and raw ``points`` are dropped there, because conversion
       re-routes bound arrows anyway;
     - elements placed from a stencil carry ``customData.stencil {name,
-      instance, role, ...}`` (or the older ``{stamp, stampGroup}``); each
-      instance folds into ONE read-only ``{"type": "stencil"}`` entry — its
-      id the instance id, its ``label`` the label part's text, its ``subject``
+      instance, role, ...}``; each instance folds into ONE read-only
+      ``{"type": "stencil"}`` entry — its id the instance id, its ``label``
+      the label part's text, its ``subject``
       whatever other namespaces the application tagged the parts with — so the
       model sees a symbol rather than the dozen primitives it is made of, and
       can bind an arrow to it by that one id (the client resolves the id to
@@ -350,8 +344,6 @@ def valid_patch(obj: Any, *,
         if not (isinstance(e, dict) and sane_geometry(e, max_coord=max_coord)):
             return False
         name = e.get("stencil")
-        if not (isinstance(name, str) and name.strip()):
-            name = e.get("stamp")  # the placement's old spelling, one release
         if isinstance(name, str) and name.strip():
             # A placement: {"stencil": name, "x", "y"[, "label"][, "subject"]}.
             # It carries no "type" — the client supplies the real elements
