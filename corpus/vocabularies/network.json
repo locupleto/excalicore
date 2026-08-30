@@ -1,0 +1,16 @@
+{
+  "name": "network",
+  "kinds": [
+    { "name": "subnet", "role": "container", "label": "Subnet",
+      "within": ["subnet"], "placed": "sometimes" },
+    { "name": "host", "role": "node", "label": "Host", "stencil": "network-host",
+      "within": ["subnet"], "placed": "always" },
+    { "name": "switch", "role": "node", "label": "Switch", "stencil": "network-switch",
+      "within": ["subnet"], "placed": "always" },
+    { "name": "router", "role": "node", "label": "Router", "stencil": "network-router",
+      "within": ["subnet"], "placed": "sometimes" },
+    { "name": "link", "role": "connector",
+      "ends": [["host", "switch"], ["switch", "switch"], ["switch", "router"], ["router", "router"]],
+      "directed": false, "loops": false, "parallel": false }
+  ]
+}

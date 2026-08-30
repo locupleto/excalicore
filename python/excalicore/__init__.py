@@ -13,14 +13,19 @@ in every Excalidraw-backed application.
     The contract a vocabulary element keeps, held on the server: validating a
     stencil, choosing a body for a library item, deriving the frame and anchors.
 
-Both are pure — no I/O, no database, no framework, no opinion about what the
+``vocabulary``
+    The form of an application's vocabulary — its kinds, containment and
+    connection rules — and the checks it implies: validating the document,
+    checking a graph against it, and the lookups a server's delta gate needs.
+
+All are pure — no I/O, no database, no framework, no opinion about what the
 elements mean. Applications keep their own tables, prompts, and vocabulary.
 """
 
 from __future__ import annotations
 
-from . import fidelity, scene, stencils
+from . import fidelity, scene, stencils, vocabulary
 
-__all__ = ["fidelity", "scene", "stencils", "__version__"]
+__all__ = ["fidelity", "scene", "stencils", "vocabulary", "__version__"]
 
-__version__ = "0.4.1"
+__version__ = "0.5.0"

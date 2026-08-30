@@ -32,6 +32,20 @@ The Bastion fixtures mirror `the-bastion/frontend/src/render.ts` at the sizes
 `backend/layout.py` produces, and the TypeScript tests check the placed
 geometry against that renderer's formulas.
 
+## Vocabularies (`vocabularies/*.json`)
+
+Vocabulary documents and graphs the `vocabulary` module is fixed against.
+Unlike the stencil fixtures, `rejected.json` and `graphs.json` each carry an
+`expect` list — the exact sentences the case must produce, compared as a set
+by both halves' tests.
+
+| File | What it is for |
+| --- | --- |
+| `bastion.json` | the Bastion's grammar: a `zone` container that nests, four component kinds (`actor`, `process`, `datastore`, `external_service`) always placed in a zone, and a `flow` connector open to any pair. |
+| `network.json` | a second, deliberately different grammar, so the checker is proven against two before a second application arrives: a `subnet` container that nests, `host` and `switch` always in a subnet, `router` sometimes, and an undirected `link` connector with no loops and no parallels, open only between the pairs a real network allows. |
+| `rejected.json` | vocabulary documents `validate` must refuse, one case (at least) per rule 1–8, each with its `expect` sentence. A malformed kind entry — not an object — is reported as `Kind N is not an object.`, `N` the kind's 1-based position. |
+| `graphs.json` | graphs checked against a named vocabulary (`bastion` or `network`), each with the `expect` sentences — an empty list for the graphs that keep the vocabulary. |
+
 ## Replies (`replies/*.txt`)
 
 Model replies as they actually arrive: fenced and unfenced patches, two patches

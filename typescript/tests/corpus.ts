@@ -11,6 +11,7 @@ import { join } from 'node:path'
 const ROOT = new URL('../../corpus/', import.meta.url).pathname
 export const SCENES = join(ROOT, 'scenes')
 export const STENCILS = join(ROOT, 'stencils')
+export const VOCABULARIES = join(ROOT, 'vocabularies')
 
 function json(path: string): unknown {
   return JSON.parse(readFileSync(path, 'utf8'))
@@ -32,5 +33,19 @@ export function stencilNames(): string[] {
   return readdirSync(STENCILS)
     .filter((f) => f.endsWith('.json'))
     .map((f) => f.slice(0, -5))
+    .sort()
+}
+
+export function vocabularyFixture(name: string): Record<string, unknown> {
+  return json(join(VOCABULARIES, `${name}.json`)) as Record<string, unknown>
+}
+
+/** The vocabulary documents themselves — `rejected` and `graphs` are cases
+ *  and expectations, not vocabularies, and are excluded. */
+export function vocabularyNames(): string[] {
+  return readdirSync(VOCABULARIES)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => f.slice(0, -5))
+    .filter((name) => name !== 'rejected' && name !== 'graphs')
     .sort()
 }

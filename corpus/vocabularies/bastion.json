@@ -1,0 +1,16 @@
+{
+  "name": "bastion",
+  "kinds": [
+    { "name": "zone", "role": "container", "within": ["zone"], "placed": "sometimes" },
+    { "name": "actor", "role": "node", "stencil": "bastion-actor",
+      "within": ["zone"], "placed": "always" },
+    { "name": "process", "role": "node", "stencil": "bastion-process",
+      "within": ["zone"], "placed": "always" },
+    { "name": "datastore", "role": "node", "stencil": "bastion-datastore",
+      "within": ["zone"], "placed": "always" },
+    { "name": "external_service", "role": "node", "stencil": "bastion-external-service",
+      "within": ["zone"], "placed": "always" },
+    { "name": "flow", "role": "connector", "ends": [["*", "*"]],
+      "directed": true, "loops": false, "parallel": true }
+  ]
+}

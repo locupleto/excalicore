@@ -146,3 +146,56 @@ a sentence, not a component that silently cannot be connected to.
 **No shelf.** The library defines what a stencil must provide and validates
 one; where stencils live, which one a view uses, and what a kind means stay
 with the application.
+
+## The vocabulary contract
+
+Every application here has kinds — the Bastion's zone, actor, process,
+datastore, external service and flow — and each declared its grammar in
+code: which kind holds which, which may join which, self-loops allowed or
+not. The Bastion carried it twice, once in Python and once in TypeScript,
+and a third copy in a handful of `validate_deltas` predicates that the
+docstring claimed covered containment cycles and did not. Two independent
+copies of the same grammar are how a check drifts from its own docstring;
+this contract is the fix, held once and checked the same way everywhere it
+is used.
+
+**A vocabulary is a document, not a switch statement.** A kind's role —
+`node`, `container` or `connector` — decides what holds what and what joins
+what; `within`, `placed`, `ends`, `directed`, `loops` and `parallel` are data
+an application ships and a facilitator or a reviewer can read without
+opening the source. Excalicore never holds a *particular* vocabulary, the
+same way it never holds a particular stencil — it holds the shape a
+vocabulary must have and checks whichever one it is handed.
+
+**A graph is built after the patch, not before.** The application hands the
+checker the graph it wants checked — for a delta, the graph *after* the
+delta applies. Delete rules fall out for free this way: a zone deleted while
+still holding a component leaves a subject sitting within something that is
+no longer on the board, and a component deleted while still touched by a
+flow leaves a connection with a missing end. No patch language enters the
+library; it only ever sees a graph.
+
+**Containment cycles are rule, not vigilance.** A zone whose parent is set by
+an `update` op, or a `within` edited into a cycle, are the same shape as any
+other malformed containment and get the same treatment: rule 11 and rule 12
+run on every check, not on the operations an author remembered to guard.
+
+**Suppression, not double jeopardy.** A subject with an unknown kind is
+reported once for that, not again for the containment it can no longer be
+meaningfully checked against; a connection missing an end is reported once
+for that, not again for the end-kind, loop or parallel rules that need both
+ends to mean anything. Each rule checks what the rule before it left
+uncontradicted, which is why the rules are numbered and applied in the order
+they are numbered.
+
+**Sentences, not booleans.** `validate` and `check` return every violation as
+a sentence, quoted and sorted where they name identifiers, so that the same
+wording reaches a log, a facilitator's prompt and a corpus fixture without a
+translation step in between.
+
+**No STRIDE, no lint, no crossing rules.** What a connection crossing a
+container boundary *means* — the Bastion's STRIDE arithmetic, its
+`multi_boundary_hop` lint — is a rule about the graph's shape that the
+application still owns. The vocabulary says a flow may run between any two
+kinds; what running between two zones implies is not this module's
+question.

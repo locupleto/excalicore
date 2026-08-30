@@ -81,6 +81,23 @@ drawn on any canvas into one; `sweep()` removes an instance whole. The Python
 can refuse a symbol at import time with a sentence — both halves are tested
 against `corpus/stencils`. See `typescript/README.md` and `docs/design.md`.
 
+### `vocabulary` — the form of an application's grammar (both halves)
+
+An application has a vocabulary: its kinds, which are containers, which are
+connectors, what may sit inside what and what may join what. `validateVocabulary()`
+(`validate` in Python) checks a vocabulary document — every kind has a name
+and a role, `within` and `ends` name real kinds of the right role, `placed`,
+`directed`, `loops` and `parallel` hold their allowed values. `checkGraph()`
+(`check`) checks a graph — the subjects and connections of one model, in the
+neutral shape the checker reads — against an already-valid vocabulary:
+declared once, of a known kind and role, containment honoured and free of
+cycles, every connection's ends on the board, of an allowed pair of kinds,
+and not a loop or a parallel where the kind forbids it. `kindsOf`/`kindOf`/
+`stencilFor` (`kinds`/`kind`/`stencil_for`) are the lookups a picker, a
+renderer or a server's delta gate need. Excalicore never holds a particular
+vocabulary — what a data store *means* stays with the application; both
+halves are tested against `corpus/vocabularies`.
+
 ## What is deliberately not here
 
 No UI components, no Excalidraw wrapper, no prompt text, no HTTP layer, no

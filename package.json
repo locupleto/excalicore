@@ -1,7 +1,7 @@
 {
   "name": "excalicore",
-  "version": "0.4.2",
-  "description": "Shared Excalidraw scene handling, browser half: the stencil contract",
+  "version": "0.5.0",
+  "description": "Shared Excalidraw scene handling, browser half: the stencil and vocabulary contracts",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -10,6 +10,10 @@
     "./stencils": {
       "types": "./typescript/dist/stencils.d.ts",
       "default": "./typescript/dist/stencils.js"
+    },
+    "./vocabulary": {
+      "types": "./typescript/dist/vocabulary.d.ts",
+      "default": "./typescript/dist/vocabulary.js"
     }
   },
   "scripts": {

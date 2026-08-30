@@ -1,0 +1,134 @@
+{
+  "cases": [
+    {
+      "reason": "no name",
+      "vocabulary": { "kinds": [{ "name": "a", "role": "node" }] },
+      "expect": ["A vocabulary needs a name."]
+    },
+    {
+      "reason": "no kinds",
+      "vocabulary": { "name": "v" },
+      "expect": ["A vocabulary needs at least one kind."]
+    },
+    {
+      "reason": "kinds not a list",
+      "vocabulary": { "name": "v", "kinds": "nope" },
+      "expect": ["A vocabulary needs at least one kind."]
+    },
+    {
+      "reason": "a kind that is not an object",
+      "vocabulary": {
+        "name": "v",
+        "kinds": [{ "name": "a", "role": "node" }, "nope", { "name": "b", "role": "node" }]
+      },
+      "expect": ["Kind 2 is not an object."]
+    },
+    {
+      "reason": "duplicate kind",
+      "vocabulary": {
+        "name": "v",
+        "kinds": [{ "name": "a", "role": "node" }, { "name": "a", "role": "node" }]
+      },
+      "expect": ["Kind \"a\" is declared twice."]
+    },
+    {
+      "reason": "missing role",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a" }] },
+      "expect": ["Kind \"a\" needs a role: node, container or connector."]
+    },
+    {
+      "reason": "unknown role",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a", "role": "widget" }] },
+      "expect": ["Kind \"a\" has an unknown role \"widget\"; a kind is a node, a container or a connector."]
+    },
+    {
+      "reason": "within naming an unknown kind",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a", "role": "node", "within": ["ghost"] }] },
+      "expect": ["Kind \"a\" may sit within \"ghost\", which is not a kind of this vocabulary."]
+    },
+    {
+      "reason": "within naming a node kind",
+      "vocabulary": {
+        "name": "v",
+        "kinds": [
+          { "name": "a", "role": "node" },
+          { "name": "b", "role": "node", "within": ["a"] }
+        ]
+      },
+      "expect": ["Kind \"b\" may sit within \"a\", which is not a container."]
+    },
+    {
+      "reason": "connector with within",
+      "vocabulary": {
+        "name": "v",
+        "kinds": [{ "name": "c", "role": "connector", "ends": [["*", "*"]], "within": ["c"] }]
+      },
+      "expect": ["Kind \"c\" is a connector and cannot sit within anything."]
+    },
+    {
+      "reason": "placed with a bad value",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a", "role": "node", "placed": "often" }] },
+      "expect": ["Kind \"a\" is placed \"often\"; a kind is placed always or sometimes."]
+    },
+    {
+      "reason": "always-placed without within",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a", "role": "node", "placed": "always" }] },
+      "expect": ["Kind \"a\" is always placed but names nothing it may sit within."]
+    },
+    {
+      "reason": "connector without ends",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "c", "role": "connector" }] },
+      "expect": ["Kind \"c\" is a connector and needs ends."]
+    },
+    {
+      "reason": "node with ends",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a", "role": "node", "ends": [["*", "*"]] }] },
+      "expect": ["Kind \"a\" is not a connector and cannot have ends."]
+    },
+    {
+      "reason": "ends naming an unknown kind (from)",
+      "vocabulary": {
+        "name": "v",
+        "kinds": [
+          { "name": "a", "role": "node" },
+          { "name": "c", "role": "connector", "ends": [["ghost", "a"]] }
+        ]
+      },
+      "expect": ["Kind \"c\" may run from \"ghost\", which is not a kind of this vocabulary."]
+    },
+    {
+      "reason": "ends naming an unknown kind (to)",
+      "vocabulary": {
+        "name": "v",
+        "kinds": [
+          { "name": "a", "role": "node" },
+          { "name": "c", "role": "connector", "ends": [["a", "ghost"]] }
+        ]
+      },
+      "expect": ["Kind \"c\" may run to \"ghost\", which is not a kind of this vocabulary."]
+    },
+    {
+      "reason": "an end that is not a pair",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "c", "role": "connector", "ends": [["*"]] }] },
+      "expect": ["Kind \"c\" has an end that is not a pair of kinds."]
+    },
+    {
+      "reason": "loops not boolean",
+      "vocabulary": {
+        "name": "v",
+        "kinds": [{ "name": "c", "role": "connector", "ends": [["*", "*"]], "loops": "no" }]
+      },
+      "expect": ["Kind \"c\": loops must be true or false."]
+    },
+    {
+      "reason": "empty stencil",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a", "role": "node", "stencil": "" }] },
+      "expect": ["Kind \"a\" names an empty stencil."]
+    },
+    {
+      "reason": "empty label",
+      "vocabulary": { "name": "v", "kinds": [{ "name": "a", "role": "node", "label": "" }] },
+      "expect": ["Kind \"a\" has an empty label."]
+    }
+  ]
+}

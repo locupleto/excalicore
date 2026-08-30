@@ -1,0 +1,216 @@
+{
+  "cases": [
+    {
+      "name": "a valid Bastion graph",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [
+          { "id": "internet", "kind": "zone" },
+          { "id": "dmz", "kind": "zone", "within": "internet" },
+          { "id": "web", "kind": "process", "within": "dmz" },
+          { "id": "orders", "kind": "datastore", "within": "dmz" },
+          { "id": "user", "kind": "actor", "within": "internet" },
+          { "id": "billing", "kind": "external_service", "within": "internet" }
+        ],
+        "connections": [
+          { "id": "f1", "kind": "flow", "from": "user", "to": "web" },
+          { "id": "f2", "kind": "flow", "from": "web", "to": "orders" },
+          { "id": "f3", "kind": "flow", "from": "web", "to": "billing" }
+        ]
+      },
+      "expect": []
+    },
+    {
+      "name": "component with no within",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "web", "kind": "process" }],
+        "connections": []
+      },
+      "expect": ["Subject \"web\" is a \"process\", which must sit within a container."]
+    },
+    {
+      "name": "component within a zone that is not on the board",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "web", "kind": "process", "within": "ghost" }],
+        "connections": []
+      },
+      "expect": ["Subject \"web\" sits within \"ghost\", which is not on the board."]
+    },
+    {
+      "name": "component within another component",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [
+          { "id": "dmz", "kind": "zone" },
+          { "id": "web", "kind": "process", "within": "dmz" },
+          { "id": "orders", "kind": "datastore", "within": "web" }
+        ],
+        "connections": []
+      },
+      "expect": ["Subject \"orders\" sits within \"web\", which is not a container."]
+    },
+    {
+      "name": "zone within a zone in a cycle of two",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [
+          { "id": "a", "kind": "zone", "within": "b" },
+          { "id": "b", "kind": "zone", "within": "a" }
+        ],
+        "connections": []
+      },
+      "expect": ["Subjects \"a\" and \"b\" contain one another."]
+    },
+    {
+      "name": "a cycle of three",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [
+          { "id": "a", "kind": "zone", "within": "b" },
+          { "id": "b", "kind": "zone", "within": "c" },
+          { "id": "c", "kind": "zone", "within": "a" }
+        ],
+        "connections": []
+      },
+      "expect": ["Subjects \"a\", \"b\" and \"c\" contain one another."]
+    },
+    {
+      "name": "a subject within itself",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "a", "kind": "zone", "within": "a" }],
+        "connections": []
+      },
+      "expect": ["Subject \"a\" sits within itself."]
+    },
+    {
+      "name": "duplicate subject id",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "a", "kind": "zone" }, { "id": "a", "kind": "zone" }],
+        "connections": []
+      },
+      "expect": ["Subject \"a\" is declared twice."]
+    },
+    {
+      "name": "duplicate connection id",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "x", "kind": "zone" }, { "id": "y", "kind": "zone" }],
+        "connections": [
+          { "id": "f1", "kind": "flow", "from": "x", "to": "y" },
+          { "id": "f1", "kind": "flow", "from": "x", "to": "y" }
+        ]
+      },
+      "expect": ["Connection \"f1\" is declared twice."]
+    },
+    {
+      "name": "unknown subject kind",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "a", "kind": "bogus" }],
+        "connections": []
+      },
+      "expect": ["Subject \"a\" has an unknown kind \"bogus\"."]
+    },
+    {
+      "name": "subject of connector kind",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "a", "kind": "flow" }],
+        "connections": []
+      },
+      "expect": ["Subject \"a\" is of kind \"flow\", which is a connector; a subject is a node or a container."]
+    },
+    {
+      "name": "connection of non-connector kind",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "a", "kind": "zone" }, { "id": "b", "kind": "zone" }],
+        "connections": [{ "id": "c1", "kind": "zone", "from": "a", "to": "b" }]
+      },
+      "expect": ["Connection \"c1\" is of kind \"zone\", which is not a connector."]
+    },
+    {
+      "name": "flow from a missing end",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "y", "kind": "zone" }],
+        "connections": [{ "id": "f1", "kind": "flow", "from": "ghost", "to": "y" }]
+      },
+      "expect": ["Connection \"f1\" runs from \"ghost\", which is not on the board."]
+    },
+    {
+      "name": "flow to a missing end",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "x", "kind": "zone" }],
+        "connections": [{ "id": "f1", "kind": "flow", "from": "x", "to": "ghost" }]
+      },
+      "expect": ["Connection \"f1\" runs to \"ghost\", which is not on the board."]
+    },
+    {
+      "name": "flow loop",
+      "vocabulary": "bastion",
+      "graph": {
+        "subjects": [{ "id": "x", "kind": "zone" }],
+        "connections": [{ "id": "f1", "kind": "flow", "from": "x", "to": "x" }]
+      },
+      "expect": ["Connection \"f1\" loops \"x\" onto itself."]
+    },
+    {
+      "name": "a valid network graph",
+      "vocabulary": "network",
+      "graph": {
+        "subjects": [
+          { "id": "lan", "kind": "subnet" },
+          { "id": "sw1", "kind": "switch", "within": "lan" },
+          { "id": "h1", "kind": "host", "within": "lan" },
+          { "id": "r1", "kind": "router" }
+        ],
+        "connections": [{ "id": "l1", "kind": "link", "from": "sw1", "to": "h1" }]
+      },
+      "expect": []
+    },
+    {
+      "name": "host-host link",
+      "vocabulary": "network",
+      "graph": {
+        "subjects": [
+          { "id": "lan", "kind": "subnet" },
+          { "id": "h1", "kind": "host", "within": "lan" },
+          { "id": "h2", "kind": "host", "within": "lan" }
+        ],
+        "connections": [{ "id": "l1", "kind": "link", "from": "h1", "to": "h2" }]
+      },
+      "expect": ["Connection \"l1\" is a \"link\" and cannot run from a \"host\" to a \"host\"."]
+    },
+    {
+      "name": "two links between the same switch and host",
+      "vocabulary": "network",
+      "graph": {
+        "subjects": [
+          { "id": "lan", "kind": "subnet" },
+          { "id": "sw1", "kind": "switch", "within": "lan" },
+          { "id": "h1", "kind": "host", "within": "lan" }
+        ],
+        "connections": [
+          { "id": "l1", "kind": "link", "from": "h1", "to": "sw1" },
+          { "id": "l2", "kind": "link", "from": "sw1", "to": "h1" }
+        ]
+      },
+      "expect": ["Connections \"l1\" and \"l2\" both run between \"h1\" and \"sw1\"; a \"link\" allows one."]
+    },
+    {
+      "name": "a switch at top level",
+      "vocabulary": "network",
+      "graph": {
+        "subjects": [{ "id": "sw1", "kind": "switch" }],
+        "connections": []
+      },
+      "expect": ["Subject \"sw1\" is a \"switch\", which must sit within a container."]
+    }
+  ]
+}
