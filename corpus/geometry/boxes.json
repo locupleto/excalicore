@@ -1,0 +1,406 @@
+{
+  "doc": "boxOf/union are element->box arithmetic executed from excalicore's own typescript/src/stencils.ts (the linear-origin rule: a linear element's box starts at its least point, not necessarily its origin). contains/overlap/centre/area cases were executed from the-bastion's backend/reconcile.py (_contains, _centre, _area) and backend/arrange.py (_overlap): contains is edge-inclusive, overlap is STRICT (two boxes that only touch an edge or a corner do not overlap). Every box in every case uses the canonical {x, y, width, height} field names, even where the executed Python reference used {x, y, w, h} internally.",
+  "cases": [
+    {
+      "fn": "contains",
+      "name": "a point strictly inside the box",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "point": [
+        50,
+        25
+      ],
+      "expect": true
+    },
+    {
+      "fn": "contains",
+      "name": "a point on the left edge counts as inside",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "point": [
+        0,
+        25
+      ],
+      "expect": true
+    },
+    {
+      "fn": "contains",
+      "name": "a point on the bottom-right corner counts as inside",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "point": [
+        100,
+        50
+      ],
+      "expect": true
+    },
+    {
+      "fn": "contains",
+      "name": "a point just outside the right edge is not contained",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "point": [
+        100.01,
+        25
+      ],
+      "expect": false
+    },
+    {
+      "fn": "overlap",
+      "name": "two boxes overlapping in the middle",
+      "a": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      },
+      "b": {
+        "x": 50,
+        "y": 50,
+        "width": 100,
+        "height": 100
+      },
+      "expect": true
+    },
+    {
+      "fn": "overlap",
+      "name": "two boxes touching edge to edge do not overlap",
+      "a": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      },
+      "b": {
+        "x": 100,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      },
+      "expect": false
+    },
+    {
+      "fn": "overlap",
+      "name": "two boxes clearly separate",
+      "a": {
+        "x": 0,
+        "y": 0,
+        "width": 50,
+        "height": 50
+      },
+      "b": {
+        "x": 200,
+        "y": 200,
+        "width": 50,
+        "height": 50
+      },
+      "expect": false
+    },
+    {
+      "fn": "overlap",
+      "name": "one box nested fully inside another",
+      "a": {
+        "x": 0,
+        "y": 0,
+        "width": 200,
+        "height": 200
+      },
+      "b": {
+        "x": 50,
+        "y": 50,
+        "width": 50,
+        "height": 50
+      },
+      "expect": true
+    },
+    {
+      "fn": "overlap",
+      "name": "two boxes touching only at a corner",
+      "a": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      },
+      "b": {
+        "x": 100,
+        "y": 100,
+        "width": 100,
+        "height": 100
+      },
+      "expect": false
+    },
+    {
+      "fn": "centre",
+      "name": "a simple box",
+      "box": {
+        "x": 10,
+        "y": 20,
+        "width": 100,
+        "height": 50
+      },
+      "expect": [
+        60,
+        45
+      ]
+    },
+    {
+      "fn": "area",
+      "name": "a simple box",
+      "box": {
+        "x": 10,
+        "y": 20,
+        "width": 100,
+        "height": 50
+      },
+      "expect": 5000
+    },
+    {
+      "fn": "centre",
+      "name": "a zero-area box",
+      "box": {
+        "x": 10,
+        "y": 20,
+        "width": 0,
+        "height": 0
+      },
+      "expect": [
+        10,
+        20
+      ]
+    },
+    {
+      "fn": "area",
+      "name": "a zero-area box",
+      "box": {
+        "x": 10,
+        "y": 20,
+        "width": 0,
+        "height": 0
+      },
+      "expect": 0
+    },
+    {
+      "fn": "centre",
+      "name": "a box with negative-origin",
+      "box": {
+        "x": -50,
+        "y": -30,
+        "width": 100,
+        "height": 60
+      },
+      "expect": [
+        0,
+        0
+      ]
+    },
+    {
+      "fn": "area",
+      "name": "a box with negative-origin",
+      "box": {
+        "x": -50,
+        "y": -30,
+        "width": 100,
+        "height": 60
+      },
+      "expect": 6000
+    },
+    {
+      "fn": "boxOf",
+      "name": "a plain rectangle",
+      "element": {
+        "x": 10,
+        "y": 20,
+        "width": 100,
+        "height": 50
+      },
+      "expect": {
+        "x": 10,
+        "y": 20,
+        "width": 100,
+        "height": 50
+      }
+    },
+    {
+      "fn": "boxOf",
+      "name": "a right-to-left line has a box starting at its least point, not its origin",
+      "element": {
+        "x": 100,
+        "y": 50,
+        "width": 80,
+        "height": 0,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            -80,
+            0
+          ]
+        ]
+      },
+      "expect": {
+        "x": 20,
+        "y": 50,
+        "width": 80,
+        "height": 0
+      }
+    },
+    {
+      "fn": "boxOf",
+      "name": "a line drawn bottom-to-top and right-to-left both",
+      "element": {
+        "x": 200,
+        "y": 200,
+        "width": 60,
+        "height": 40,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            -60,
+            -40
+          ],
+          [
+            -20,
+            -10
+          ]
+        ]
+      },
+      "expect": {
+        "x": 140,
+        "y": 160,
+        "width": 60,
+        "height": 40
+      }
+    },
+    {
+      "fn": "boxOf",
+      "name": "a linear element with no points falls back to its own origin",
+      "element": {
+        "x": 5,
+        "y": 5,
+        "width": 30,
+        "height": 10,
+        "points": []
+      },
+      "expect": {
+        "x": 5,
+        "y": 5,
+        "width": 30,
+        "height": 10
+      }
+    },
+    {
+      "fn": "boxOf",
+      "name": "missing numeric fields default to zero",
+      "element": {
+        "x": "nope",
+        "width": null
+      },
+      "expect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    {
+      "fn": "union",
+      "name": "the union of an empty list is null",
+      "boxes": [],
+      "expect": null
+    },
+    {
+      "fn": "union",
+      "name": "the union of a single box is itself",
+      "boxes": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "expect": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      }
+    },
+    {
+      "fn": "union",
+      "name": "the union of two separate boxes encloses both",
+      "boxes": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "x": 150,
+          "y": 50,
+          "width": 60,
+          "height": 200
+        }
+      ],
+      "expect": {
+        "x": 0,
+        "y": 0,
+        "width": 210,
+        "height": 250
+      }
+    },
+    {
+      "fn": "union",
+      "name": "the union of three boxes including one straddling the origin",
+      "boxes": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "x": 150,
+          "y": 50,
+          "width": 60,
+          "height": 200
+        },
+        {
+          "x": -20,
+          "y": -20,
+          "width": 40,
+          "height": 40
+        }
+      ],
+      "expect": {
+        "x": -20,
+        "y": -20,
+        "width": 230,
+        "height": 270
+      }
+    }
+  ]
+}

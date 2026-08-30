@@ -1,0 +1,230 @@
+{
+  "doc": "relativeBends/absoluteRoute cases were executed from the-bastion's backend/layout.py (relative_bends, absolute_route) directly, on point sets drawn from tests/test_layout.py's TestFlowRouting (a right angle that stays a right angle when both boxes translate, a bend that survives both boxes moving, a straight two-point route with nothing to remember, a degenerate zero-length chord). A bend is {t, d}: t the fraction along the chord from the first point to the last, d the signed perpendicular offset in pixels.",
+  "cases": [
+    {
+      "fn": "relativeBends",
+      "name": "a straight two-point route has no bends",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          100,
+          0
+        ]
+      ],
+      "expect": []
+    },
+    {
+      "fn": "relativeBends",
+      "name": "a single knee a quarter along, offset perpendicular",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          25,
+          40
+        ],
+        [
+          100,
+          0
+        ]
+      ],
+      "expect": [
+        {
+          "t": 0.25,
+          "d": 40
+        }
+      ]
+    },
+    {
+      "fn": "relativeBends",
+      "name": "a degenerate zero-length chord has no bends",
+      "points": [
+        [
+          50,
+          50
+        ],
+        [
+          60,
+          80
+        ],
+        [
+          50,
+          50
+        ]
+      ],
+      "expect": []
+    },
+    {
+      "fn": "relativeBends",
+      "name": "a right-angle elbow, relative to its own chord",
+      "points": [
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          300
+        ],
+        [
+          400,
+          100
+        ]
+      ],
+      "expect": [
+        {
+          "t": 0,
+          "d": 200
+        }
+      ]
+    },
+    {
+      "fn": "absoluteRoute",
+      "name": "the same right angle refitted onto the same anchors (identity)",
+      "bends": [
+        {
+          "t": 0,
+          "d": 200
+        }
+      ],
+      "a": [
+        100,
+        100
+      ],
+      "b": [
+        400,
+        100
+      ],
+      "expect": [
+        [
+          100,
+          100
+        ],
+        [
+          100,
+          300
+        ],
+        [
+          400,
+          100
+        ]
+      ]
+    },
+    {
+      "fn": "absoluteRoute",
+      "name": "a right angle stays a right angle when both boxes translate together",
+      "bends": [
+        {
+          "t": 0,
+          "d": 200
+        }
+      ],
+      "a": [
+        350,
+        190
+      ],
+      "b": [
+        650,
+        190
+      ],
+      "expect": [
+        [
+          350,
+          190
+        ],
+        [
+          350,
+          390
+        ],
+        [
+          650,
+          190
+        ]
+      ]
+    },
+    {
+      "fn": "relativeBends",
+      "name": "a knee bulging perpendicular off a horizontal chord",
+      "points": [
+        [
+          100,
+          100
+        ],
+        [
+          250,
+          40
+        ],
+        [
+          400,
+          100
+        ]
+      ],
+      "expect": [
+        {
+          "t": 0.5,
+          "d": -60
+        }
+      ]
+    },
+    {
+      "fn": "absoluteRoute",
+      "name": "the bulging knee refitted after both anchors translate",
+      "bends": [
+        {
+          "t": 0.5,
+          "d": -60
+        }
+      ],
+      "a": [
+        400,
+        220
+      ],
+      "b": [
+        700,
+        220
+      ],
+      "expect": [
+        [
+          400,
+          220
+        ],
+        [
+          550,
+          160
+        ],
+        [
+          700,
+          220
+        ]
+      ]
+    },
+    {
+      "fn": "absoluteRoute",
+      "name": "no bends refitted between two new anchors is just the straight segment",
+      "bends": [],
+      "a": [
+        10,
+        10
+      ],
+      "b": [
+        500,
+        250
+      ],
+      "expect": [
+        [
+          10,
+          10
+        ],
+        [
+          500,
+          250
+        ]
+      ]
+    }
+  ]
+}

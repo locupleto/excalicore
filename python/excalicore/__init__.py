@@ -1,6 +1,13 @@
 """excalicore — the parts of an Excalidraw-backed application that are the same
 in every Excalidraw-backed application.
 
+``geometry``
+    The lowest module: box arithmetic, which face an arrow leaves and
+    arrives on, a bent route remembered as a shape rather than a place, an
+    arrow's kind read out of Excalidraw's two unrelated fields, and greedy
+    word-wrap to a column budget. ``stencils`` and ``scene`` import their box
+    arithmetic from here.
+
 ``scene``
     The bridge between a canvas and a language model: compacting a scene into a
     prompt-sized skeleton, and extracting a validated merge patch from a reply.
@@ -24,8 +31,8 @@ elements mean. Applications keep their own tables, prompts, and vocabulary.
 
 from __future__ import annotations
 
-from . import fidelity, scene, stencils, vocabulary
+from . import fidelity, geometry, scene, stencils, vocabulary
 
-__all__ = ["fidelity", "scene", "stencils", "vocabulary", "__version__"]
+__all__ = ["fidelity", "geometry", "scene", "stencils", "vocabulary", "__version__"]
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"

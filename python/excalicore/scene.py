@@ -27,6 +27,8 @@ import math
 import re
 from typing import Any
 
+from . import geometry
+
 # Fields worth showing a model — enough to reason about the board and to
 # preserve ids, without the versionNonce/seed/roundness noise that only burns
 # tokens and invites the model to echo values it should never author.
@@ -204,27 +206,17 @@ def stencil_summary(instance: str, members: list[dict[str, Any]]) -> dict[str, A
 
 
 def bbox(elements: list[Any]) -> tuple[float, float]:
-    """(width, height) of a group of elements — an instance's natural footprint."""
-    xs: list[float] = []
-    ys: list[float] = []
-    for e in elements or []:
-        if not isinstance(e, dict):
-            continue
-        x, y = e.get("x"), e.get("y")
-        if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
-            continue
-        # A linear element's origin is its first point; drawn right-to-left
-        # its points run negative and its box starts before the origin.
-        pts = [p for p in (e.get("points") or []) if isinstance(p, (list, tuple)) and len(p) >= 2
-               and all(isinstance(c, (int, float)) for c in p[:2])]
-        if pts:
-            x += min(p[0] for p in pts)
-            y += min(p[1] for p in pts)
-        xs += [x, x + (e.get("width") or 0)]
-        ys += [y, y + (e.get("height") or 0)]
-    if not xs:
-        return (0.0, 0.0)
-    return (max(xs) - min(xs), max(ys) - min(ys))
+    """(width, height) of a group of elements — an instance's natural
+    footprint. A thin wrapper over :func:`geometry.union`; the linear-origin
+    rule (a box may start before an element's own ``x``/``y``) lives there
+    now, in :func:`geometry.box_of`."""
+    boxes = [
+        geometry.box_of(e)
+        for e in elements or []
+        if isinstance(e, dict) and isinstance(e.get("x"), (int, float)) and isinstance(e.get("y"), (int, float))
+    ]
+    u = geometry.union(boxes)
+    return (u[2], u[3]) if u is not None else (0.0, 0.0)
 
 
 def compact(elements: list[Any] | None, *,

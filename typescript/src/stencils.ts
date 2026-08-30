@@ -29,6 +29,9 @@
  * come back in the same shape with ids, geometry, groups and tags rewritten.
  */
 
+import { boxOf, union, type Box } from './geometry.ts'
+
+export type { Box }
 export type Role = 'body' | 'label' | 'decoration'
 export type SizeMode = 'fit' | 'fixed'
 
@@ -36,7 +39,6 @@ export interface Anchor { u: number; v: number }
 export interface Offset { dx: number; dy: number }
 /** The subject's box relative to the body: origin offset and size ratio. */
 export interface Frame { dx: number; dy: number; sw: number; sh: number }
-export interface Box { x: number; y: number; width: number; height: number }
 
 /** `customData.stencil` — the namespace this module owns. */
 export interface StencilTag {
@@ -160,40 +162,11 @@ function num(v: unknown, fallback = 0): number {
   return typeof v === 'number' && Number.isFinite(v) ? v : fallback
 }
 
-/** An element's box. A linear element (line, arrow, freedraw) keeps its
- *  origin at its FIRST point and its points relative to it, so a stroke drawn
- *  right-to-left has an origin at its right end and points that run negative;
- *  its box starts at the least point, not at the origin. Reading `x` as the
- *  left edge is how a hand-drawn symbol got a frame a stroke's width off. */
-function boxOf(el: Element): Box {
-  let x = num(el.x)
-  let y = num(el.y)
-  if (Array.isArray(el.points) && el.points.length) {
-    let minX = Infinity
-    let minY = Infinity
-    for (const p of el.points as unknown[]) {
-      if (Array.isArray(p) && p.length >= 2) {
-        minX = Math.min(minX, num(p[0]))
-        minY = Math.min(minY, num(p[1]))
-      }
-    }
-    if (Number.isFinite(minX)) x += minX
-    if (Number.isFinite(minY)) y += minY
-  }
-  return { x, y, width: num(el.width), height: num(el.height) }
-}
-
+/** The box enclosing a list of elements, or `null` for none — `boxOf` and
+ *  `union` are geometry's; this is the one-line adapter from an element list
+ *  to the boxes `union` wants. */
 function bbox(els: Element[]): Box | null {
-  if (!els.length) return null
-  let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity
-  for (const el of els) {
-    const b = boxOf(el)
-    x1 = Math.min(x1, b.x)
-    y1 = Math.min(y1, b.y)
-    x2 = Math.max(x2, b.x + b.width)
-    y2 = Math.max(y2, b.y + b.height)
-  }
-  return { x: x1, y: y1, width: x2 - x1, height: y2 - y1 }
+  return union(els.map(boxOf))
 }
 
 function finite(...values: unknown[]): boolean {

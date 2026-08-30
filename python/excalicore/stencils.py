@@ -29,6 +29,8 @@ from __future__ import annotations
 import math
 from typing import Any
 
+from . import geometry
+
 ROLES: frozenset[str] = frozenset({"body", "label", "decoration"})
 SIZE_MODES: frozenset[str] = frozenset({"fit", "fixed"})
 
@@ -65,29 +67,6 @@ def _num(v: Any) -> float:
 
 def _finite(*values: Any) -> bool:
     return all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in values)
-
-
-def _box(el: dict[str, Any]) -> tuple[float, float, float, float]:
-    """An element's box. A linear element keeps its origin at its FIRST point
-    with the rest relative, so a stroke drawn right-to-left has points that run
-    negative and a box that starts before its origin."""
-    x, y = _num(el.get("x")), _num(el.get("y"))
-    pts = [p for p in (el.get("points") or []) if isinstance(p, (list, tuple)) and len(p) >= 2]
-    if pts:
-        x += min(_num(p[0]) for p in pts)
-        y += min(_num(p[1]) for p in pts)
-    return x, y, _num(el.get("width")), _num(el.get("height"))
-
-
-def _bbox(els: list[dict[str, Any]]) -> tuple[float, float, float, float] | None:
-    if not els:
-        return None
-    boxes = [_box(e) for e in els]
-    x1 = min(b[0] for b in boxes)
-    y1 = min(b[1] for b in boxes)
-    x2 = max(b[0] + b[2] for b in boxes)
-    y2 = max(b[1] + b[3] for b in boxes)
-    return x1, y1, x2 - x1, y2 - y1
 
 
 def _id(el: dict[str, Any]) -> str:
@@ -197,7 +176,7 @@ def default_roles(item: dict[str, Any]) -> dict[str, Any]:
         for el in live:
             if str(el.get("type")) not in BINDABLE_TYPES or not isinstance(el.get("id"), str):
                 continue
-            _, _, w, h = _box(el)
+            _, _, w, h = geometry.box_of(el)
             area = abs(w) * abs(h)
             if best is None or area > best_area:
                 best, best_area = el, area
@@ -229,8 +208,8 @@ def from_library_item(item: dict[str, Any], roles: dict[str, Any]) -> dict[str, 
     tagged = [(el, spec_of(el)) for el in source]
     bodies = [el for el, spec in tagged if spec.get("role") == "body"]
     body = bodies[0] if len(bodies) == 1 else None
-    body_box = _box(body) if body is not None else None
-    subject = _bbox([el for el, spec in tagged if spec.get("role") != "label"])
+    body_box = geometry.box_of(body) if body is not None else None
+    subject = geometry.union([geometry.box_of(el) for el, spec in tagged if spec.get("role") != "label"])
 
     elements: list[dict[str, Any]] = []
     for el, spec in tagged:
@@ -273,6 +252,6 @@ def subject_box(elements: list[Any]) -> tuple[float, float, float, float] | None
             f = tag["frame"]
             if not _finite(f.get("dx"), f.get("dy"), f.get("sw"), f.get("sh")):
                 return None
-            x, y, w, h = _box(el)
+            x, y, w, h = geometry.box_of(el)
             return x + f["dx"], y + f["dy"], w * f["sw"], h * f["sh"]
     return None

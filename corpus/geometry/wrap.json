@@ -1,0 +1,197 @@
+{
+  "doc": "wrap/ellipsise/terse cases were executed from the-bastion's frontend/src/render.ts (wrapLabel, terse are exported and were called directly; ellipsise is not exported and was executed from a verbatim one-line copy of its body) -- the house budget case (22 cols, 2 lines) is the shape frontend/src/render.test.mjs's own fixture wraps at. lineCount is DEFINED as wrap's own uncapped line count (see geometry.ts's doc comment on lineCount), so every lineCount case here is wrap(text, cols, Infinity).length on the SAME text/cols pairs as the wrap cases above -- not the-bastion's backend/layout.py _text_lines(), which was executed too and used only to CHECK agreement. It agreed on 6 of 8; on the other two, _text_lines is a pre-existing bug this module deliberately does not carry forward, flagged here for the Python-half implementer: an empty string (_text_lines counts 1 line where wrap draws 0), and a single word longer than the column budget ('antidisestablishmentarianism' at 10 cols: _text_lines counts 2, assuming an overlong word always spills onto a second line, never accounting for wrap cutting that word with an ellipsis to fit on the first; wrap itself produces exactly 1 line). Both corrected cases say so in their own name.",
+  "cases": [
+    {
+      "fn": "wrap",
+      "name": "the render.test.mjs house budget: a long label wraps within 22 cols, 2 lines",
+      "text": "DF1: polls for Discovery job [TIE]",
+      "cols": 22,
+      "maxLines": 2,
+      "expect": [
+        "DF1: polls for",
+        "Discovery job [TIE]"
+      ]
+    },
+    {
+      "fn": "wrap",
+      "name": "text that fits on one line is not wrapped",
+      "text": "CMDB",
+      "cols": 22,
+      "maxLines": 2,
+      "expect": [
+        "CMDB"
+      ]
+    },
+    {
+      "fn": "wrap",
+      "name": "an empty string wraps to no lines",
+      "text": "",
+      "cols": 22,
+      "maxLines": 2,
+      "expect": []
+    },
+    {
+      "fn": "wrap",
+      "name": "a word longer than the column budget is cut with an ellipsis",
+      "text": "antidisestablishmentarianism",
+      "cols": 10,
+      "maxLines": 2,
+      "expect": [
+        "antidises\u2026"
+      ]
+    },
+    {
+      "fn": "wrap",
+      "name": "text that exactly fills the column budget on one line",
+      "text": "1234567890",
+      "cols": 10,
+      "maxLines": 2,
+      "expect": [
+        "1234567890"
+      ]
+    },
+    {
+      "fn": "wrap",
+      "name": "maxLines of 1 ellipsises the first line when there is more",
+      "text": "reads the CMDB inventory table",
+      "cols": 12,
+      "maxLines": 1,
+      "expect": [
+        "reads the\u2026"
+      ]
+    },
+    {
+      "fn": "wrap",
+      "name": "text with more words than fit in maxLines ellipsises the last line",
+      "text": "polls for Discovery job with a long chain of extra words",
+      "cols": 12,
+      "maxLines": 2,
+      "expect": [
+        "polls for",
+        "Discovery\u2026"
+      ]
+    },
+    {
+      "fn": "wrap",
+      "name": "a single word exactly at the budget fits without ellipsis",
+      "text": "HTTPS",
+      "cols": 5,
+      "maxLines": 2,
+      "expect": [
+        "HTTPS"
+      ]
+    },
+    {
+      "fn": "ellipsise",
+      "name": "a short line gets a trailing ellipsis",
+      "line": "CMDB",
+      "cols": 22,
+      "expect": "CMDB\u2026"
+    },
+    {
+      "fn": "ellipsise",
+      "name": "a line at or over the budget is cut and ellipsised",
+      "line": "a line that runs long",
+      "cols": 10,
+      "expect": "a line th\u2026"
+    },
+    {
+      "fn": "ellipsise",
+      "name": "an empty line just gets the ellipsis",
+      "line": "",
+      "cols": 10,
+      "expect": "\u2026"
+    },
+    {
+      "fn": "terse",
+      "name": "the default word budget keeps the first three words",
+      "text": "polls for Discovery job nightly",
+      "expect": "polls for Discovery\u2026",
+      "maxWords": 3
+    },
+    {
+      "fn": "terse",
+      "name": "fewer words than the budget pass through unmarked",
+      "text": "reads the CMDB",
+      "maxWords": 3,
+      "expect": "reads the CMDB"
+    },
+    {
+      "fn": "terse",
+      "name": "exactly the word budget passes through unmarked",
+      "text": "reads the CMDB",
+      "maxWords": 3,
+      "expect": "reads the CMDB"
+    },
+    {
+      "fn": "terse",
+      "name": "an empty string terses to an empty string",
+      "text": "",
+      "maxWords": 3,
+      "expect": ""
+    },
+    {
+      "fn": "terse",
+      "name": "a maxWords of one keeps only the first word",
+      "text": "polls for Discovery job",
+      "maxWords": 1,
+      "expect": "polls\u2026"
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: DF1: polls for Discovery job [TIE]",
+      "text": "DF1: polls for Discovery job [TIE]",
+      "cols": 22,
+      "expect": 2
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: CMDB",
+      "text": "CMDB",
+      "cols": 22,
+      "expect": 1
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: (empty) -- CORRECTED from the old Python _text_lines, which read an empty string as 1 line; wrap draws 0",
+      "text": "",
+      "cols": 22,
+      "expect": 0
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: antidisestablishmentarianism -- CORRECTED from the old Python _text_lines, which counted 2 (assuming an overlong word spills onto a second line without accounting for its own ellipsis-cut fitting on the first)",
+      "text": "antidisestablishmentarianism",
+      "cols": 10,
+      "expect": 1
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: 1234567890",
+      "text": "1234567890",
+      "cols": 10,
+      "expect": 1
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: reads the CMDB inventory table",
+      "text": "reads the CMDB inventory table",
+      "cols": 12,
+      "expect": 4
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: polls for Discovery job with a long chain of extra words",
+      "text": "polls for Discovery job with a long chain of extra words",
+      "cols": 12,
+      "expect": 6
+    },
+    {
+      "fn": "lineCount",
+      "name": "lineCount agrees with wrap's own line count: HTTPS",
+      "text": "HTTPS",
+      "cols": 5,
+      "expect": 1
+    }
+  ]
+}

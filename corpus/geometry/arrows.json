@@ -1,0 +1,218 @@
+{
+  "doc": "arrowKind cases were executed from the-bastion's backend/reconcile.py (arrow_shape) on element field combinations drawn from tests/test_reconcile.py's TestFlowRoutes. arrowFields cases were executed by calling the-bastion's frontend/src/render.ts buildScene() end to end and reading the roundness/elbowed fields it wrote onto the arrow it drew for each shape word — the write side of arrowKind, and the exact matrix frontend/src/render.test.mjs checks ('the two fields Excalidraw uses are written from one word'): sharp writes {roundness: null} and no elbowed key at all; curved writes {roundness: {type: 2}} and no elbowed key; elbow writes {roundness: null, elbowed: true}. arrowElement cases for the 'poll' flow (an elbow that doubles back through six points) and the 'read' flow (a straight two-point line) were read directly off the arrow elements buildScene() drew for frontend/src/render.test.mjs's own GEOMETRY fixture.",
+  "cases": [
+    {
+      "fn": "arrowKind",
+      "name": "neither field set reads as sharp",
+      "element": {},
+      "expect": "sharp"
+    },
+    {
+      "fn": "arrowKind",
+      "name": "roundness alone reads as curved",
+      "element": {
+        "roundness": {
+          "type": 2
+        }
+      },
+      "expect": "curved"
+    },
+    {
+      "fn": "arrowKind",
+      "name": "elbowed true reads as elbow even with roundness also set",
+      "element": {
+        "elbowed": true,
+        "roundness": {
+          "type": 2
+        }
+      },
+      "expect": "elbow"
+    },
+    {
+      "fn": "arrowKind",
+      "name": "elbowed false with roundness set still reads as curved",
+      "element": {
+        "elbowed": false,
+        "roundness": {
+          "type": 2
+        }
+      },
+      "expect": "curved"
+    },
+    {
+      "fn": "arrowKind",
+      "name": "roundness explicitly null reads as sharp",
+      "element": {
+        "roundness": null
+      },
+      "expect": "sharp"
+    },
+    {
+      "fn": "arrowKind",
+      "name": "an odd truthy roundness value still reads as curved",
+      "element": {
+        "roundness": {
+          "type": 3
+        }
+      },
+      "expect": "curved"
+    },
+    {
+      "fn": "arrowKind",
+      "name": "elbowed alone with no roundness reads as elbow",
+      "element": {
+        "elbowed": true
+      },
+      "expect": "elbow"
+    },
+    {
+      "fn": "arrowFields",
+      "name": "no shape recorded (an older geometry) writes the sharp fields",
+      "kind": "sharp",
+      "expect": {
+        "roundness": null
+      }
+    },
+    {
+      "fn": "arrowFields",
+      "name": "sharp writes roundness null and no elbowed key",
+      "kind": "sharp",
+      "expect": {
+        "roundness": null
+      }
+    },
+    {
+      "fn": "arrowFields",
+      "name": "curved writes a type-2 roundness and no elbowed key",
+      "kind": "curved",
+      "expect": {
+        "roundness": {
+          "type": 2
+        }
+      }
+    },
+    {
+      "fn": "arrowFields",
+      "name": "elbow writes elbowed true and roundness null",
+      "kind": "elbow",
+      "expect": {
+        "roundness": null,
+        "elbowed": true
+      }
+    },
+    {
+      "fn": "arrowElement",
+      "name": "the poll flow's points, relativised and sized to their extent",
+      "points": [
+        [
+          916,
+          290
+        ],
+        [
+          916,
+          324
+        ],
+        [
+          736,
+          324
+        ],
+        [
+          736,
+          564
+        ],
+        [
+          556,
+          564
+        ],
+        [
+          556,
+          598
+        ]
+      ],
+      "expect": {
+        "x": 916,
+        "y": 290,
+        "width": 360,
+        "height": 308,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            34
+          ],
+          [
+            -180,
+            34
+          ],
+          [
+            -180,
+            274
+          ],
+          [
+            -360,
+            274
+          ],
+          [
+            -360,
+            308
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "arrowElement",
+      "name": "the read flow's points, relativised and sized to their extent",
+      "points": [
+        [
+          246,
+          205
+        ],
+        [
+          502,
+          240
+        ]
+      ],
+      "expect": {
+        "x": 246,
+        "y": 205,
+        "width": 256,
+        "height": 35,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            256,
+            35
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "arrowElement",
+      "name": "a single point has zero extent (an extrapolation past what render.ts ever receives)",
+      "points": [
+        [
+          42,
+          17
+        ]
+      ],
+      "expect": {
+        "x": 42,
+        "y": 17,
+        "width": 0,
+        "height": 0,
+        "points": [
+          [
+            0,
+            0
+          ]
+        ]
+      }
+    }
+  ]
+}

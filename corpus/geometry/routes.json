@@ -1,0 +1,1012 @@
+{
+  "doc": "Cases were executed by calling normalizeBoundArrows() directly from the-armory's frontend/src/pages/sketchGeometry.ts (byte-identical to the-academy's frontend/src/pages/boardGeometry.ts) with GAP=6, SPREAD=48, CLEAR=20, MIN_SEP=48, DEFAULT_DIMENSION=100 (the module's own defaults, unless a case says otherwise). TypeScript only \u2014 no Python twin exists for this pipeline; see corpus/README.md. 'board' is the twins' own second parameter (elements already on the canvas); 'skeletons' is the incoming patch. A case with an empty 'board' and both endpoint shapes inside 'skeletons' covers geometry looked up from the patch itself.",
+  "cases": [
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a stub arrow between two bound boxes is re-routed centre to centre, trimmed by the gap",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 50,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "two arrows sharing the same pair are fanned onto parallel lines",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        },
+        {
+          "id": "ar2",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 26,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "ar2",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 74,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "three arrows sharing the same unordered pair fan out together, direction ignored",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        },
+        {
+          "id": "ar2",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        },
+        {
+          "id": "ar3",
+          "type": "arrow",
+          "start": {
+            "id": "b"
+          },
+          "end": {
+            "id": "a"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 10,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "ar2",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 60,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "ar3",
+          "type": "arrow",
+          "start": {
+            "id": "b"
+          },
+          "end": {
+            "id": "a"
+          },
+          "x": 294,
+          "y": 110,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              -188,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a segment that would cross a third box is pushed clear of it",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 80,
+          "height": 80
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 400,
+          "y": 0,
+          "width": 80,
+          "height": 80
+        },
+        {
+          "id": "mid",
+          "type": "rectangle",
+          "x": 190,
+          "y": -10,
+          "width": 80,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 86,
+          "y": 74,
+          "width": 308,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              308,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "two arrows between different pairs whose label anchors land too close are pushed apart",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 80,
+          "height": 80
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 400,
+          "y": 0,
+          "width": 80,
+          "height": 80
+        },
+        {
+          "id": "c",
+          "type": "rectangle",
+          "x": 0,
+          "y": 300,
+          "width": 80,
+          "height": 80
+        },
+        {
+          "id": "d",
+          "type": "rectangle",
+          "x": 400,
+          "y": 300,
+          "width": 80,
+          "height": 80
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "d"
+          }
+        },
+        {
+          "id": "ar2",
+          "type": "arrow",
+          "start": {
+            "id": "c"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "d"
+          },
+          "x": 84.80000000000001,
+          "y": 73.6,
+          "width": 310.4,
+          "height": 232.79999999999998,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              310.4,
+              232.79999999999998
+            ]
+          ]
+        },
+        {
+          "id": "ar2",
+          "type": "arrow",
+          "start": {
+            "id": "c"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 114.80000000000001,
+          "y": 346.4,
+          "width": 310.4,
+          "height": 232.79999999999995,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              310.4,
+              -232.79999999999995
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a binding whose target is a line is dropped, so conversion does not throw",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "ln",
+          "type": "line",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "ln"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a binding whose target is another arrow is dropped",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "ar-other",
+          "type": "arrow",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "ar-other"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a binding whose target is a freedraw stroke is dropped",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "fd",
+          "type": "freedraw",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "fd"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "an arrow bound to an id that is not on the board passes through untouched",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "ghost"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "ghost"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "coincident boxes have nothing sane to draw, so the arrow passes through untouched",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a box nested fully inside another falls back to the raw centre line",
+      "board": [
+        {
+          "id": "outer",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 300,
+          "height": 300
+        },
+        {
+          "id": "inner",
+          "type": "rectangle",
+          "x": 100,
+          "y": 100,
+          "width": 50,
+          "height": 50
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "outer"
+          },
+          "end": {
+            "id": "inner"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "outer"
+          },
+          "end": {
+            "id": "inner"
+          },
+          "x": 150,
+          "y": 150,
+          "width": 25,
+          "height": 25,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              -25,
+              -25
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a shape with no declared size defaults to the 100px stub dimension",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0
+        },
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0
+        },
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 50,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "geometry looked up from the patch itself (both shapes arrive in the same skeletons array)",
+      "board": [],
+      "skeletons": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 50,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a non-arrow skeleton passes through untouched alongside a routed arrow",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        },
+        {
+          "id": "txt",
+          "type": "text",
+          "x": 10,
+          "y": 10,
+          "text": "hello"
+        }
+      ],
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 106,
+          "y": 6,
+          "width": 188,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              188,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "txt",
+          "type": "text",
+          "x": 10,
+          "y": 10,
+          "text": "hello"
+        }
+      ]
+    },
+    {
+      "fn": "normalizeBoundArrows",
+      "name": "a wider gap option trims the segment further from each box (the twins hardcode 6; this is the option the port adds)",
+      "board": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 100
+        }
+      ],
+      "skeletons": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ],
+      "options": {
+        "gap": 20
+      },
+      "expect": [
+        {
+          "id": "ar1",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          },
+          "x": 120,
+          "y": 50,
+          "width": 160,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              160,
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,7 @@ const ROOT = new URL('../../corpus/', import.meta.url).pathname
 export const SCENES = join(ROOT, 'scenes')
 export const STENCILS = join(ROOT, 'stencils')
 export const VOCABULARIES = join(ROOT, 'vocabularies')
+export const GEOMETRY = join(ROOT, 'geometry')
 
 function json(path: string): unknown {
   return JSON.parse(readFileSync(path, 'utf8'))
@@ -48,4 +49,11 @@ export function vocabularyNames(): string[] {
     .map((f) => f.slice(0, -5))
     .filter((name) => name !== 'rejected' && name !== 'graphs')
     .sort()
+}
+
+/** One of `corpus/geometry/*.json` — each a `{doc, cases}` object, `doc`
+ *  saying what shape its cases have so a reader (or the Python half) can
+ *  understand the file without a TypeScript test alongside it. */
+export function geometryFixture(name: string): { doc: string; cases: Record<string, unknown>[] } {
+  return json(join(GEOMETRY, `${name}.json`)) as { doc: string; cases: Record<string, unknown>[] }
 }

@@ -14,6 +14,7 @@ from typing import Any
 ROOT = pathlib.Path(__file__).resolve().parents[2] / "corpus"
 SCENES = ROOT / "scenes"
 REPLIES = ROOT / "replies"
+GEOMETRY = ROOT / "geometry"
 
 
 def scene(name: str) -> dict[str, Any]:
@@ -30,3 +31,11 @@ def reply(name: str) -> str:
 
 def scene_names() -> list[str]:
     return sorted(p.stem for p in SCENES.glob("*.json"))
+
+
+def geometry_fixture(name: str) -> dict[str, Any]:
+    """One of ``corpus/geometry/*.json`` — each a ``{doc, cases}`` object,
+    ``doc`` saying what shape its cases have so a reader (or the TypeScript
+    half) can understand the file without a Python test alongside it.
+    Mirrors ``typescript/tests/corpus.ts``'s ``geometryFixture``."""
+    return json.loads((GEOMETRY / f"{name}.json").read_text())

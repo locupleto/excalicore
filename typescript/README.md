@@ -8,7 +8,7 @@ render. The pieces that are the same wherever that work is done belong here.
 | --- | --- | --- |
 | `stencils` | The contract a vocabulary element keeps so that arrows can bind to it, the application can find it again, and a language model can talk about it. Placing one, finding its subject's box again, sweeping it, restyling it. | written |
 | `vocabulary` | The form of an application's vocabulary — its kinds, containment and connection rules — and the checks it implies: validating the document, checking a graph against it. | written |
-| `geometry` | Re-routing bound arrows centre-to-centre, and keeping labels legible when elements crowd. Excalidraw preserves whatever binding focus an arrow was first given, so an arrow created programmatically keeps a slant nobody asked for unless it is corrected. | planned |
+| `geometry` | The primitives an arrow and a label obey once boxes are placed — box arithmetic, which face a route leaves and arrives on, a bent route remembered as a shape rather than a place, an arrow's kind read out of Excalidraw's two unrelated fields, word-wrap to a column budget — plus the sketch apps' browser-only skeleton pipeline: re-routing bound arrows centre-to-centre, and keeping labels legible when elements crowd. `stencils` imports its box arithmetic. | written |
 | `contrast` | Deciding whether a stroke colour is readable against the backgrounds it will actually sit on, and adjusting it when it is not. Palettes stay with the application; the perceptual maths does not. | planned |
 
 No runtime dependencies, no Excalidraw import, no DOM. Elements are plain
@@ -86,6 +86,44 @@ Sentences are quoted and end with a full stop; identifiers in a sentence are
 sorted. Both halves are tested against `corpus/vocabularies`, which also
 holds `bastion.json` and `network.json` as worked examples of a vocabulary
 document.
+
+## `geometry`
+
+The lowest module: `stencils` imports its box arithmetic rather than
+carrying its own copy. A **box** is `{x, y, width, height}`; a **face** is
+`left | right | top | bottom`; an **anchor** is a point on a box as unit
+fractions `{u, v}`, deliberately unclamped; a **bend** is a route's interior
+point as `{t, d}` against its own chord, so a hand-drawn route survives its
+two boxes moving without being sheared. Most of the module has a Python twin
+(`excalicore.geometry`) fixed against the same corpus; the skeleton pipeline
+at the bottom — the pass a sketch application runs in the browser between a
+model's reply and `convertToExcalidrawElements` — is TypeScript only.
+
+```ts
+import { facingSides, centreSegment, relativeBends, absoluteRoute, wrap } from 'excalicore/geometry'
+
+const [fromSide, toSide] = facingSides(boxA, boxB)     // ['right', 'left']
+centreSegment(boxA, boxB, 6)                            // {x1, y1, x2, y2}, trimmed 6px outside each box
+const bends = relativeBends(userDrawnRoute)             // the route's shape, independent of where it was drawn
+absoluteRoute(bends, newAnchorA, newAnchorB)             // the same shape, refitted after the boxes moved
+wrap('polls for Discovery job', 22, 2)                  // ['polls for Discovery', 'job']
+```
+
+| Function | Does |
+| --- | --- |
+| `boxOf(element)`, `union(boxes)`, `centre(box)`, `contains(box, point)`, `overlap(a, b)`, `area(box)` | box arithmetic |
+| `facingSides(a, b)`, `pointOnSide(box, side, t)`, `along(other, side)` | which face an arrow leaves/arrives on, and the sort key for spreading several along one face |
+| `anchorUV(point, box)` / `anchorXY(uv, box)`, `exitT(box, dx, dy)`, `centreSegment(a, b, gap)` | a point as unit fractions of a box and back; where a centre-to-centre segment exits a box; that segment trimmed outside both |
+| `relativeBends(points)` / `absoluteRoute(bends, a, b)` | a route's shape, independent of the boxes; refitted onto a live pair of anchors |
+| `arrowKind(element)` / `arrowFields(kind)` | Excalidraw's `roundness` + `elbowed` read into one word, and back |
+| `arrowElement(points)` | `{x, y, width, height, points}` for an arrow from absolute points, relativised to the first and sized to the point cloud's extent |
+| `wrap(text, cols, maxLines)`, `ellipsise(line, cols)`, `terse(text, maxWords)`, `lineCount(text, cols)` | greedy word-wrap to a column budget, and how many lines it would take |
+| `normalizeBoundArrows(skeletons, board, options?)`, `topAlignCrowdedLabels(skeletons)` | TypeScript only: the sketch apps' skeleton pipeline, unchanged in behaviour from the Armory's/Academy's twin module |
+
+Both halves are tested against `corpus/geometry/`, one file per concern
+(`boxes`, `faces`, `bends`, `arrows`, `wrap`, `routes`, `crowding.json`) —
+`routes.json` and `crowding.json` are TypeScript-only fixtures, since no
+Python twin exists for the skeleton pipeline.
 
 ## Tests
 

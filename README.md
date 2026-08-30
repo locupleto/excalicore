@@ -66,6 +66,33 @@ Deleted elements count as references: Excalidraw keeps them in the array so
 undo can restore them, and an undo that restores an image whose file was
 collected restores a broken image.
 
+### `geometry` — what an arrow and a label do once the boxes are placed (both halves)
+
+Every Excalidraw-backed application ends up answering the same three
+questions once its boxes are on the sheet: where does an arrow between two
+boxes go, how does an arrow the user bent survive the boxes moving, and how
+does a label stay legible. `geometry` is the lowest module in the package —
+`stencils` and `scene` import their box arithmetic from it rather than
+carrying their own copy. It holds box arithmetic (`boxOf`/`box_of`,
+`union`, `centre`, `contains`, `overlap`, `area`); faces and anchors
+(`facingSides`/`facing_sides`, `pointOnSide`/`point_on_side`, `along`,
+`anchorUV`/`anchor_uv`, `anchorXY`/`anchor_xy`, `exitT`/`exit_t`,
+`centreSegment`/`centre_segment`); shape memory — a hand-bent route
+remembered relative to its own chord so a right angle stays a right angle
+when a box moves (`relativeBends`/`relative_bends`,
+`absoluteRoute`/`absolute_route`), and an arrow's kind read out of
+Excalidraw's two unrelated fields (`arrowKind`/`arrow_kind`,
+`arrowFields`/`arrow_fields`, `arrowElement`/`arrow_element`); and greedy
+word-wrap to a column budget (`wrap`, `ellipsise`, `terse`,
+`lineCount`/`line_count`). Both halves are tested against
+`corpus/geometry`. The TypeScript half additionally exports
+`normalizeBoundArrows` and `topAlignCrowdedLabels` — the pass a sketch
+application runs in the browser between a model's reply and
+`convertToExcalidrawElements`; no server has a use for them, so there is no
+Python twin. The layout *engine* — where a box goes, how a route is chosen
+among several — stays with the application; this module is what the engine
+is built out of.
+
 ### `stencils` — the contract a vocabulary element keeps (both halves)
 
 An application has a graphical vocabulary — a data store, a person, a server.
