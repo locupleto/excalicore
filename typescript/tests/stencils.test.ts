@@ -19,6 +19,7 @@ import {
   bodyOf,
   frameOf,
   fromLibraryItem,
+  ghostStack,
   instanceOf,
   instances,
   instantiate,
@@ -440,4 +441,76 @@ test('a stroke drawn right-to-left does not push the frame off by its own width'
   const lid = parts.find((p) => p.id === 'lid')!
   assert.deepEqual([lid.x, lid.y], [180, 100], 'the lid keeps its origin at its right end')
   assert.deepEqual(frameOf(parts), { x: 100, y: 100, width: 80, height: 70 })
+})
+
+// --- ghost stacks for imported symbols -------------------------------------------
+
+test('ghostStack puts echoes of the body behind an imported symbol, drawn only when asked', () => {
+  const server = armory('armory-server')
+  const ghosted = ghostStack(server, 'multiplicity')
+  assert.equal(ghosted.elements.length, server.elements.length + 2)
+  assert.equal(tagOf(ghosted.elements[0])!.variant, 'multiplicity')
+  assert.equal(tagOf(ghosted.elements[1])!.variant, 'multiplicity')
+  assert.equal(tagOf(ghosted.elements[0])!.role, 'decoration')
+
+  const plain = instantiate(ghosted, { x: 100, y: 100 }, { id: (src) => String(src.id) })
+  assert.ok(!plain.some((p) => tagOf(p)?.variant), 'no ghosts unless asked')
+
+  const many = instantiate(ghosted, { x: 100, y: 100 }, {
+    variants: ['multiplicity'], id: (src) => String(src.id),
+  })
+  assert.equal(many.length, plain.length + 2)
+  const p = byId(many)
+  const body = bodyOf(many) as Element
+  close(p.ghost1.x, (body.x as number) + 12, 'ghost1.x tracks the body')
+  close(p.ghost1.y, (body.y as number) - 12, 'ghost1.y tracks the body')
+  close(p.ghost2.x, (body.x as number) + 24, 'ghost2.x steps again')
+  close(p.ghost1.width, body.width as number, 'ghost1 is the body silhouette')
+  assert.equal(p.ghost1.strokeWidth, 1)
+  assert.equal(p.ghost1.opacity, 40)
+  assert.equal(p.ghost1.type, body.type)
+  // Behind: the echoes come before everything else in board order.
+  assert.equal(many[0].id, 'ghost2')
+  assert.equal(many[1].id, 'ghost1')
+})
+
+test('a ghosted symbol scaled to a box scales its echoes with it, the step still in pixels', () => {
+  const server = armory('armory-server')
+  const natural = frameOf(server.elements)!
+  const ghosted = ghostStack(server, 'multiplicity')
+  const many = instantiate(ghosted, { x: 0, y: 0, width: natural.width * 2, height: natural.height }, {
+    variants: ['multiplicity'], id: (src) => String(src.id),
+  })
+  const p = byId(many)
+  const body = bodyOf(many) as Element
+  close(p.ghost1.width, body.width as number, 'the echo stretches with the body')
+  close(p.ghost1.x, (body.x as number) + 12, 'the step stays 12 pixels')
+})
+
+test('a stencil that already carries the variant keeps its own ghosts', () => {
+  const process = stencil('bastion-process')
+  assert.equal(ghostStack(process, 'multiplicity'), process)
+})
+
+test('ghost ids stay clear of the stencil own element ids', () => {
+  const clashy: Stencil = {
+    name: 'clashy',
+    elements: [
+      {
+        type: 'rectangle', id: 'ghost1', x: 0, y: 0, width: 10, height: 10,
+        customData: { stencil: { role: 'decoration', anchor: { u: 0, v: 0 }, offset: { dx: 0, dy: 0 }, size: 'fit' } },
+      },
+      {
+        type: 'rectangle', id: 'b', x: 0, y: 0, width: 100, height: 50,
+        customData: { stencil: { role: 'body', frame: { dx: 0, dy: 0, sw: 1, sh: 1 } } },
+      },
+    ],
+  }
+  const ghosted = ghostStack(clashy, 'multiplicity')
+  const ids = ghosted.elements.map((el) => el.id)
+  assert.equal(new Set(ids).size, ids.length, 'no duplicate ids')
+})
+
+test('a ghost stack without a variant name is refused with a sentence', () => {
+  assert.throws(() => ghostStack(armory('armory-server'), ''), StencilError)
 })

@@ -561,6 +561,78 @@ export function instantiate(
   return placed.map((el) => (options.style ? restyleOne(el, options.style) : el))
 }
 
+// --- ghosts ------------------------------------------------------------------
+
+export interface GhostStackOptions {
+  /** Echo copies drawn behind the body. Default 2. */
+  count?: number
+  /** Pixels each echo steps right and up. Default 12. */
+  offset?: number
+  /** The echoes' own opacity. Default 40. */
+  opacity?: number
+}
+
+/** The stencil with a ghost stack behind it: `count` echoes of the body's
+ *  silhouette, stepped `offset` pixels up and to the right, each a
+ *  `decoration` carrying `variant` — so an instantiation draws them only
+ *  when it asks for that variant, exactly as with ghosts an author drew.
+ *
+ *  This is how a symbol that was drawn without variants — imported from a
+ *  library file, or drawn by a model — earns the same "there are many of
+ *  these" treatment a purpose-built glyph bakes in. Only the body's shape is
+ *  echoed, never the whole artwork: a stack of outlines reads as
+ *  multiplicity, a stack of drawings reads as clutter. The echoes keep the
+ *  body's own paint at a thin stroke and low opacity, so a tint at
+ *  instantiation recolours them with the rest of the instance while the
+ *  fading still tells them apart.
+ *
+ *  A stencil that already carries a part with this `variant` is returned
+ *  unchanged: its author drew their own ghosts, and two stacks would fight. */
+export function ghostStack(stencil: Stencil, variant: string, options: GhostStackOptions = {}): Stencil {
+  if (!variant) throw new StencilError(stencil.name, ['A ghost stack needs a variant name.'])
+  const errors = validateStencil(stencil.elements)
+  if (errors.length) throw new StencilError(stencil.name, errors)
+  const live = stencil.elements.filter((el) => !el.isDeleted)
+  if (live.some((el) => tagOf(el)?.variant === variant)) return stencil
+
+  const count = options.count ?? 2
+  const offset = options.offset ?? 12
+  const opacity = options.opacity ?? 40
+  const body = bodyOf(live) as Element
+  const b = boxOf(body)
+  const taken = new Set(live.map((el) => el.id).filter((id): id is string => typeof id === 'string'))
+  const ghosts: Element[] = []
+  for (let i = count; i >= 1; i--) {
+    let id = `ghost${i}`
+    while (taken.has(id)) id = `_${id}`
+    taken.add(id)
+    const ghost: Element = {
+      type: body.type,
+      id,
+      x: b.x + i * offset,
+      y: b.y - i * offset,
+      width: b.width,
+      height: b.height,
+      strokeWidth: 1,
+      opacity,
+      customData: {
+        stencil: {
+          role: 'decoration',
+          anchor: { u: 0, v: 0 },
+          offset: { dx: i * offset, dy: -i * offset },
+          size: 'fit',
+          variant,
+        } satisfies StencilTag,
+      },
+    }
+    for (const field of ['angle', 'strokeColor', 'backgroundColor', 'fillStyle', 'strokeStyle', 'roughness', 'roundness', 'fileId']) {
+      if (body[field] !== undefined) ghost[field] = body[field]
+    }
+    ghosts.push(ghost)
+  }
+  return { ...stencil, elements: [...ghosts, ...stencil.elements] }
+}
+
 // --- style -------------------------------------------------------------------
 
 function restyleOne(el: Element, style: Style): Element {
