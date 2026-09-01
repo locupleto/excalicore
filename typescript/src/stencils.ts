@@ -529,7 +529,14 @@ export function instantiate(
     const fontSize = typeof options.caption.fontSize === 'number' ? options.caption.fontSize : 16
     const subject: Box = { x: at.x, y: at.y, width: natural.width * sx, height: natural.height * sy }
     const cx = subject.x + subject.width / 2
-    const dx = -text.length * fontSize * 0.3  // the usual guess at half a string's width
+    // Half the string's width, guessed: there is no font metric here, and the
+    // caption has to be placed at build time. It is the WIDEST LINE that sets
+    // the element's width — a two-line caption measured by its total length is
+    // pushed left by the whole of its second line, which is why every data
+    // store on a Bastion board sat with its name off to the left of the
+    // cylinder it names.
+    const widest = Math.max(...text.split("\n").map((line) => line.length))
+    const dx = -widest * fontSize * 0.3
     const dy = 8
     const source: Element = { id: 'caption', type: 'text' }
     const caption: Element = {
