@@ -529,14 +529,23 @@ export function instantiate(
     const fontSize = typeof options.caption.fontSize === 'number' ? options.caption.fontSize : 16
     const subject: Box = { x: at.x, y: at.y, width: natural.width * sx, height: natural.height * sy }
     const cx = subject.x + subject.width / 2
-    // Half the string's width, guessed: there is no font metric here, and the
-    // caption has to be placed at build time. It is the WIDEST LINE that sets
-    // the element's width — a two-line caption measured by its total length is
-    // pushed left by the whole of its second line, which is why every data
-    // store on a Bastion board sat with its name off to the left of the
-    // cylinder it names.
+    // Where the caption's own x must sit for the text to come out centred under
+    // the subject.
+    //
+    // Excalidraw does this arithmetic ITSELF on the way in: restoring a text
+    // element it subtracts half the MEASURED width when textAlign is `center`
+    // (`getTextElementPositionOffsets`), so such an element is drawn centred on
+    // the x it was given. Guessing at half a string's width here and
+    // subtracting it too is the same correction applied twice, and the caption
+    // lands a whole half-width to the left of the shape it names — which is
+    // exactly what every data store on a Bastion board did.
+    //
+    // Left-aligned, Excalidraw subtracts nothing and x IS the left edge, so
+    // there the guess is the only centring to be had. It measures the WIDEST
+    // LINE: a text element is as wide as its longest line, and counting the
+    // whole string pushed a two-line caption left by the length of its second.
     const widest = Math.max(...text.split("\n").map((line) => line.length))
-    const dx = -widest * fontSize * 0.3
+    const dx = options.caption.textAlign === "center" ? 0 : -widest * fontSize * 0.3
     const dy = 8
     const source: Element = { id: 'caption', type: 'text' }
     const caption: Element = {

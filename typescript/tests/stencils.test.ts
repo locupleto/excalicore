@@ -421,12 +421,17 @@ test('a caption is drawn beneath a stencil that has no label slot', () => {
   assert.deepEqual(caption.groupIds, ['i-9'])
   const box = frameOf(parts)!
   close(caption.y, box.y + box.height + 8, 'beneath the subject')
-  close(caption.x, box.x + box.width / 2 - 'Web tier'.length * 16 * 0.3, 'centred by the usual guess')
+  close(caption.x, box.x + box.width / 2 - 'Web tier'.length * 16 * 0.3, 'left-aligned, centred by the usual guess')
   // A two-line caption is as wide as its WIDEST line. Measured by its total
-  // length it is pushed left by the whole of its second line — which is how a
-  // data store's name came to sit beside the cylinder rather than under it.
+  // length it is pushed left by the whole of its second line.
   const two = instantiate(s, { x: 100, y: 50 }, { label: 'MFT incoming-files\nS3 bucket', instance: 'i-9', caption: {} }).at(-1)!
   close(two.x, box.x + box.width / 2 - 'MFT incoming-files'.length * 16 * 0.3, 'the widest line sets the offset')
+  // Centre-aligned, Excalidraw subtracts half the MEASURED width itself when it
+  // restores the element. Guessing at it here as well is the same correction
+  // applied twice, and the caption lands a half-width left of its subject.
+  const centred = instantiate(s, { x: 100, y: 50 }, { label: 'MFT incoming-files\nS3 bucket', instance: 'i-9', caption: { textAlign: 'center' } }).at(-1)!
+  close(centred.x, box.x + box.width / 2, 'centre-aligned, x is the subject centre and Excalidraw does the rest')
+  assert.deepEqual(tagOf(centred)!.offset, { dx: 0, dy: 8 })
   assert.equal(instantiate(s, { x: 0, y: 0 }, { label: 'x' }).length, s.elements.length, 'no caption template, no caption')
   assert.equal(instantiate(stencil('bastion-actor'), { x: 0, y: 0 }, { label: 'x', caption: {} }).length, 5, 'a stencil with a label slot gets no caption')
 })
