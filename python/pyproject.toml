@@ -1,6 +1,11 @@
 [project]
 name = "excalicore"
-version = "0.7.0"
+# One repository, one version. Both halves are consumed from the SAME git tag —
+# npm from the root, pip from this subdirectory — so this number moves with the
+# tag whether or not any Python changed. Left behind at 0.7.0 through three TS
+# releases it made pip consider the requirement already satisfied, and a venv
+# pinned to v0.8.2 reported 0.7.0 with no way to tell the two apart.
+version = "0.8.3"
 description = "Shared Excalidraw scene handling: model bridge and element fidelity"
 requires-python = ">=3.12"
 dependencies = []
