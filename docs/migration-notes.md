@@ -112,3 +112,12 @@ The `stamp` / `stampGroup` tags and the `{"stamp": name}` placement, read as
 aliases for one release starting in 0.3.0, are no longer read. A breaking
 change: a board or a reply still carrying the pre-contract spelling is now
 ordinary geometry, not a stencil instance.
+
+## 0.9.0 — a loop route (2026-09-16)
+
+`loopRoute`/`loop_route` and `loopSides`/`loop_sides` join the `geometry`
+module in both halves: the orthogonal five-point hook a connector draws off
+a box's own corner when its source and destination are the same box — moved
+out of the-bastion's `backend/layout.py` `_route` loop branch and
+generalised from the one corner it hard-coded to all four. No behaviour
+change for existing users.

@@ -62,13 +62,16 @@ from the-bastion's `backend/layout.py` and `backend/reconcile.py`; `overlap`
 from `backend/arrange.py`; `wrap`/`ellipsise`/`terse` and `arrowFields`/
 `arrowElement` from the-bastion's `frontend/src/render.ts`; `exitT` and the
 skeleton-pipeline files from the-armory's `frontend/src/pages/sketchGeometry.ts`
-(byte-identical to the-academy's `boardGeometry.ts`).
+(byte-identical to the-academy's `boardGeometry.ts`); `loopSides`/`loopRoute`
+from the-bastion's `backend/layout.py` `_route` loop branch, generalised
+from the one corner it hard-coded to all four.
 
 | File | What it is for |
 | --- | --- |
 | `boxes.json` | `boxOf`, `union`, `contains`, `overlap`, `centre`, `area` — a rectangle, a right-to-left line, an empty union, containment on the edge, overlapping/touching/separate pairs (touching does NOT overlap). |
 | `faces.json` | `facingSides`, `pointOnSide`, `along`, `anchorUV`/`anchorXY`, `exitT`, `centreSegment` — pairs separated more horizontally/vertically/diagonally, points at `t` 0/0.5/1 on every side, anchor round trips including a point outside the box, and the twins' overlapping/nested fallback to the raw centre line. |
 | `bends.json` | `relativeBends`, `absoluteRoute` — the Bastion's own pinned cases: a right angle that stays a right angle when both boxes translate, a bend that survives both boxes moving, a straight route with nothing to remember, a degenerate zero-length chord. |
+| `loops.json` | `loopSides`, `loopRoute` — the orthogonal five-point hook a connector back onto its own box uses, at all four corners; the pinned worked example (box 100,100,200x88, reach 48, t=0.5) plus an uneven split, a smaller reach, and a non-square box at a different origin. |
 | `arrows.json` | `arrowKind`, `arrowFields`, `arrowElement` — the 3 kinds against Excalidraw's two fields both ways (including what an odd or missing `roundness` reads as), and points-to-element for a straight line, an elbow that doubles back, and a single point. |
 | `wrap.json` | `wrap`, `ellipsise`, `terse`, `lineCount` — the house budget (22 cols, 2 lines), a word longer than the budget, an empty string, an exact fit, `maxLines: 1`. `lineCount` is DEFINED as `wrap`'s own uncapped line count; its cases also record where the-bastion's old `backend/layout.py _text_lines` disagreed with that (an empty string, and a single overlong word) — a bug this module does not carry forward, flagged for the Python-half implementer. |
 | `routes.json` | `normalizeBoundArrows` — TypeScript only. A stub arrow re-routed centre to centre, two and three arrows sharing a pair fanned apart, a segment pushed clear of a box in its way, two arrows' label anchors separated, a binding to a line/arrow/freedraw stripped, a missing endpoint and coincident/nested boxes passed through or falling back, the `DEFAULT_DIMENSION` stub size, and a non-default `options`. |

@@ -29,6 +29,8 @@ import {
   exitT,
   facingSides,
   lineCount,
+  loopRoute,
+  loopSides,
   normalizeBoundArrows,
   overlap,
   pointOnSide,
@@ -38,6 +40,7 @@ import {
   union,
   wrap,
   type Box,
+  type Corner,
   type Point,
 } from '../src/geometry.ts'
 import * as corpus from './corpus.ts'
@@ -168,6 +171,50 @@ test('anchorUV/anchorXY round-trip on every anchor case in faces.json', () => {
     const back = anchorXY(uv, c.box as Box)
     close(back, c.point, `round trip: ${c.name}`)
   }
+})
+
+// --- a loop off a box's own corner ------------------------------------------
+
+test('loops.json: loopSides, loopRoute', () => {
+  const { cases: cs } = cases('loops')
+  const seen = new Set<string>()
+  for (const c of cs) {
+    seen.add(c.fn as string)
+    const what = `${c.fn}: ${c.name}`
+    switch (c.fn) {
+      case 'loopSides':
+        assert.deepEqual(loopSides(c.corner as Corner), c.expect, what)
+        break
+      case 'loopRoute':
+        close(
+          loopRoute(c.box as Box, c.reach as number, c.tOut as number, c.tIn as number, c.corner as Corner),
+          c.expect,
+          what,
+        )
+        break
+      default:
+        assert.fail(`unknown fn ${c.fn} in loops.json`)
+    }
+  }
+  assert.ok(seen.size === 2, `loops.json should exercise both functions, saw ${[...seen]}`)
+})
+
+test('every loopRoute leaves and enters where it should and stays outside the box', () => {
+  const box: Box = { x: 100, y: 100, width: 200, height: 88 }
+  const corners: Corner[] = ['top-right', 'top-left', 'bottom-right', 'bottom-left']
+  for (const corner of corners) {
+    const [outSide, inSide] = loopSides(corner)
+    const route = loopRoute(box, 48, 0.5, 0.5, corner)
+    close(route[0], pointOnSide(box, outSide, 0.5), corner)
+    close(route[route.length - 1], pointOnSide(box, inSide, 0.5), corner)
+    for (const point of route.slice(1, -1)) {
+      assert.ok(!contains(box, point), `${corner}: ${point} sits inside the box`)
+    }
+  }
+})
+
+test('loopSides rejects an unknown corner', () => {
+  assert.throws(() => loopSides('nowhere' as Corner))
 })
 
 // --- shape memory ------------------------------------------------------------

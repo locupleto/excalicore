@@ -54,6 +54,7 @@ from typing import Any, Literal
 Box = tuple[float, float, float, float]
 Point = tuple[float, float]
 Side = Literal["left", "right", "top", "bottom"]
+Corner = Literal["top-right", "top-left", "bottom-right", "bottom-left"]
 ArrowKind = Literal["sharp", "curved", "elbow"]
 
 
@@ -231,6 +232,59 @@ def centre_segment(a: Any, b: Any, gap: float) -> dict[str, float]:
         t0 = 0
         t1 = 1
     return {"x1": ax + dx * t0, "y1": ay + dy * t0, "x2": ax + dx * t1, "y2": ay + dy * t1}
+
+
+# --- a loop off a box's own corner ------------------------------------------
+
+_LOOP_SIDES: dict[Corner, tuple[Side, Side]] = {
+    "top-right": ("top", "right"),
+    "top-left": ("top", "left"),
+    "bottom-right": ("bottom", "right"),
+    "bottom-left": ("bottom", "left"),
+}
+
+
+def loop_sides(corner: Corner = "top-right") -> tuple[Side, Side]:
+    """The (out, in) faces a loop hooked off ``corner`` uses — always the
+    HORIZONTAL face to leave and the VERTICAL face to enter. An application
+    spreading several arrows along a face calls this to reserve the loop's
+    own anchors on the right ones before it lays out the rest. Raises on an
+    unknown corner rather than defaulting quietly, since a caller that gets
+    this wrong has miscounted which of its own faces is crowded."""
+    try:
+        return _LOOP_SIDES[corner]
+    except KeyError:
+        raise ValueError(f"unknown corner: {corner!r}") from None
+
+
+def loop_route(
+    box: Any,
+    reach: float,
+    t_out: float = 0.5,
+    t_in: float = 0.5,
+    corner: Corner = "top-right",
+) -> list[Point]:
+    """An orthogonal five-point hook off one corner of ``box`` — the one
+    connector a straight line cannot draw. A loop's source and destination
+    are the SAME box, so there is no second box for :func:`facing_sides` to
+    compare centres against, and the straight-line rule would draw a chord
+    that never leaves the box at all — invisible. The route leaves the out
+    face at ``t_out``, runs ``reach`` px past the box on both axes, and drops
+    onto the in face at ``t_in``.
+
+    Which corner to hook off, and how far ``reach`` should be, is the
+    APPLICATION's choice — how crowded its own faces already are, how large
+    the symbol is drawn, what else sits above or beside it. Both are
+    parameters rather than a constant this module picks for you: excalicore
+    holds no layout engine (see the geometry section of the README's last
+    paragraph)."""
+    x, y, w, h = _as_box(box)
+    out_side, in_side = loop_sides(corner)
+    a = point_on_side((x, y, w, h), out_side, t_out)
+    b = point_on_side((x, y, w, h), in_side, t_in)
+    out_y = y - reach if out_side == "top" else y + h + reach
+    in_x = x - reach if in_side == "left" else x + w + reach
+    return [a, (a[0], out_y), (in_x, out_y), (in_x, b[1]), b]
 
 
 # --- shape memory ------------------------------------------------------------

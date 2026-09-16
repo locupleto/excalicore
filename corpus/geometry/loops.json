@@ -1,0 +1,125 @@
+{
+  "doc": "loopSides/loopRoute were executed from the-bastion's backend/layout.py _route loop branch (LOOP_REACH, the top/right hook off a multiplicity box's own corner), 2026-09-16, generalised from the one corner it hard-coded to all four. The worked box (100,100,200x88) at reach 48 is the pinned example from the design brief; the same box carries all four corners at t=0.5, the top-right corner again at an uneven split (t_out=0.75, t_in=0.25) and a smaller reach (36), and a non-square box at a different origin (300,150,140x50) exercises a corner away from (0,0).",
+  "cases": [
+    {
+      "fn": "loopSides",
+      "name": "top-right leaves the top face, enters the right",
+      "corner": "top-right",
+      "expect": ["top", "right"]
+    },
+    {
+      "fn": "loopSides",
+      "name": "top-left leaves the top face, enters the left",
+      "corner": "top-left",
+      "expect": ["top", "left"]
+    },
+    {
+      "fn": "loopSides",
+      "name": "bottom-right leaves the bottom face, enters the right",
+      "corner": "bottom-right",
+      "expect": ["bottom", "right"]
+    },
+    {
+      "fn": "loopSides",
+      "name": "bottom-left leaves the bottom face, enters the left",
+      "corner": "bottom-left",
+      "expect": ["bottom", "left"]
+    },
+    {
+      "fn": "loopRoute",
+      "name": "top-right, the worked example: t=0.5, reach 48",
+      "box": { "x": 100, "y": 100, "width": 200, "height": 88 },
+      "reach": 48,
+      "tOut": 0.5,
+      "tIn": 0.5,
+      "corner": "top-right",
+      "expect": [
+        [200, 100],
+        [200, 52],
+        [348, 52],
+        [348, 144],
+        [300, 144]
+      ]
+    },
+    {
+      "fn": "loopRoute",
+      "name": "top-left, t=0.5, reach 48 — hooks left instead of right",
+      "box": { "x": 100, "y": 100, "width": 200, "height": 88 },
+      "reach": 48,
+      "tOut": 0.5,
+      "tIn": 0.5,
+      "corner": "top-left",
+      "expect": [
+        [200, 100],
+        [200, 52],
+        [52, 52],
+        [52, 144],
+        [100, 144]
+      ]
+    },
+    {
+      "fn": "loopRoute",
+      "name": "bottom-right, t=0.5, reach 48 — leaves the bottom face",
+      "box": { "x": 100, "y": 100, "width": 200, "height": 88 },
+      "reach": 48,
+      "tOut": 0.5,
+      "tIn": 0.5,
+      "corner": "bottom-right",
+      "expect": [
+        [200, 188],
+        [200, 236],
+        [348, 236],
+        [348, 144],
+        [300, 144]
+      ]
+    },
+    {
+      "fn": "loopRoute",
+      "name": "bottom-left, t=0.5, reach 48 — leaves the bottom face, hooks left",
+      "box": { "x": 100, "y": 100, "width": 200, "height": 88 },
+      "reach": 48,
+      "tOut": 0.5,
+      "tIn": 0.5,
+      "corner": "bottom-left",
+      "expect": [
+        [200, 188],
+        [200, 236],
+        [52, 236],
+        [52, 144],
+        [100, 144]
+      ]
+    },
+    {
+      "fn": "loopRoute",
+      "name": "top-right, uneven split (t_out=0.75, t_in=0.25) and a smaller reach (36)",
+      "box": { "x": 100, "y": 100, "width": 200, "height": 88 },
+      "reach": 36,
+      "tOut": 0.75,
+      "tIn": 0.25,
+      "corner": "top-right",
+      "expect": [
+        [250, 100],
+        [250, 64],
+        [336, 64],
+        [336, 122],
+        [300, 122]
+      ]
+    },
+    {
+      "fn": "loopRoute",
+      "name": "a non-square box at a different origin, top-right, t=0.5, reach 30",
+      "box": { "x": 300, "y": 150, "width": 140, "height": 50 },
+      "reach": 30,
+      "tOut": 0.5,
+      "tIn": 0.5,
+      "corner": "top-right",
+      "expect": [
+        [370, 150],
+        [370, 120],
+        [470, 120],
+        [470, 175],
+        [440, 175]
+      ]
+    }
+  ]
+}

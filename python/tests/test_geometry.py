@@ -127,6 +127,39 @@ class TestFaces(unittest.TestCase):
             close(self, back, c["point"], f'round trip: {c["name"]}')
 
 
+class TestLoops(unittest.TestCase):
+    def test_loops_json(self):
+        fx = cases("loops")
+        seen: set[str] = set()
+        for c in fx["cases"]:
+            seen.add(c["fn"])
+            what = f'{c["fn"]}: {c["name"]}'
+            if c["fn"] == "loopSides":
+                self.assertEqual(list(geometry.loop_sides(c["corner"])), c["expect"], what)
+            elif c["fn"] == "loopRoute":
+                got = geometry.loop_route(
+                    c["box"], c["reach"], c["tOut"], c["tIn"], c["corner"]
+                )
+                close(self, got, c["expect"], what)
+            else:
+                self.fail(f'unknown fn {c["fn"]} in loops.json')
+        self.assertEqual(seen, {"loopSides", "loopRoute"})
+
+    def test_every_loop_route_leaves_and_enters_where_it_should_and_stays_outside_the_box(self):
+        box = (100.0, 100.0, 200.0, 88.0)
+        for corner in ("top-right", "top-left", "bottom-right", "bottom-left"):
+            out_side, in_side = geometry.loop_sides(corner)
+            route = geometry.loop_route(box, 48, 0.5, 0.5, corner)
+            self.assertEqual(route[0], geometry.point_on_side(box, out_side, 0.5), corner)
+            self.assertEqual(route[-1], geometry.point_on_side(box, in_side, 0.5), corner)
+            for point in route[1:-1]:
+                self.assertFalse(geometry.contains(box, point), f"{corner}: {point} sits inside the box")
+
+    def test_loop_sides_rejects_an_unknown_corner(self):
+        with self.assertRaises(ValueError):
+            geometry.loop_sides("nowhere")
+
+
 class TestBends(unittest.TestCase):
     def test_bends_json(self):
         fx = cases("bends")

@@ -77,7 +77,9 @@ carrying their own copy. It holds box arithmetic (`boxOf`/`box_of`,
 `union`, `centre`, `contains`, `overlap`, `area`); faces and anchors
 (`facingSides`/`facing_sides`, `pointOnSide`/`point_on_side`, `along`,
 `anchorUV`/`anchor_uv`, `anchorXY`/`anchor_xy`, `exitT`/`exit_t`,
-`centreSegment`/`centre_segment`); shape memory — a hand-bent route
+`centreSegment`/`centre_segment`); a loop off a box's own corner for a
+connector whose kind allows one (`loopRoute`/`loop_route`,
+`loopSides`/`loop_sides`); shape memory — a hand-bent route
 remembered relative to its own chord so a right angle stays a right angle
 when a box moves (`relativeBends`/`relative_bends`,
 `absoluteRoute`/`absolute_route`), and an arrow's kind read out of
