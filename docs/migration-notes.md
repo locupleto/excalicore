@@ -121,3 +121,13 @@ a box's own corner when its source and destination are the same box — moved
 out of the-bastion's `backend/layout.py` `_route` loop branch and
 generalised from the one corner it hard-coded to all four. No behaviour
 change for existing users.
+
+## 0.10.0 — draw.io (2026-09-27)
+
+`excalicore.drawio` is new, Python only: the `Diagram` builder that writes a
+`.drawio` and an editable `.drawio.svg`. Moved out of the-bastion's
+`backend/drawio.py`, which keeps only its mapping (zones, component kinds,
+the palette, row references and STRIDE letters). The Bastion's export is
+unchanged: the new output was compared with the old cell by cell (ids,
+parents, labels, geometry, waypoints, every style property) and matched.
+No change for existing users.

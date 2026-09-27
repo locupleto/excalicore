@@ -66,6 +66,29 @@ Deleted elements count as references: Excalidraw keeps them in the array so
 undo can restore them, and an undo that restores an image whose file was
 collected restores a broken image.
 
+## `excalicore.drawio` — a diagram as a draw.io file (Python)
+
+Some boards have to leave the application: into a wiki, a design review, a
+document someone else edits. draw.io is what those places read. `Diagram` is
+a small builder the application drives **from its own model**, not from the
+Excalidraw scene: containers, boxes (`rect`, `cylinder`, `actor`) and arrows
+at absolute coordinates, each with draw.io style properties passed through.
+Working from the scene would mean guessing back which box a region contains
+and which two boxes an arrow joins; the model already knows.
+
+The builder does the parts that are easy to get quietly wrong. A cell inside
+a container is stored relative to it, and written after it, because draw.io
+resolves a parent by id as it reads. An edge names its source and target, so
+it stays attached when a box is dragged; its ends are pinned to where they
+meet the boxes and every point between becomes a waypoint, so a bent route
+survives. `to_drawio()` writes an uncompressed `mxfile`. `to_svg()` writes a
+picture drawn to the same styles with the `mxfile` in the root's `content`
+attribute, which is draw.io's editable SVG: the editor opens it as the
+diagram, and anything else (a wiki without the draw.io app) shows the picture.
+Both files were checked by exporting them through the draw.io desktop CLI.
+
+No palette and no mapping from kinds to shapes: those are the application's.
+
 ### `geometry` — what an arrow and a label do once the boxes are placed (both halves)
 
 Every Excalidraw-backed application ends up answering the same three
@@ -148,12 +171,21 @@ when you decide it does, never on an unrelated `git pull`.
 
 ```python
 from excalicore import scene, fidelity
+from excalicore.drawio import Diagram
 
 skeleton = scene.compact(elements)            # -> put in the prompt
 prose, patch = scene.extract_patch(reply)     # -> patch is None if nothing valid
 
 rows = fidelity.explode(elements)             # -> insert as you like
 elements = fidelity.reassemble(rows)          # -> exactly what went in
+
+d = Diagram("My board")
+d.container("dmz", "DMZ", (0, 0, 600, 300))
+d.vertex("web", ["Web", "nginx"], (40, 60, 160, 70), parent="dmz")
+d.vertex("db", ["Orders"], (360, 60, 160, 70), shape="cylinder", parent="dmz")
+d.edge("q", "web", "db", [(200, 95), (360, 95)], ["queries"])
+d.to_drawio()                                 # -> bytes for a .drawio file
+d.to_svg()                                    # -> bytes for a .drawio.svg file
 ```
 
 Every tuning constant — which fields to keep, which types are read-only, the
@@ -180,6 +212,10 @@ source is configured.
 `0.x` — the API may still change. A module is added here when a second
 independent use has proved its shape; until then it stays in the application
 that needs it, because a design with one user is not yet a general one.
+`drawio` (v0.10.0) is the one exception so far: it arrived with one user, the
+Bastion's Confluence export, and a second already named, on the owner's
+decision. Its API is deliberately small (containers, boxes, arrows) so that
+second use can still reshape it.
 
 ## Layout
 

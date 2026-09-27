@@ -25,6 +25,11 @@ in every Excalidraw-backed application.
     connection rules — and the checks it implies: validating the document,
     checking a graph against it, and the lookups a server's delta gate needs.
 
+``drawio``
+    A diagram as a draw.io file, built from the application's own model:
+    containers, boxes and attached arrows, written as a ``.drawio`` and as an
+    editable ``.drawio.svg`` that carries the diagram in ``content``.
+
 All are pure — no I/O, no database, no framework, no opinion about what the
 elements mean. Applications keep their own tables, prompts, and vocabulary.
 """
