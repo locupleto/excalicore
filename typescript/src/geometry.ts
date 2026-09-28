@@ -373,6 +373,173 @@ export function arrowElement(
   }
 }
 
+// --- ends: an arrow the user dragged -----------------------------------------
+//
+// What happens to an arrow once a person has had it on the canvas. Three
+// things go wrong in every application that draws arrows bound to boxes and
+// then lets people drag them, and none of them is application logic:
+//
+// - Excalidraw's converter hands back a doubly bound arrow whose first point
+//   is not at its own origin, and dragging such an arrow's END multiplies the
+//   stray offset until the arrow is clipped out of its own render cache and
+//   vanishes (`originAtFirstPoint`);
+// - an end dropped in empty space is a slip, not a placement, and storing it
+//   where it fell redraws the arrow hanging in mid-air forever
+//   (`offBox`, `releaseEnds`);
+// - an end dropped on a DIFFERENT box rebinds it there, and an application
+//   whose arrows stand for something in a model has to notice that the
+//   drawing now disagrees with it (`reboundEnds`).
+//
+// What to DO about the last two — put the end back, ask the user — is the
+// application's; these say what happened.
+
+/** How far off its box an arrow's end may sit before it counts as dropped
+ *  rather than placed. A bound end sits a few pixels off the face (the
+ *  binding gap is Excalidraw's), and a hand-slid one a little more; forty is
+ *  well past both and well short of the next box on a packed board. */
+export const RELEASE_TOLERANCE = 40
+
+/** A linear element with its origin put back on its first point.
+ *
+ *  Excalidraw assumes every arrow and line starts at `[0, 0]` relative to its
+ *  own `x`/`y` — its own tools always draw them so, and `boxOf` reads the
+ *  origin as the first point. `convertToExcalidrawElements` breaks that: an
+ *  arrow bound at both ends comes out starting at `[±0.5, ±0.5]`. Harmless
+ *  until the user drags the arrow's END, when Excalidraw 0.18's point editor
+ *  multiplies the stray offset by 4096 — the first point lands at
+ *  `[2048, -2048]`, `x`/`y` shift the other way to compensate, and the arrow
+ *  is clipped out of its render cache: it vanishes from the canvas until the
+ *  next repaint, and a second drag pushes it to 2^23. Run every converted
+ *  element through this before it reaches the canvas. The absolute ends do
+ *  not move; anything that is not an arrow or a line, or already starts at
+ *  the origin, is returned as the same object. Never mutates. */
+export function originAtFirstPoint<T>(element: T): T {
+  const e = element as Element
+  if (e.type !== 'arrow' && e.type !== 'line') return element
+  const points = e.points as Point[] | undefined
+  const first = points?.[0]
+  if (!first || (first[0] === 0 && first[1] === 0)) return element
+  const [dx, dy] = first
+  return {
+    ...element,
+    x: num(e.x) + dx,
+    y: num(e.y) + dy,
+    points: points!.map(([x, y]) => [x - dx, y - dy]),
+  }
+}
+
+/** How far a point lies OUTSIDE a box — 0 on its outline or inside it. The
+ *  distance to the nearest point of the box, so a point off a corner is
+ *  measured to the corner, not to the nearer face's line. */
+export function offBox(point: Point, box: Box): number {
+  const [x, y] = point
+  const dx = Math.max(box.x - x, 0, x - (box.x + box.width))
+  const dy = Math.max(box.y - y, 0, y - (box.y + box.height))
+  return Math.hypot(dx, dy)
+}
+
+/** A route with any end dropped clear of its box put back.
+ *
+ *  `points` is the arrow as drawn, in absolute coordinates; `start` and `end`
+ *  the boxes it joins; `anchors` where each end belongs when it is not the
+ *  user's — typically the router's own anchors. An end further than
+ *  `tolerance` from its box is replaced by its anchor and named in
+ *  `released`; an end within it is the user's and kept. Interior points are
+ *  never touched. Returns new arrays; never mutates. */
+export function releaseEnds(
+  points: readonly Point[],
+  start: Box,
+  end: Box,
+  anchors: readonly [Point, Point],
+  tolerance: number = RELEASE_TOLERANCE,
+): { points: Point[]; released: ('start' | 'end')[] } {
+  const out: Point[] = points.map(([x, y]) => [x, y])
+  const released: ('start' | 'end')[] = []
+  if (out.length < 2) return { points: out, released }
+  if (offBox(out[0], start) > tolerance) {
+    out[0] = [anchors[0][0], anchors[0][1]]
+    released.push('start')
+  }
+  if (offBox(out[out.length - 1], end) > tolerance) {
+    out[out.length - 1] = [anchors[1][0], anchors[1][1]]
+    released.push('end')
+  }
+  return { points: out, released }
+}
+
+/** Which ends of an arrow are bound somewhere other than expected.
+ *
+ *  `ownerOf` maps an element id to what the application calls the thing it
+ *  belongs to — a symbol drawn from several elements maps every one of them
+ *  to the same owner, so an arrow dropped on a symbol's caption names the
+ *  symbol. `expected` is who the application believes each end joins.
+ *  Returns the owner each end is now bound to, for the ends that moved to a
+ *  DIFFERENT known owner only: an unbound end, or one bound to an element
+ *  `ownerOf` does not know (a scribble, a note), says nothing about where
+ *  the arrow goes and is left out. An empty object means nothing moved. */
+export function reboundEnds(
+  arrow: Element,
+  expected: { start: string; end: string },
+  ownerOf: Readonly<Record<string, string>>,
+): { start?: string; end?: string } {
+  const out: { start?: string; end?: string } = {}
+  const bound = (field: 'startBinding' | 'endBinding'): string | undefined => {
+    const b = arrow[field]
+    if (!b || typeof b !== 'object') return undefined
+    const id = (b as Record<string, unknown>).elementId
+    return typeof id === 'string' && Object.hasOwn(ownerOf, id) ? ownerOf[id] : undefined
+  }
+  const s = bound('startBinding')
+  const e = bound('endBinding')
+  if (s !== undefined && s !== expected.start) out.start = s
+  if (e !== undefined && e !== expected.end) out.end = e
+  return out
+}
+
+/** A scene with some arrows swapped for fresh copies — the way to put a
+ *  handful of arrows back without repainting the whole canvas (and losing
+ *  whatever else the user has not saved yet).
+ *
+ *  `ids` are the arrows to replace; `fresh` is any element list holding
+ *  their new versions (a whole freshly converted scene will do — only the
+ *  arrows named, and text bound to them, are taken from it). Out of `scene`
+ *  go those arrows and their bound text; in go the fresh ones. Every other
+ *  element's `boundElements` is then made to agree: a box the old arrow was
+ *  dropped on lets go of it, the boxes the fresh arrow is bound to take it
+ *  back. Never mutates. */
+export function replaceArrows(
+  scene: readonly Element[],
+  fresh: readonly Element[],
+  ids: Iterable<string>,
+): Element[] {
+  const wanted = new Set(ids)
+  const ours = (e: Element) =>
+    wanted.has(e.id as string) || (typeof e.containerId === 'string' && wanted.has(e.containerId))
+  const incoming = fresh.filter(ours)
+  const holders = new Map<string, Set<string>>()
+  for (const a of incoming) {
+    for (const field of ['startBinding', 'endBinding'] as const) {
+      const b = a[field] as { elementId?: unknown } | null | undefined
+      if (!b || typeof b.elementId !== 'string') continue
+      if (!holders.has(b.elementId)) holders.set(b.elementId, new Set())
+      holders.get(b.elementId)!.add(a.id as string)
+    }
+  }
+  const kept = scene
+    .filter((e) => !ours(e))
+    .map((e) => {
+      const refs = (e.boundElements as { id: string; type: string }[] | null | undefined) ?? []
+      const add = holders.get(e.id as string)
+      const trimmed = refs.filter((r) => !wanted.has(r.id))
+      if (!add && trimmed.length === refs.length) return e
+      return {
+        ...e,
+        boundElements: [...trimmed, ...[...(add ?? [])].map((id) => ({ id, type: 'arrow' }))],
+      }
+    })
+  return [...kept, ...incoming]
+}
+
 // --- labels ------------------------------------------------------------------
 
 /** One line cut to `cols` characters with a trailing ellipsis. A line

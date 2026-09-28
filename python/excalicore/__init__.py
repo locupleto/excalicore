@@ -40,4 +40,4 @@ from . import fidelity, geometry, scene, stencils, vocabulary
 
 __all__ = ["fidelity", "geometry", "scene", "stencils", "vocabulary", "__version__"]
 
-__version__ = "0.7.0"
+__version__ = "0.11.0"

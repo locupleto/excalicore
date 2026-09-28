@@ -265,3 +265,42 @@ class TestSkeletonPipeline(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEnds(unittest.TestCase):
+    def test_ends_json(self):
+        fx = cases("ends")
+        seen: set[str] = set()
+        for c in fx["cases"]:
+            seen.add(c["fn"])
+            what = f'{c["fn"]}: {c["name"]}'
+            if c["fn"] == "originAtFirstPoint":
+                out = geometry.origin_at_first_point(c["element"])
+                if c.get("same"):
+                    self.assertIs(out, c["element"], what)
+                else:
+                    close(self, out, c["expect"], what)
+            elif c["fn"] == "offBox":
+                close(self, geometry.off_box(c["point"], c["box"]), c["expect"], what)
+            elif c["fn"] == "releaseEnds":
+                kwargs = {"tolerance": c["tolerance"]} if "tolerance" in c else {}
+                out = geometry.release_ends(c["points"], c["start"], c["end"], c["anchors"], **kwargs)
+                close(self, out, c["expect"], what)
+                self.assertEqual(out["released"], c["expect"]["released"], what)
+            elif c["fn"] == "reboundEnds":
+                self.assertEqual(
+                    geometry.rebound_ends(c["arrow"], c["expected"]["start"],
+                                          c["expected"]["end"], c["ownerOf"]),
+                    c["expect"], what,
+                )
+            else:
+                self.fail(f'unknown fn {c["fn"]} in ends.json')
+        self.assertEqual(seen, {"originAtFirstPoint", "offBox", "releaseEnds", "reboundEnds"})
+
+    def test_nothing_is_mutated(self):
+        arrow = {"type": "arrow", "x": 1, "y": 2, "points": [[0.5, -0.5], [9, 9]]}
+        geometry.origin_at_first_point(arrow)
+        self.assertEqual(arrow["points"], [[0.5, -0.5], [9, 9]])
+        pts = [[-500, -500], [10, 10]]
+        geometry.release_ends(pts, (0, 0, 5, 5), (10, 10, 5, 5), [(5, 2), (10, 12)])
+        self.assertEqual(pts, [[-500, -500], [10, 10]])

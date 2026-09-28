@@ -109,8 +109,28 @@ when a box moves (`relativeBends`/`relative_bends`,
 Excalidraw's two unrelated fields (`arrowKind`/`arrow_kind`,
 `arrowFields`/`arrow_fields`, `arrowElement`/`arrow_element`); and greedy
 word-wrap to a column budget (`wrap`, `ellipsise`, `terse`,
-`lineCount`/`line_count`). Both halves are tested against
-`corpus/geometry`. The TypeScript half additionally exports
+`lineCount`/`line_count`); and what happens to an arrow once a person has
+dragged it (`RELEASE_TOLERANCE`, `originAtFirstPoint`/`origin_at_first_point`,
+`offBox`/`off_box`, `releaseEnds`/`release_ends`, `reboundEnds`/`rebound_ends`).
+Both halves are tested against `corpus/geometry`.
+
+**Run every converted element through `originAtFirstPoint` before it reaches
+the canvas.** `convertToExcalidrawElements` hands back an arrow bound at both
+ends starting half a pixel off its own origin, and Excalidraw 0.18's point
+editor multiplies that offset by 4096 when the user drags the arrow's end: the
+arrow is clipped out of its own render cache and vanishes from the board.
+
+`releaseEnds` and `reboundEnds` are for an application whose arrows stand for
+something in a model of its own. An end dropped in empty space (further than
+`RELEASE_TOLERANCE` from its box) is a slip, and `releaseEnds` puts it back on
+the anchor the application supplies; an end dropped on a *different* box means
+the drawing now disagrees with the model, and `reboundEnds` says which end and
+to whom — resolving any element of a multi-element symbol to the symbol
+through the application's own `ownerOf` map. Whether to put the end back, ask
+the user or accept it is the application's decision. In the browser,
+`replaceArrows` swaps a few arrows (and their bound labels) for fresh copies
+and re-seats the boxes' `boundElements`, so a declined change can be undone
+without repainting the whole board. The TypeScript half additionally exports
 `normalizeBoundArrows` and `topAlignCrowdedLabels` — the pass a sketch
 application runs in the browser between a model's reply and
 `convertToExcalidrawElements`; no server has a use for them, so there is no
@@ -215,7 +235,11 @@ that needs it, because a design with one user is not yet a general one.
 `drawio` (v0.10.0) is the one exception so far: it arrived with one user, the
 Bastion's Confluence export, and a second already named, on the owner's
 decision. Its API is deliberately small (containers, boxes, arrows) so that
-second use can still reshape it.
+second use can still reshape it. The arrow-end functions of v0.11.0 are the
+second: `originAtFirstPoint` has three users on arrival, but `releaseEnds`,
+`reboundEnds` and `replaceArrows` have one (the Bastion's model-backed board),
+and were moved here on the owner's decision that every application built on
+this library should have them.
 
 ## Layout
 

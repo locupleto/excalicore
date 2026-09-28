@@ -1,0 +1,645 @@
+{
+  "doc": "What happens to an arrow once a person has dragged it. originAtFirstPoint's first two cases are real: the arrow the-bastion's Workshop page painted for the Kubernetes engagement's DF32 (ci_fetch_jobs), read off the canvas after convertToExcalidrawElements, and DF31 (ci_clone) as Excalidraw 0.18.1 left it after one drag of its end point (2026-09-28) — the stray [0.5,-0.5] grown to [2048,-2048]. releaseEnds and reboundEnds cases mirror the rules the-bastion's backend applies on Save (an end more than 40px off its box put back to the router's anchor; an end bound to another component, any part of a multi-element symbol, proposed as a re-pointing). reboundEnds is compared EXACTLY (an absent key is the answer), not tolerantly.",
+  "cases": [
+    {
+      "fn": "originAtFirstPoint",
+      "name": "a doubly bound arrow as the converter hands it back is moved onto its first point",
+      "element": {
+        "type": "arrow",
+        "x": 1814.104989685931,
+        "y": 761.0463332082364,
+        "points": [
+          [
+            0.5,
+            -0.5
+          ],
+          [
+            106.25692890573373,
+            -204.7757031565128
+          ]
+        ]
+      },
+      "expect": {
+        "type": "arrow",
+        "x": 1814.60499,
+        "y": 760.546333,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            105.756929,
+            -204.275703
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "originAtFirstPoint",
+      "name": "the offset one end drag left behind (2048 per axis) is undone the same way",
+      "element": {
+        "type": "arrow",
+        "x": -347.5,
+        "y": 2767.5,
+        "points": [
+          [
+            2048,
+            -2048
+          ],
+          [
+            2307.5,
+            -2215.5
+          ]
+        ]
+      },
+      "expect": {
+        "type": "arrow",
+        "x": 1700.5,
+        "y": 719.5,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            259.5,
+            -167.5
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "originAtFirstPoint",
+      "name": "a line is linear too",
+      "element": {
+        "type": "line",
+        "x": 10,
+        "y": 10,
+        "points": [
+          [
+            3,
+            4
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            13,
+            24
+          ]
+        ]
+      },
+      "expect": {
+        "type": "line",
+        "x": 13,
+        "y": 14,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            10,
+            0
+          ],
+          [
+            10,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "originAtFirstPoint",
+      "name": "an arrow already at its origin is returned as the same object",
+      "element": {
+        "type": "arrow",
+        "x": 5,
+        "y": 6,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            40,
+            0
+          ]
+        ]
+      },
+      "same": true
+    },
+    {
+      "fn": "originAtFirstPoint",
+      "name": "a box is not linear and is returned as the same object",
+      "element": {
+        "type": "rectangle",
+        "x": 5,
+        "y": 6,
+        "width": 40,
+        "height": 20
+      },
+      "same": true
+    },
+    {
+      "fn": "offBox",
+      "name": "inside",
+      "point": [
+        150,
+        130
+      ],
+      "box": {
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "expect": 0
+    },
+    {
+      "fn": "offBox",
+      "name": "on the outline",
+      "point": [
+        300,
+        140
+      ],
+      "box": {
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "expect": 0
+    },
+    {
+      "fn": "offBox",
+      "name": "straight out from a face",
+      "point": [
+        100,
+        60
+      ],
+      "box": {
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "expect": 40
+    },
+    {
+      "fn": "offBox",
+      "name": "off a corner is measured to the corner",
+      "point": [
+        330,
+        220
+      ],
+      "box": {
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "expect": 50
+    },
+    {
+      "fn": "releaseEnds",
+      "name": "both ends on their boxes are the user's",
+      "points": [
+        [
+          100,
+          10
+        ],
+        [
+          300,
+          40
+        ]
+      ],
+      "start": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "end": {
+        "x": 300,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "anchors": [
+        [
+          100,
+          25
+        ],
+        [
+          300,
+          25
+        ]
+      ],
+      "expect": {
+        "points": [
+          [
+            100,
+            10
+          ],
+          [
+            300,
+            40
+          ]
+        ],
+        "released": []
+      }
+    },
+    {
+      "fn": "releaseEnds",
+      "name": "an end dropped in empty space goes back to its anchor; the knee stays",
+      "points": [
+        [
+          100,
+          10
+        ],
+        [
+          150,
+          200
+        ],
+        [
+          650,
+          -200
+        ]
+      ],
+      "start": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "end": {
+        "x": 300,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "anchors": [
+        [
+          100,
+          25
+        ],
+        [
+          300,
+          25
+        ]
+      ],
+      "expect": {
+        "points": [
+          [
+            100,
+            10
+          ],
+          [
+            150,
+            200
+          ],
+          [
+            300,
+            25
+          ]
+        ],
+        "released": [
+          "end"
+        ]
+      }
+    },
+    {
+      "fn": "releaseEnds",
+      "name": "an end slid 30px off its face is within tolerance and kept",
+      "points": [
+        [
+          130,
+          40
+        ],
+        [
+          300,
+          25
+        ]
+      ],
+      "start": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "end": {
+        "x": 300,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "anchors": [
+        [
+          100,
+          25
+        ],
+        [
+          300,
+          25
+        ]
+      ],
+      "expect": {
+        "points": [
+          [
+            130,
+            40
+          ],
+          [
+            300,
+            25
+          ]
+        ],
+        "released": []
+      }
+    },
+    {
+      "fn": "releaseEnds",
+      "name": "both ends dropped",
+      "points": [
+        [
+          -200,
+          -200
+        ],
+        [
+          800,
+          400
+        ]
+      ],
+      "start": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "end": {
+        "x": 300,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "anchors": [
+        [
+          100,
+          25
+        ],
+        [
+          300,
+          25
+        ]
+      ],
+      "expect": {
+        "points": [
+          [
+            100,
+            25
+          ],
+          [
+            300,
+            25
+          ]
+        ],
+        "released": [
+          "start",
+          "end"
+        ]
+      }
+    },
+    {
+      "fn": "releaseEnds",
+      "name": "a tighter tolerance releases what the default keeps",
+      "points": [
+        [
+          130,
+          40
+        ],
+        [
+          300,
+          25
+        ]
+      ],
+      "start": {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "end": {
+        "x": 300,
+        "y": 0,
+        "width": 100,
+        "height": 50
+      },
+      "anchors": [
+        [
+          100,
+          25
+        ],
+        [
+          300,
+          25
+        ]
+      ],
+      "tolerance": 10,
+      "expect": {
+        "points": [
+          [
+            100,
+            25
+          ],
+          [
+            300,
+            25
+          ]
+        ],
+        "released": [
+          "start"
+        ]
+      }
+    },
+    {
+      "fn": "reboundEnds",
+      "name": "bound where expected: nothing moved",
+      "arrow": {
+        "type": "arrow",
+        "startBinding": {
+          "elementId": "c-ci",
+          "focus": 0,
+          "gap": 5
+        },
+        "endBinding": {
+          "elementId": "c-git",
+          "focus": 0,
+          "gap": 5
+        }
+      },
+      "expected": {
+        "start": "ci",
+        "end": "git"
+      },
+      "ownerOf": {
+        "c-ci": "ci",
+        "c-git": "git",
+        "c-jfrog": "jfrog",
+        "cp-jfrog-cyl-top": "jfrog",
+        "cp-jfrog-caption": "jfrog"
+      },
+      "expect": {}
+    },
+    {
+      "fn": "reboundEnds",
+      "name": "the end dropped on another box",
+      "arrow": {
+        "type": "arrow",
+        "startBinding": {
+          "elementId": "c-ci",
+          "focus": 0,
+          "gap": 5
+        },
+        "endBinding": {
+          "elementId": "c-jfrog",
+          "focus": 0,
+          "gap": 5
+        }
+      },
+      "expected": {
+        "start": "ci",
+        "end": "git"
+      },
+      "ownerOf": {
+        "c-ci": "ci",
+        "c-git": "git",
+        "c-jfrog": "jfrog",
+        "cp-jfrog-cyl-top": "jfrog",
+        "cp-jfrog-caption": "jfrog"
+      },
+      "expect": {
+        "end": "jfrog"
+      }
+    },
+    {
+      "fn": "reboundEnds",
+      "name": "dropped on a part of a symbol names the symbol",
+      "arrow": {
+        "type": "arrow",
+        "startBinding": {
+          "elementId": "c-ci",
+          "focus": 0,
+          "gap": 5
+        },
+        "endBinding": {
+          "elementId": "cp-jfrog-cyl-top",
+          "focus": 0,
+          "gap": 5
+        }
+      },
+      "expected": {
+        "start": "ci",
+        "end": "git"
+      },
+      "ownerOf": {
+        "c-ci": "ci",
+        "c-git": "git",
+        "c-jfrog": "jfrog",
+        "cp-jfrog-cyl-top": "jfrog",
+        "cp-jfrog-caption": "jfrog"
+      },
+      "expect": {
+        "end": "jfrog"
+      }
+    },
+    {
+      "fn": "reboundEnds",
+      "name": "an unbound end says nothing",
+      "arrow": {
+        "type": "arrow",
+        "startBinding": {
+          "elementId": "c-ci",
+          "focus": 0,
+          "gap": 5
+        },
+        "endBinding": null
+      },
+      "expected": {
+        "start": "ci",
+        "end": "git"
+      },
+      "ownerOf": {
+        "c-ci": "ci",
+        "c-git": "git",
+        "c-jfrog": "jfrog",
+        "cp-jfrog-cyl-top": "jfrog",
+        "cp-jfrog-caption": "jfrog"
+      },
+      "expect": {}
+    },
+    {
+      "fn": "reboundEnds",
+      "name": "an end on an element the application does not own says nothing",
+      "arrow": {
+        "type": "arrow",
+        "startBinding": {
+          "elementId": "c-ci",
+          "focus": 0,
+          "gap": 5
+        },
+        "endBinding": {
+          "elementId": "some-scribble",
+          "focus": 0,
+          "gap": 5
+        }
+      },
+      "expected": {
+        "start": "ci",
+        "end": "git"
+      },
+      "ownerOf": {
+        "c-ci": "ci",
+        "c-git": "git",
+        "c-jfrog": "jfrog",
+        "cp-jfrog-cyl-top": "jfrog",
+        "cp-jfrog-caption": "jfrog"
+      },
+      "expect": {}
+    },
+    {
+      "fn": "reboundEnds",
+      "name": "both ends moved",
+      "arrow": {
+        "type": "arrow",
+        "startBinding": {
+          "elementId": "c-jfrog",
+          "focus": 0,
+          "gap": 5
+        },
+        "endBinding": {
+          "elementId": "c-ci",
+          "focus": 0,
+          "gap": 5
+        }
+      },
+      "expected": {
+        "start": "ci",
+        "end": "git"
+      },
+      "ownerOf": {
+        "c-ci": "ci",
+        "c-git": "git",
+        "c-jfrog": "jfrog",
+        "cp-jfrog-cyl-top": "jfrog",
+        "cp-jfrog-caption": "jfrog"
+      },
+      "expect": {
+        "start": "jfrog",
+        "end": "ci"
+      }
+    }
+  ]
+}

@@ -32,9 +32,14 @@ import {
   loopRoute,
   loopSides,
   normalizeBoundArrows,
+  offBox,
+  originAtFirstPoint,
   overlap,
   pointOnSide,
+  reboundEnds,
   relativeBends,
+  releaseEnds,
+  replaceArrows,
   terse,
   topAlignCrowdedLabels,
   union,
@@ -281,6 +286,80 @@ test('arrows.json: arrowKind, arrowFields, arrowElement', () => {
     }
   }
   assert.ok(seen.size === 3, `arrows.json should exercise all 3 functions, saw ${[...seen]}`)
+})
+
+// --- ends ----------------------------------------------------------------------
+
+test('ends.json: originAtFirstPoint, offBox, releaseEnds, reboundEnds', () => {
+  const { cases: cs } = cases('ends')
+  const seen = new Set<string>()
+  for (const c of cs) {
+    seen.add(c.fn as string)
+    const what = `${c.fn}: ${c.name}`
+    if (c.fn === 'originAtFirstPoint') {
+      const out = originAtFirstPoint(c.element)
+      if (c.same) assert.equal(out, c.element, `${what}: same object`)
+      else close(out, c.expect, what)
+    } else if (c.fn === 'offBox') {
+      close(offBox(c.point as Point, c.box as never), c.expect, what)
+    } else if (c.fn === 'releaseEnds') {
+      const out = releaseEnds(
+        c.points as Point[], c.start as never, c.end as never,
+        c.anchors as never, (c.tolerance as number | undefined) ?? undefined,
+      )
+      close(out, c.expect, what)
+      assert.deepEqual(out.released, (c.expect as { released: string[] }).released, what)
+    } else if (c.fn === 'reboundEnds') {
+      assert.deepEqual(
+        reboundEnds(c.arrow as never, c.expected as never, c.ownerOf as never), c.expect, what,
+      )
+    } else {
+      assert.fail(`unknown fn ${c.fn} in ends.json`)
+    }
+  }
+  assert.equal(seen.size, 4, `ends.json should exercise all 4 functions, saw ${[...seen]}`)
+})
+
+test('originAtFirstPoint and releaseEnds do not mutate their arguments', () => {
+  const arrow = { type: 'arrow', x: 1, y: 2, points: [[0.5, -0.5], [9, 9]] }
+  const frozen = JSON.stringify(arrow)
+  originAtFirstPoint(arrow)
+  assert.equal(JSON.stringify(arrow), frozen)
+  const pts: Point[] = [[-500, -500], [10, 10]]
+  releaseEnds(pts, { x: 0, y: 0, width: 5, height: 5 }, { x: 10, y: 10, width: 5, height: 5 }, [[5, 2], [10, 12]])
+  assert.deepEqual(pts, [[-500, -500], [10, 10]])
+})
+
+test('replaceArrows swaps an arrow and its label and re-seats the back-references', () => {
+  const box = (id: string, bound: string[]) => ({
+    id, type: 'rectangle', boundElements: bound.map((b) => ({ id: b, type: 'arrow' })),
+  })
+  // The arrow was dropped on c-jfrog: Excalidraw moved its back-reference there.
+  const scene = [
+    box('c-ci', ['f-clone']), box('c-git', ['f-other']), box('c-jfrog', ['f-clone']),
+    { id: 'f-clone', type: 'arrow', startBinding: { elementId: 'c-ci' }, endBinding: { elementId: 'c-jfrog' } },
+    { id: 't-clone', type: 'text', containerId: 'f-clone', text: 'old' },
+    { id: 'f-other', type: 'arrow' },
+    { id: 'note', type: 'text', text: 'a scribble' },
+  ]
+  const fresh = [
+    box('c-ci', ['f-clone']), box('c-git', ['f-clone']),
+    { id: 'f-clone', type: 'arrow', startBinding: { elementId: 'c-ci' }, endBinding: { elementId: 'c-git' } },
+    { id: 't-clone2', type: 'text', containerId: 'f-clone', text: 'DF31: clones source' },
+    { id: 'f-other', type: 'arrow', fresh: true },
+  ]
+  const out = replaceArrows(scene, fresh, ['f-clone'])
+  const byId = new Map(out.map((e) => [e.id as string, e]))
+  assert.equal((byId.get('f-clone')!.endBinding as { elementId: string }).elementId, 'c-git')
+  assert.ok(!byId.has('t-clone'), 'the old label is gone')
+  assert.equal(byId.get('t-clone2')!.text, 'DF31: clones source')
+  assert.equal(byId.get('f-other')!.fresh, undefined, 'an arrow not named is not replaced')
+  assert.ok(byId.has('note'), 'everything else stays')
+  const refs = (id: string) => ((byId.get(id)!.boundElements as { id: string }[]) ?? []).map((r) => r.id).sort()
+  assert.deepEqual(refs('c-jfrog'), [])
+  assert.deepEqual(refs('c-git'), ['f-clone', 'f-other'])
+  assert.deepEqual(refs('c-ci'), ['f-clone'])
+  assert.equal(out.length, scene.length, 'one arrow and one label out, one of each in')
 })
 
 // --- labels ------------------------------------------------------------------

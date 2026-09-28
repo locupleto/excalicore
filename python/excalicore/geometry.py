@@ -396,6 +396,120 @@ def arrow_element(points: list[Any]) -> dict[str, Any]:
     }
 
 
+# --- ends: an arrow the user dragged -----------------------------------------
+#
+# What happens to an arrow once a person has had it on the canvas — see the
+# TypeScript half for the full account. An end dropped in empty space is a
+# slip, not a placement (off_box, release_ends); an end dropped on a DIFFERENT
+# box rebinds it there, and an application whose arrows stand for something
+# in a model has to notice (rebound_ends); and a converted arrow must start at
+# its own origin or dragging its end makes it vanish (origin_at_first_point).
+# What to DO about any of it is the application's; these say what happened.
+
+#: How far off its box an arrow's end may sit before it counts as dropped
+#: rather than placed. A bound end sits a few pixels off the face (the binding
+#: gap is Excalidraw's), and a hand-slid one a little more; forty is well past
+#: both and well short of the next box on a packed board.
+RELEASE_TOLERANCE = 40.0
+
+
+def origin_at_first_point(element: dict[str, Any]) -> dict[str, Any]:
+    """A linear element with its origin put back on its first point.
+
+    Excalidraw assumes every arrow and line starts at ``[0, 0]`` relative to
+    its own ``x``/``y``; its converter leaves a doubly bound arrow starting at
+    ``[±0.5, ±0.5]``, and dragging such an arrow's END multiplies the offset
+    by 4096 until the arrow is clipped out of its render cache. The absolute
+    ends do not move; anything that is not an arrow or a line, or already
+    starts at the origin, is returned as the same object. Never mutates."""
+    if element.get("type") not in ("arrow", "line"):
+        return element
+    points = element.get("points") or []
+    if not points:
+        return element
+    dx, dy = float(points[0][0]), float(points[0][1])
+    if dx == 0 and dy == 0:
+        return element
+    return {
+        **element,
+        "x": _num(element.get("x")) + dx,
+        "y": _num(element.get("y")) + dy,
+        "points": [(float(p[0]) - dx, float(p[1]) - dy) for p in points],
+    }
+
+
+def off_box(point: Any, box: Any) -> float:
+    """How far a point lies OUTSIDE a box — 0 on its outline or inside it.
+    The distance to the nearest point of the box, so a point off a corner is
+    measured to the corner, not to the nearer face's line."""
+    x, y, w, h = _as_box(box)
+    px, py = float(point[0]), float(point[1])
+    dx = max(x - px, 0.0, px - (x + w))
+    dy = max(y - py, 0.0, py - (y + h))
+    return math.hypot(dx, dy)
+
+
+def release_ends(
+    points: list[Any],
+    start: Any,
+    end: Any,
+    anchors: tuple[Any, Any] | list[Any],
+    tolerance: float = RELEASE_TOLERANCE,
+) -> dict[str, Any]:
+    """A route with any end dropped clear of its box put back.
+
+    ``points`` is the arrow as drawn, in absolute coordinates; ``start`` and
+    ``end`` the boxes it joins; ``anchors`` where each end belongs when it is
+    not the user's — typically the router's own anchors. An end further than
+    ``tolerance`` from its box is replaced by its anchor and named in
+    ``released``; an end within it is the user's and kept. Interior points
+    are never touched. Returns ``{"points": [...], "released": [...]}`` with
+    ``released`` a list of ``"start"``/``"end"``; never mutates."""
+    out: list[Point] = [(float(p[0]), float(p[1])) for p in points]
+    released: list[str] = []
+    if len(out) < 2:
+        return {"points": out, "released": released}
+    if off_box(out[0], start) > tolerance:
+        out[0] = (float(anchors[0][0]), float(anchors[0][1]))
+        released.append("start")
+    if off_box(out[-1], end) > tolerance:
+        out[-1] = (float(anchors[1][0]), float(anchors[1][1]))
+        released.append("end")
+    return {"points": out, "released": released}
+
+
+def rebound_ends(
+    arrow: dict[str, Any],
+    start: str,
+    end: str,
+    owner_of: dict[str, str],
+) -> dict[str, str]:
+    """Which ends of an arrow are bound somewhere other than expected.
+
+    ``owner_of`` maps an element id to what the application calls the thing
+    it belongs to — a symbol drawn from several elements maps every one of
+    them to the same owner, so an arrow dropped on a symbol's caption names
+    the symbol. ``start`` and ``end`` are who the application believes each
+    end joins. Returns ``{"start": owner, "end": owner}`` for the ends that
+    moved to a DIFFERENT known owner only: an unbound end, or one bound to an
+    element ``owner_of`` does not know (a scribble, a note), says nothing
+    about where the arrow goes and is left out. Empty means nothing moved."""
+
+    def bound(field: str) -> str | None:
+        binding = arrow.get(field)
+        if not isinstance(binding, dict):
+            return None
+        return owner_of.get(str(binding.get("elementId")))
+
+    out: dict[str, str] = {}
+    now_start, now_end = bound("startBinding"), bound("endBinding")
+    if now_start is not None and now_start != start:
+        out["start"] = now_start
+    if now_end is not None and now_end != end:
+        out["end"] = now_end
+    return out
+
+
 # --- labels ------------------------------------------------------------------
 
 # The sentinel line_count() hands wrap() for an uncapped word-wrap — the
