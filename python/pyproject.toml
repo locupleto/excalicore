@@ -6,7 +6,7 @@ name = "excalicore"
 # releases it made pip consider the requirement already satisfied, and a venv
 # pinned to v0.8.2 reported 0.7.0 with no way to tell the two apart.
 version = "0.11.0"
-description = "Shared Excalidraw scene handling: model bridge and element fidelity"
+description = "Shared Excalidraw scene handling: model bridge, element fidelity, stencil and vocabulary contracts, geometry, draw.io export"
 requires-python = ">=3.12"
 dependencies = []
 

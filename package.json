@@ -1,7 +1,7 @@
 {
   "name": "excalicore",
   "version": "0.11.0",
-  "description": "Shared Excalidraw scene handling, browser half: the stencil and vocabulary contracts",
+  "description": "Shared Excalidraw scene handling, browser half: the stencil and vocabulary contracts and geometry",
   "license": "MIT",
   "private": true,
   "type": "module",

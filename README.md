@@ -3,15 +3,21 @@
 The parts of an Excalidraw-backed application that are the same in every
 Excalidraw-backed application.
 
+![An application imports excalicore's modules; excalicore works on Excalidraw elements](docs/architecture.svg)
+
 Excalidraw is a canvas library. It hands you an array of elements and leaves
 everything else to you — and "everything else" turns out to be the same short
 list of problems each time: how to show a board to a language model without
 drowning it in bookkeeping, how to accept the model's answer without letting a
-garbled reply wreck the canvas, and how to store elements in a database and get
-them back unbroken.
+garbled reply wreck the canvas, how to store elements in a database and get
+them back unbroken, how to declare the symbols and the rules of a domain so
+they can be checked, how to route an arrow and keep it routed when a person
+drags it, and how to hand the result to draw.io.
 
 None of that is application logic, but all of it is subtle enough to get wrong
-quietly. This package is that list, solved once.
+quietly. This package is that list, solved once. It comes in two halves from
+one repository and one tag: a Python package for the server and a TypeScript
+package for the browser, held to the same shared corpus.
 
 ## `excalicore.scene` — between a canvas and a language model
 
@@ -40,6 +46,87 @@ forgot to mention.
 Validation is strict all-or-nothing. One malformed element, or a single
 coordinate far enough out to be a hallucination rather than a layout, rejects
 the entire patch. A half-garbled reply can never half-apply.
+
+## `excalicore.stencils` — the contract a vocabulary element keeps (both halves)
+
+An application has a graphical vocabulary — a data store, a person, a server.
+What such an element *means* belongs to the application; what it looks like
+belongs to whoever drew it; what it must *provide* — one bindable body, a
+frame back to the subject's box, a label slot, decorations anchored to the
+body, one group, one tag namespace — is the contract in
+`typescript/src/stencils.ts`. `instantiate()` places a stencil so that
+`frameOf()` gives the subject's box back; `fromLibraryItem()` turns a symbol
+drawn on any canvas into one; `sweep()` removes an instance whole. The Python
+`excalicore.stencils` holds the same validator and the same derivations
+(`validate`, `default_roles`, `from_library_item`, `subject_box`), so a server
+can refuse a symbol at import time with a sentence — both halves are tested
+against `corpus/stencils`. See `typescript/README.md` and `docs/design.md`.
+
+## `excalicore.geometry` — what an arrow and a label do once the boxes are placed (both halves)
+
+Every Excalidraw-backed application ends up answering the same three
+questions once its boxes are on the sheet: where does an arrow between two
+boxes go, how does an arrow the user bent survive the boxes moving, and how
+does a label stay legible. `geometry` is the lowest module in the package —
+`stencils` and `scene` import their box arithmetic from it rather than
+carrying their own copy. It holds box arithmetic (`boxOf`/`box_of`,
+`union`, `centre`, `contains`, `overlap`, `area`); faces and anchors
+(`facingSides`/`facing_sides`, `pointOnSide`/`point_on_side`, `along`,
+`anchorUV`/`anchor_uv`, `anchorXY`/`anchor_xy`, `exitT`/`exit_t`,
+`centreSegment`/`centre_segment`); a loop off a box's own corner for a
+connector whose kind allows one (`loopRoute`/`loop_route`,
+`loopSides`/`loop_sides`); shape memory — a hand-bent route
+remembered relative to its own chord so a right angle stays a right angle
+when a box moves (`relativeBends`/`relative_bends`,
+`absoluteRoute`/`absolute_route`), and an arrow's kind read out of
+Excalidraw's two unrelated fields (`arrowKind`/`arrow_kind`,
+`arrowFields`/`arrow_fields`, `arrowElement`/`arrow_element`); and greedy
+word-wrap to a column budget (`wrap`, `ellipsise`, `terse`,
+`lineCount`/`line_count`); and what happens to an arrow once a person has
+dragged it (`RELEASE_TOLERANCE`, `originAtFirstPoint`/`origin_at_first_point`,
+`offBox`/`off_box`, `releaseEnds`/`release_ends`, `reboundEnds`/`rebound_ends`).
+Both halves are tested against `corpus/geometry`.
+
+**Run every converted element through `originAtFirstPoint` before it reaches
+the canvas.** `convertToExcalidrawElements` hands back an arrow bound at both
+ends starting half a pixel off its own origin, and Excalidraw 0.18's point
+editor multiplies that offset by 4096 when the user drags the arrow's end: the
+arrow is clipped out of its own render cache and vanishes from the board.
+
+`releaseEnds` and `reboundEnds` are for an application whose arrows stand for
+something in a model of its own. An end dropped in empty space (further than
+`RELEASE_TOLERANCE` from its box) is a slip, and `releaseEnds` puts it back on
+the anchor the application supplies; an end dropped on a *different* box means
+the drawing now disagrees with the model, and `reboundEnds` says which end and
+to whom — resolving any element of a multi-element symbol to the symbol
+through the application's own `ownerOf` map. Whether to put the end back, ask
+the user or accept it is the application's decision. In the browser,
+`replaceArrows` swaps a few arrows (and their bound labels) for fresh copies
+and re-seats the boxes' `boundElements`, so a declined change can be undone
+without repainting the whole board. The TypeScript half additionally exports
+`normalizeBoundArrows` and `topAlignCrowdedLabels` — the pass a sketch
+application runs in the browser between a model's reply and
+`convertToExcalidrawElements`; no server has a use for them, so there is no
+Python twin. The layout *engine* — where a box goes, how a route is chosen
+among several — stays with the application; this module is what the engine
+is built out of.
+
+## `excalicore.vocabulary` — the form of an application's grammar (both halves)
+
+An application has a vocabulary: its kinds, which are containers, which are
+connectors, what may sit inside what and what may join what. `validateVocabulary()`
+(`validate` in Python) checks a vocabulary document — every kind has a name
+and a role, `within` and `ends` name real kinds of the right role, `placed`,
+`directed`, `loops` and `parallel` hold their allowed values. `checkGraph()`
+(`check`) checks a graph — the subjects and connections of one model, in the
+neutral shape the checker reads — against an already-valid vocabulary:
+declared once, of a known kind and role, containment honoured and free of
+cycles, every connection's ends on the board, of an allowed pair of kinds,
+and not a loop or a parallel where the kind forbids it. `kindsOf`/`kindOf`/
+`stencilFor` (`kinds`/`kind`/`stencil_for`) are the lookups a picker, a
+renderer or a server's delta gate need. Excalicore never holds a particular
+vocabulary — what a data store *means* stays with the application; both
+halves are tested against `corpus/vocabularies`.
 
 ## `excalicore.fidelity` — storing elements without breaking them
 
@@ -89,102 +176,33 @@ Both files were checked by exporting them through the draw.io desktop CLI.
 
 No palette and no mapping from kinds to shapes: those are the application's.
 
-### `geometry` — what an arrow and a label do once the boxes are placed (both halves)
-
-Every Excalidraw-backed application ends up answering the same three
-questions once its boxes are on the sheet: where does an arrow between two
-boxes go, how does an arrow the user bent survive the boxes moving, and how
-does a label stay legible. `geometry` is the lowest module in the package —
-`stencils` and `scene` import their box arithmetic from it rather than
-carrying their own copy. It holds box arithmetic (`boxOf`/`box_of`,
-`union`, `centre`, `contains`, `overlap`, `area`); faces and anchors
-(`facingSides`/`facing_sides`, `pointOnSide`/`point_on_side`, `along`,
-`anchorUV`/`anchor_uv`, `anchorXY`/`anchor_xy`, `exitT`/`exit_t`,
-`centreSegment`/`centre_segment`); a loop off a box's own corner for a
-connector whose kind allows one (`loopRoute`/`loop_route`,
-`loopSides`/`loop_sides`); shape memory — a hand-bent route
-remembered relative to its own chord so a right angle stays a right angle
-when a box moves (`relativeBends`/`relative_bends`,
-`absoluteRoute`/`absolute_route`), and an arrow's kind read out of
-Excalidraw's two unrelated fields (`arrowKind`/`arrow_kind`,
-`arrowFields`/`arrow_fields`, `arrowElement`/`arrow_element`); and greedy
-word-wrap to a column budget (`wrap`, `ellipsise`, `terse`,
-`lineCount`/`line_count`); and what happens to an arrow once a person has
-dragged it (`RELEASE_TOLERANCE`, `originAtFirstPoint`/`origin_at_first_point`,
-`offBox`/`off_box`, `releaseEnds`/`release_ends`, `reboundEnds`/`rebound_ends`).
-Both halves are tested against `corpus/geometry`.
-
-**Run every converted element through `originAtFirstPoint` before it reaches
-the canvas.** `convertToExcalidrawElements` hands back an arrow bound at both
-ends starting half a pixel off its own origin, and Excalidraw 0.18's point
-editor multiplies that offset by 4096 when the user drags the arrow's end: the
-arrow is clipped out of its own render cache and vanishes from the board.
-
-`releaseEnds` and `reboundEnds` are for an application whose arrows stand for
-something in a model of its own. An end dropped in empty space (further than
-`RELEASE_TOLERANCE` from its box) is a slip, and `releaseEnds` puts it back on
-the anchor the application supplies; an end dropped on a *different* box means
-the drawing now disagrees with the model, and `reboundEnds` says which end and
-to whom — resolving any element of a multi-element symbol to the symbol
-through the application's own `ownerOf` map. Whether to put the end back, ask
-the user or accept it is the application's decision. In the browser,
-`replaceArrows` swaps a few arrows (and their bound labels) for fresh copies
-and re-seats the boxes' `boundElements`, so a declined change can be undone
-without repainting the whole board. The TypeScript half additionally exports
-`normalizeBoundArrows` and `topAlignCrowdedLabels` — the pass a sketch
-application runs in the browser between a model's reply and
-`convertToExcalidrawElements`; no server has a use for them, so there is no
-Python twin. The layout *engine* — where a box goes, how a route is chosen
-among several — stays with the application; this module is what the engine
-is built out of.
-
-### `stencils` — the contract a vocabulary element keeps (both halves)
-
-An application has a graphical vocabulary — a data store, a person, a server.
-What such an element *means* belongs to the application; what it looks like
-belongs to whoever drew it; what it must *provide* — one bindable body, a
-frame back to the subject's box, a label slot, decorations anchored to the
-body, one group, one tag namespace — is the contract in
-`typescript/src/stencils.ts`. `instantiate()` places a stencil so that
-`frameOf()` gives the subject's box back; `fromLibraryItem()` turns a symbol
-drawn on any canvas into one; `sweep()` removes an instance whole. The Python
-`excalicore.stencils` holds the same validator and the same derivations
-(`validate`, `default_roles`, `from_library_item`, `subject_box`), so a server
-can refuse a symbol at import time with a sentence — both halves are tested
-against `corpus/stencils`. See `typescript/README.md` and `docs/design.md`.
-
-### `vocabulary` — the form of an application's grammar (both halves)
-
-An application has a vocabulary: its kinds, which are containers, which are
-connectors, what may sit inside what and what may join what. `validateVocabulary()`
-(`validate` in Python) checks a vocabulary document — every kind has a name
-and a role, `within` and `ends` name real kinds of the right role, `placed`,
-`directed`, `loops` and `parallel` hold their allowed values. `checkGraph()`
-(`check`) checks a graph — the subjects and connections of one model, in the
-neutral shape the checker reads — against an already-valid vocabulary:
-declared once, of a known kind and role, containment honoured and free of
-cycles, every connection's ends on the board, of an allowed pair of kinds,
-and not a loop or a parallel where the kind forbids it. `kindsOf`/`kindOf`/
-`stencilFor` (`kinds`/`kind`/`stencil_for`) are the lookups a picker, a
-renderer or a server's delta gate need. Excalicore never holds a particular
-vocabulary — what a data store *means* stays with the application; both
-halves are tested against `corpus/vocabularies`.
-
 ## What is deliberately not here
 
 No UI components, no Excalidraw wrapper, no prompt text, no HTTP layer, no
 database schema, no layout engine, no palette, and no shelf of stencils —
-the library defines what a stencil must provide and stores none. Both modules are pure functions — no
-I/O, no framework, and no opinion about what the elements mean. Your
-application keeps its own tables, prompts, and vocabulary.
+the library defines what a stencil must provide and stores none. Every module
+is pure functions — no I/O, no framework, and no opinion about what the
+elements mean. Your application keeps its own tables, prompts, layout engine,
+palette and vocabulary document; excalicore checks the document, it does not
+hold one. A `contrast` module (whether a stroke colour is readable against
+its backgrounds) is planned for the TypeScript half.
 
 ## Install
 
+Python, from the `python/` subdirectory:
+
 ```
-pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.1.0#subdirectory=python"
+pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.11.0#subdirectory=python"
 ```
 
-Pin by tag. Canvas behaviour is the kind of thing that should only ever change
+TypeScript, from the repository root (npm cannot install a subdirectory of a
+git dependency; a `prepare` script builds `typescript/dist` on install):
+
+```json
+"excalicore": "github:locupleto/excalicore#v0.11.0"
+```
+
+Pin both halves to the same tag, and by tag. Canvas behaviour is the kind of thing that should only ever change
 when you decide it does, never on an unrelated `git pull`.
 
 ## Use
@@ -208,6 +226,16 @@ d.to_drawio()                                 # -> bytes for a .drawio file
 d.to_svg()                                    # -> bytes for a .drawio.svg file
 ```
 
+```ts
+import { instantiate } from 'excalicore/stencils'
+import { checkGraph } from 'excalicore/vocabulary'
+import { originAtFirstPoint } from 'excalicore/geometry'
+
+const problems = checkGraph(vocabulary, graph)   // -> sentences, [] when it holds
+const parts = instantiate(stencil, { x: 300, y: 200 }, { label: 'Orders' })
+const safe = convertToExcalidrawElements(parts).map(originAtFirstPoint)
+```
+
 Every tuning constant — which fields to keep, which types are read-only, the
 polyline budget, the coordinate bound — is a keyword argument with a sensible
 default, so a dialect can be adjusted without forking the module.
@@ -216,11 +244,12 @@ default, so a dialect can be adjusted without forking the module.
 
 ```
 cd python && python -m unittest discover -s tests -t .
+npm test
 ```
 
 The suite runs against a corpus of real captured scenes and real model replies
-at `corpus/`, shared with the TypeScript half so both agree about the same
-fixtures. See `corpus/README.md`.
+at `corpus/` (scenes, replies, stencils, vocabularies, geometry), shared by
+both halves so they agree about the same fixtures. See `corpus/README.md`.
 
 `tests/test_parity.py` is a tool for anyone migrating off their own copy of
 this code: point it at your existing implementation and it asserts that this
@@ -248,5 +277,5 @@ python/       the installable Python package and its tests
 typescript/   the browser half — stencils, vocabulary and geometry written, contrast planned; see its README
 package.json  the npm package (root, so a git dependency can find it); builds typescript/dist on install
 corpus/       golden scenes and model replies, shared by both halves
-docs/         design rationale
+docs/         design rationale; architecture.py draws architecture.svg
 ```

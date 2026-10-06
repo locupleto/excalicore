@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 620" width="1080" height="620" role="img" aria-label="An application imports excalicore's modules; excalicore works on Excalidraw elements">
+<style>
+.bg { fill: #ffffff; }
+.box { fill: none; stroke: #1f2328; stroke-width: 1.6; }
+.core { fill: none; stroke: #8d4b00; stroke-width: 2; }
+.app { fill: none; stroke: #1f2328; stroke-width: 1.6; stroke-dasharray: 7 5; }
+.planned { fill: none; stroke: #8d4b00; stroke-width: 1.6; stroke-dasharray: 6 4; }
+.use { stroke: #2f7d32; stroke-width: 1.6; fill: none; }
+.down { stroke: #1f2328; stroke-width: 1.6; fill: none; }
+.head-use { fill: #2f7d32; }
+.head-down { fill: #1f2328; }
+text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; fill: #1f2328; }
+.title { font-size: 19px; font-weight: 600; }
+.brass { fill: #8d4b00; }
+.name { font-size: 15px; font-weight: 600; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.half { font-size: 11px; fill: #656d76; }
+.body { font-size: 12px; }
+.note { font-size: 13px; fill: #656d76; }
+@media (prefers-color-scheme: dark) {
+  .bg { fill: #0d1117; }
+  .box, .app { stroke: #d1d7e0; }
+  .core, .planned { stroke: #e3a255; }
+  .use { stroke: #6fc276; }
+  .head-use { fill: #6fc276; }
+  .down { stroke: #d1d7e0; }
+  .head-down { fill: #d1d7e0; }
+  text { fill: #e6edf3; }
+  .brass { fill: #e3a255; }
+  .half, .note { fill: #9198a1; }
+}
+</style>
+<rect x="0" y="0" width="1080" height="620" class="bg"/>
+<rect x="40" y="24" width="1000" height="112" rx="10" class="app"/>
+<text x="540.0" y="56" class="title" text-anchor="middle">Your application</text>
+<text x="540.0" y="86" class="body" text-anchor="middle">what an element means · the vocabulary document · the shelf artwork</text>
+<text x="540.0" y="106" class="body" text-anchor="middle">prompts · tables and SQL · UI · the layout engine · the palette</text>
+<rect x="40" y="216" width="1000" height="248" rx="12" class="core"/>
+<rect x="60.0" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="124.0" y="260" class="name" text-anchor="middle">scene</text>
+<text x="124.0" y="278" class="half" text-anchor="middle">Python</text>
+<text x="70.0" y="304" class="body" text-anchor="start">canvas ↔ model</text>
+<text x="70.0" y="321" class="body" text-anchor="start">compact()</text>
+<text x="70.0" y="338" class="body" text-anchor="start">extract_patch()</text>
+<text x="70.0" y="355" class="body" text-anchor="start">merge patch,</text>
+<text x="70.0" y="372" class="body" text-anchor="start">all or nothing</text>
+<rect x="198.66666666666666" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="262.66666666666663" y="260" class="name" text-anchor="middle">stencils</text>
+<text x="262.66666666666663" y="278" class="half" text-anchor="middle">Python + TS</text>
+<text x="208.66666666666666" y="304" class="body" text-anchor="start">the stencil</text>
+<text x="208.66666666666666" y="321" class="body" text-anchor="start">contract</text>
+<text x="208.66666666666666" y="338" class="body" text-anchor="start">instantiate()</text>
+<text x="208.66666666666666" y="355" class="body" text-anchor="start">validate()</text>
+<text x="208.66666666666666" y="372" class="body" text-anchor="start">ghostStack()</text>
+<rect x="337.3333333333333" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="401.3333333333333" y="260" class="name" text-anchor="middle">geometry</text>
+<text x="401.3333333333333" y="278" class="half" text-anchor="middle">Python + TS</text>
+<text x="347.3333333333333" y="304" class="body" text-anchor="start">anchors, routes,</text>
+<text x="347.3333333333333" y="321" class="body" text-anchor="start">loops, bends,</text>
+<text x="347.3333333333333" y="338" class="body" text-anchor="start">dragged arrow</text>
+<text x="347.3333333333333" y="355" class="body" text-anchor="start">ends, wrap</text>
+<rect x="476.0" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="540.0" y="260" class="name" text-anchor="middle">vocabulary</text>
+<text x="540.0" y="278" class="half" text-anchor="middle">Python + TS</text>
+<text x="486.0" y="304" class="body" text-anchor="start">the grammar</text>
+<text x="486.0" y="321" class="body" text-anchor="start">contract</text>
+<text x="486.0" y="338" class="body" text-anchor="start">validate()</text>
+<text x="486.0" y="355" class="body" text-anchor="start">check()</text>
+<rect x="614.6666666666666" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="678.6666666666666" y="260" class="name" text-anchor="middle">fidelity</text>
+<text x="678.6666666666666" y="278" class="half" text-anchor="middle">Python</text>
+<text x="624.6666666666666" y="304" class="body" text-anchor="start">explode()</text>
+<text x="624.6666666666666" y="321" class="body" text-anchor="start">reassemble()</text>
+<text x="624.6666666666666" y="338" class="body" text-anchor="start">exact database</text>
+<text x="624.6666666666666" y="355" class="body" text-anchor="start">round trip</text>
+<rect x="753.3333333333333" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="817.3333333333333" y="260" class="name" text-anchor="middle">drawio</text>
+<text x="817.3333333333333" y="278" class="half" text-anchor="middle">Python</text>
+<text x="763.3333333333333" y="304" class="body" text-anchor="start">Diagram</text>
+<text x="763.3333333333333" y="321" class="body" text-anchor="start">to_drawio()</text>
+<text x="763.3333333333333" y="338" class="body" text-anchor="start">to_svg()</text>
+<text x="763.3333333333333" y="355" class="body" text-anchor="start">editable</text>
+<text x="763.3333333333333" y="372" class="body" text-anchor="start">.drawio.svg</text>
+<rect x="892.0" y="236" width="128" height="160" rx="8" class="planned"/>
+<text x="956.0" y="260" class="name brass" text-anchor="middle">contrast</text>
+<text x="956.0" y="278" class="half" text-anchor="middle">TS, planned</text>
+<text x="902.0" y="304" class="body" text-anchor="start">readable ink</text>
+<text x="902.0" y="321" class="body" text-anchor="start">against its</text>
+<text x="902.0" y="338" class="body" text-anchor="start">backgrounds</text>
+<text x="540.0" y="424" class="title brass" text-anchor="middle">excalicore</text>
+<text x="540.0" y="448" class="note" text-anchor="middle">pure functions · no I/O · no UI · no layout engine · no palette · no vocabulary of its own</text>
+<rect x="40" y="520" width="1000" height="76" rx="10" class="box"/>
+<text x="540.0" y="550" class="title" text-anchor="middle">@excalidraw/excalidraw</text>
+<text x="540.0" y="575" class="note" text-anchor="middle">elements and their styling · binding · the canvas component the application embeds</text>
+<line x1="124.0" y1="136" x2="124.0" y2="229" class="use"/>
+<path d="M119.0,227 L124.0,236 L129.0,227 Z" class="head-use"/>
+<line x1="262.66666666666663" y1="136" x2="262.66666666666663" y2="229" class="use"/>
+<path d="M257.66666666666663,227 L262.66666666666663,236 L267.66666666666663,227 Z" class="head-use"/>
+<line x1="401.3333333333333" y1="136" x2="401.3333333333333" y2="229" class="use"/>
+<path d="M396.3333333333333,227 L401.3333333333333,236 L406.3333333333333,227 Z" class="head-use"/>
+<line x1="540.0" y1="136" x2="540.0" y2="229" class="use"/>
+<path d="M535.0,227 L540.0,236 L545.0,227 Z" class="head-use"/>
+<line x1="678.6666666666666" y1="136" x2="678.6666666666666" y2="229" class="use"/>
+<path d="M673.6666666666666,227 L678.6666666666666,236 L683.6666666666666,227 Z" class="head-use"/>
+<line x1="817.3333333333333" y1="136" x2="817.3333333333333" y2="229" class="use"/>
+<path d="M812.3333333333333,227 L817.3333333333333,236 L822.3333333333333,227 Z" class="head-use"/>
+<line x1="540.0" y1="464" x2="540.0" y2="513" class="down"/>
+<path d="M535.0,511 L540.0,520 L545.0,511 Z" class="head-down"/>
+</svg>
