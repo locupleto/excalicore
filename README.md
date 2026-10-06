@@ -245,7 +245,7 @@ this library should have them.
 
 ```
 python/       the installable Python package and its tests
-typescript/   the browser half — stencils written, geometry and contrast planned; see its README
+typescript/   the browser half — stencils, vocabulary and geometry written, contrast planned; see its README
 package.json  the npm package (root, so a git dependency can find it); builds typescript/dist on install
 corpus/       golden scenes and model replies, shared by both halves
 docs/         design rationale
