@@ -241,14 +241,14 @@ its backgrounds) is planned for the TypeScript half.
 Python, from the `python/` subdirectory:
 
 ```
-pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.12.1#subdirectory=python"
+pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.12.2#subdirectory=python"
 ```
 
 TypeScript, from the repository root (npm cannot install a subdirectory of a
 git dependency; a `prepare` script builds `typescript/dist` on install):
 
 ```json
-"excalicore": "github:locupleto/excalicore#v0.12.1"
+"excalicore": "github:locupleto/excalicore#v0.12.2"
 ```
 
 Pin both halves to the same tag, and by tag. Canvas behaviour is the kind of thing that should only ever change

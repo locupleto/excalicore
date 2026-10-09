@@ -190,15 +190,50 @@ def wrap_text(text: str, width: float, size: float, font: int = FONT_EXCALIFONT,
     return "\n".join(lines)
 
 
+def _round(x: float) -> int:
+    """JavaScript's ``Math.round`` (halves go up), not Python's banker's."""
+    return math.floor(x + 0.5)
+
+
+def text_room(container: Mapping[str, Any], padding: float = PADDING) -> tuple[float, float, float, float]:
+    """The room a container offers bound text, as Excalidraw's
+    ``getBoundTextMaxWidth`` / ``getBoundTextMaxHeight`` / ``getContainerCoords``
+    have it: ``(max_width, max_height, left, top)``. A rectangle offers its
+    box less the padding; an ellipse the box of the rectangle inscribed in it
+    (``w / sqrt 2``); a diamond half its width and height."""
+    w, h, kind = container["width"], container["height"], container.get("type")
+    left, top = container["x"] + padding, container["y"] + padding
+    if kind == "ellipse":
+        left += w / 2 * (1 - math.sqrt(2) / 2)
+        top += h / 2 * (1 - math.sqrt(2) / 2)
+        return (_round(w / 2 * math.sqrt(2)) - 2 * padding,
+                _round(h / 2 * math.sqrt(2)) - 2 * padding, left, top)
+    if kind == "diamond":
+        return (_round(w / 2) - 2 * padding, _round(h / 2) - 2 * padding,
+                left + w / 4, top + h / 4)
+    return (w - 2 * padding, h - 2 * padding, left, top)
+
+
+def container_height_for(text_height: float, kind: str | None, padding: float = PADDING) -> int:
+    """The container height that holds ``text_height`` of bound text:
+    Excalidraw's ``computeContainerDimensionForBoundText``."""
+    d = math.ceil(text_height)
+    if kind == "ellipse":
+        return _round((d + 2 * padding) / math.sqrt(2) * 2)
+    if kind == "diamond":
+        return 2 * (d + 2 * padding)
+    return d + 2 * padding
+
+
 def _in_container(container: Mapping[str, Any], text: str, size: float, font: int,
                   padding: float) -> tuple[str, float, float, float, float]:
-    """``text`` wrapped to a container's width and centred in it: the wrapped
-    text, its width and height, and its top-left corner."""
-    wrapped = wrap_text(text, container["width"] - 2 * padding, size, font)
+    """``text`` wrapped to the width a container offers it and centred in the
+    room it offers: the wrapped text, its width and height, and its top-left
+    corner."""
+    max_w, max_h, left, top = text_room(container, padding)
+    wrapped = wrap_text(text, max_w, size, font)
     w, h = measure_text(wrapped, size, font)
-    return (wrapped, w, h,
-            container["x"] + (container["width"] - w) / 2,
-            container["y"] + (container["height"] - h) / 2)
+    return (wrapped, w, h, left + (max_w - w) / 2, top + (max_h - h) / 2)
 
 
 # --- the builders ---------------------------------------------------------------------
@@ -401,7 +436,7 @@ def add_label(container: dict, text: str, *, size: float = FONT_SIZE, font: int,
     over.setdefault("strokeColor", INK if stroke == "transparent" else stroke)
     label = text_element(text, container["x"], container["y"], size=size, font=font,
                          roughness=roughness, container=container, padding=padding, **over)
-    need = label["height"] + 2 * padding
+    need = container_height_for(label["height"], container.get("type"), padding)
     if need > container["height"]:
         container["height"] = need
         label = text_element(text, container["x"], container["y"], size=size, font=font,
@@ -424,7 +459,7 @@ def fit_label(container: dict, label: dict, *, text: str | None = None, size: fl
     changed = [label]
     wrapped, w, h, x, y = _in_container(
         container, label["originalText"], label["fontSize"], label["fontFamily"], padding)
-    need = h + 2 * padding
+    need = container_height_for(h, container.get("type"), padding)
     if need > container["height"]:
         container["height"] = need
         changed.append(container)

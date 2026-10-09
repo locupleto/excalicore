@@ -246,6 +246,26 @@ class TestLabels(unittest.TestCase):
         self.assertGreaterEqual(box["height"], label["height"] + 2 * el.PADDING)
         self.assertTrue(close(label["y"] + label["height"] / 2, box["y"] + box["height"] / 2))
 
+    def test_an_ellipse_and_a_diamond_offer_less_room_than_their_box(self) -> None:
+        # Excalidraw's getBoundTextMaxWidth: ellipse round(w / 2 * sqrt 2) - 10,
+        # diamond round(w / 2) - 10, rectangle w - 10.
+        for kind, room in (("rectangle", 430), ("ellipse", 301), ("diamond", 210)):
+            box = el.shape_element(kind, 40, 960, 440, 190, roughness=0)
+            self.assertEqual(el.text_room(box)[0], room, kind)
+            label = el.add_label(box, "word " * 30, font=el.FONT_EXCALIFONT, roughness=0)
+            self.assertLessEqual(label["width"], room, kind)
+            self.assertLess(abs(label["x"] + label["width"] / 2 - 260), 1, kind)
+            self.assertLess(abs(label["y"] + label["height"] / 2 - box["y"] - box["height"] / 2), 1, kind)
+
+    def test_an_ellipse_and_a_diamond_grow_as_excalidraw_grows_them(self) -> None:
+        for kind, grown in (("ellipse", lambda h: round((math.ceil(h) + 10) / math.sqrt(2) * 2)),
+                            ("diamond", lambda h: 2 * (math.ceil(h) + 10))):
+            box = el.shape_element(kind, 0, 0, 200, 40, roughness=0)
+            label = el.add_label(box, "word " * 30, font=el.FONT_EXCALIFONT, roughness=0)
+            self.assertEqual(box["width"], 200)
+            self.assertEqual(box["height"], grown(label["height"]), kind)
+            self.assertLessEqual(label["height"], el.text_room(box)[1] + 1, kind)
+
     def test_fit_label_follows_the_box_and_new_text(self) -> None:
         box, label = self.labelled("Ingest")
         box["x"], box["y"] = 400, 50
