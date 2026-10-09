@@ -199,13 +199,25 @@ def anchor_xy(uv: dict[str, float], box: Any) -> Point:
     return (x + uv["u"] * w, y + uv["v"] * h)
 
 
-def exit_t(box: Any, dx: float, dy: float) -> float:
+def exit_t(box: Any, dx: float, dy: float, shape: str = "rectangle") -> float:
     """The fraction along a centre-to-centre segment ``(dx, dy)`` at which
-    it exits ``box``'s bounding box, measured from the box's own centre.
+    it exits ``box``, measured from the box's own centre.
     Used to trim a centre-to-centre line back to the box's edge without
     ever computing an intersection: the smaller of how far the segment can
-    travel before it clears the box horizontally or vertically."""
+    travel before it clears the box horizontally or vertically.
+
+    ``shape`` says what is drawn inside the bounding box. The default,
+    ``"rectangle"``, is the box itself. An ``"ellipse"`` and a ``"diamond"``
+    are INSIDE their bounding box, so the same segment leaves them sooner;
+    any other word is read as a rectangle."""
     _, _, w, h = _as_box(box)
+    if shape in ("ellipse", "diamond"):
+        hw, hh = max(w / 2, 1e-6), max(h / 2, 1e-6)
+        if shape == "ellipse":
+            norm = math.hypot(dx / hw, dy / hh)
+        else:
+            norm = abs(dx) / hw + abs(dy) / hh
+        return math.inf if norm == 0 else 1 / norm
     tx = math.inf if dx == 0 else (w / 2) / abs(dx)
     ty = math.inf if dy == 0 else (h / 2) / abs(dy)
     return min(tx, ty)
@@ -525,12 +537,20 @@ def ellipsise(line: str, cols: int) -> str:
     return line[: cols - 1] + "…" if len(line) >= cols else line + "…"
 
 
-def wrap(text: str, cols: int, max_lines: float) -> list[str]:
+def wrap(text: str, cols: int, max_lines: float, *, verbatim: bool = False) -> list[str]:
     """Greedy word wrap to ``cols`` characters per line, capped at
     ``max_lines`` with an ellipsis on the last line when the text does not
     fit. A word longer than the budget on its own is cut to fit, with its
     own ellipsis, rather than being pushed whole onto an overflowing
-    line."""
+    line.
+
+    ``verbatim=True`` wraps text the way a text box does while it is being
+    typed, not the way a label is shortened: line breaks and runs of spaces
+    are kept as written, and a word wider than the budget is broken across
+    lines instead of being cut with an ellipsis, so nothing is lost. The
+    ``max_lines`` cap still ends the last kept line with an ellipsis."""
+    if verbatim:
+        return _wrap_verbatim(text or "", max(int(cols), 1), max_lines)
     words = (text or "").split()
     lines: list[str] = []
     line = ""
@@ -551,6 +571,30 @@ def wrap(text: str, cols: int, max_lines: float) -> list[str]:
         else:
             lines[-1] = ellipsise(lines[-1], cols)
     return lines
+
+
+def _wrap_verbatim(text: str, cols: int, max_lines: float) -> list[str]:
+    out: list[str] = []
+    for paragraph in text.split("\n"):
+        line = ""
+        for word in paragraph.split(" "):
+            while len(word) > cols:
+                if line:
+                    out.append(line)
+                    line = ""
+                out.append(word[:cols])
+                word = word[cols:]
+            trial = f"{line} {word}" if line else word
+            if len(trial) <= cols:
+                line = trial
+            else:
+                out.append(line)
+                line = word
+        out.append(line)
+    if len(out) > max_lines:
+        out = out[: int(max_lines)]
+        out[-1] = ellipsise(out[-1], cols)
+    return out
 
 
 def terse(text: str, max_words: int) -> str:

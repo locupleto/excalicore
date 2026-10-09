@@ -12,7 +12,8 @@ drowning it in bookkeeping, how to accept the model's answer without letting a
 garbled reply wreck the canvas, how to store elements in a database and get
 them back unbroken, how to declare the symbols and the rules of a domain so
 they can be checked, how to route an arrow and keep it routed when a person
-drags it, and how to hand the result to draw.io.
+drags it, how to draw an element from a server with no canvas to complete it,
+and how to hand the result to draw.io.
 
 None of that is application logic, but all of it is subtle enough to get wrong
 quietly. This package is that list, solved once. It comes in two halves from
@@ -111,6 +112,51 @@ Python twin. The layout *engine* — where a box goes, how a route is chosen
 among several — stays with the application; this module is what the engine
 is built out of.
 
+## `excalicore.elements` — complete elements, built without a canvas (Python)
+
+When the user draws, Excalidraw fills in everything that makes an element
+whole: an id, a seed for the rough renderer, version counters, a dozen style
+fields, and the two-way references that keep a label in its box and an arrow
+on its shape. A server that draws *for* a person — an agent adding a box, a
+script sketching a flow — has no canvas to do it, and an element missing any of
+it fails quietly: a label detaches, an arrow floats off its box, a field
+Excalidraw expects as `null` arrives as `undefined`.
+
+`elements` builds elements that are complete, and keeps the references
+consistent when they change:
+
+- `base_element`, then `text_element`, `shape_element` (rectangle, ellipse,
+  diamond), `frame_element` and `linear_element` (arrow, line) on top of it.
+  Roughness, font, colours and sizes are parameters; the module has no palette.
+- `measure_text` and `wrap_text` estimate what the canvas will measure exactly
+  once the text is edited, since a server has no font metrics.
+- `add_label` binds a text into a box both ways (`containerId` on the text, a
+  `text` entry in the box's `boundElements`), wraps it, centres it and grows the
+  box to hold it; `fit_label` keeps it centred after the box moves.
+- `route_between` finds an arrow's route from the shapes at its ends (an ellipse
+  and a diamond are *inside* their bounding box, so the arrow stops at the
+  shape, not the box), `bind_end` binds an end to a shape both ways,
+  `refit_arrow` puts bound ends back on their shapes after one moves, and
+  `detach` removes an element without leaving a dangling reference.
+
+The functions that change elements change the dicts they are given and *return*
+the other elements they changed, so the caller stores exactly those. They do not
+bump `version`: only the caller knows whether an element already exists on a
+canvas, and `touch` does it when it does.
+
+It is built on `geometry`, and extended it in two backwards-compatible ways:
+`wrap(..., verbatim=True)` wraps the way a text box does while it is typed
+(line breaks and spacing kept, an over-long word broken instead of cut with an
+ellipsis), and `exit_t(..., shape=)` knows an ellipse and a diamond. The
+TypeScript half has no twin of `elements` (a browser has the canvas's own
+`newElement` family), nor of those two parameters.
+
+The test suite checks every kind it builds for the fields Excalidraw requires:
+against a list, against the real captured elements in `corpus/scenes`, and —
+when `EXCALIDRAW_PACKAGE` points at an installed `@excalidraw/excalidraw`, or
+it is in `node_modules` at the repository root — against that package's own type
+declarations.
+
 ## `excalicore.vocabulary` — the form of an application's grammar (both halves)
 
 An application has a vocabulary: its kinds, which are containers, which are
@@ -192,14 +238,14 @@ its backgrounds) is planned for the TypeScript half.
 Python, from the `python/` subdirectory:
 
 ```
-pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.11.0#subdirectory=python"
+pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.12.0#subdirectory=python"
 ```
 
 TypeScript, from the repository root (npm cannot install a subdirectory of a
 git dependency; a `prepare` script builds `typescript/dist` on install):
 
 ```json
-"excalicore": "github:locupleto/excalicore#v0.11.0"
+"excalicore": "github:locupleto/excalicore#v0.12.0"
 ```
 
 Pin both halves to the same tag, and by tag. Canvas behaviour is the kind of thing that should only ever change
@@ -208,7 +254,7 @@ when you decide it does, never on an unrelated `git pull`.
 ## Use
 
 ```python
-from excalicore import scene, fidelity
+from excalicore import scene, fidelity, elements as el
 from excalicore.drawio import Diagram
 
 skeleton = scene.compact(elements)            # -> put in the prompt
@@ -216,6 +262,11 @@ prose, patch = scene.extract_patch(reply)     # -> patch is None if nothing vali
 
 rows = fidelity.explode(elements)             # -> insert as you like
 elements = fidelity.reassemble(rows)          # -> exactly what went in
+
+box = el.shape_element("rectangle", 100, 100, 200, 80, roughness=1)
+label = el.add_label(box, "Orders", font=el.FONT_EXCALIFONT, roughness=1)   # bound both ways
+arrow = el.linear_element("arrow", [(0, 0), (1, 1)], roughness=1, end_head="arrow")
+el.bind_end(arrow, "start", box)              # both directions; then el.refit_arrow()
 
 d = Diagram("My board")
 d.container("dmz", "DMZ", (0, 0, 600, 300))
@@ -264,11 +315,14 @@ that needs it, because a design with one user is not yet a general one.
 `drawio` (v0.10.0) is the one exception so far: it arrived with one user, the
 Bastion's Confluence export, and a second already named, on the owner's
 decision. Its API is deliberately small (containers, boxes, arrows) so that
-second use can still reshape it. The arrow-end functions of v0.11.0 are the
+second use can still reshape it. The arrow-end functions of v0.12.0 are the
 second: `originAtFirstPoint` has three users on arrival, but `releaseEnds`,
 `reboundEnds` and `replaceArrows` have one (the Bastion's model-backed board),
 and were moved here on the owner's decision that every application built on
-this library should have them.
+this library should have them. `elements` (v0.12.0) is the third: it arrived
+with one user, an application that draws for its users from a server, on the
+same decision that the second application to need the same builder should find
+it here and not write another.
 
 ## Layout
 

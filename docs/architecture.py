@@ -10,7 +10,7 @@ Usage:  python docs/architecture.py
 from pathlib import Path
 from xml.sax.saxutils import escape
 
-W, H = 1080, 620
+W, H = 1240, 620
 FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
 MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
 
@@ -83,11 +83,12 @@ CORE_X, CORE_Y, CORE_W, CORE_H = 40, 216, W - 80, 248
 rect(CORE_X, CORE_Y, CORE_W, CORE_H, "core", 12)
 
 MOD_Y, MOD_H, MOD_W = CORE_Y + 20, 160, 128
-GAP = (CORE_W - 40 - 7 * MOD_W) / 6
+GAP = (CORE_W - 40 - 8 * MOD_W) / 7
 modules = [
     ("scene", "Python", ["canvas ↔ model", "compact()", "extract_patch()", "merge patch,", "all or nothing"]),
     ("stencils", "Python + TS", ["the stencil", "contract", "instantiate()", "validate()", "ghostStack()"]),
     ("geometry", "Python + TS", ["anchors, routes,", "loops, bends,", "dragged arrow", "ends, wrap"]),
+    ("elements", "Python", ["complete elements:", "text, shapes,", "frames, arrows,", "bound labels,", "bound arrows"]),
     ("vocabulary", "Python + TS", ["the grammar", "contract", "validate()", "check()"]),
     ("fidelity", "Python", ["explode()", "reassemble()", "exact database", "round trip"]),
     ("drawio", "Python", ["Diagram", "to_drawio()", "to_svg()", "editable", ".drawio.svg"]),

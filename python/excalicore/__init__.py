@@ -25,6 +25,12 @@ in every Excalidraw-backed application.
     connection rules — and the checks it implies: validating the document,
     checking a graph against it, and the lookups a server's delta gate needs.
 
+``elements``
+    Complete Excalidraw elements built without a canvas: text, shapes,
+    frames, arrows and lines with every field Excalidraw expects, a label
+    bound into its box, an arrow bound to its shapes (both directions kept in
+    step), and the text measuring and wrapping they need. Built on ``geometry``.
+
 ``drawio``
     A diagram as a draw.io file, built from the application's own model:
     containers, boxes and attached arrows, written as a ``.drawio`` and as an
@@ -36,8 +42,8 @@ elements mean. Applications keep their own tables, prompts, and vocabulary.
 
 from __future__ import annotations
 
-from . import fidelity, geometry, scene, stencils, vocabulary
+from . import elements, fidelity, geometry, scene, stencils, vocabulary
 
-__all__ = ["fidelity", "geometry", "scene", "stencils", "vocabulary", "__version__"]
+__all__ = ["elements", "fidelity", "geometry", "scene", "stencils", "vocabulary", "__version__"]
 
-__version__ = "0.11.0"
+__version__ = "0.12.0"

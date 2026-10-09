@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 620" width="1080" height="620" role="img" aria-label="An application imports excalicore's modules; excalicore works on Excalidraw elements">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 620" width="1240" height="620" role="img" aria-label="An application imports excalicore's modules; excalicore works on Excalidraw elements">
 <style>
 .bg { fill: #ffffff; }
 .box { fill: none; stroke: #1f2328; stroke-width: 1.6; }
@@ -29,12 +29,12 @@ text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Ar
   .half, .note { fill: #9198a1; }
 }
 </style>
-<rect x="0" y="0" width="1080" height="620" class="bg"/>
-<rect x="40" y="24" width="1000" height="112" rx="10" class="app"/>
-<text x="540.0" y="56" class="title" text-anchor="middle">Your application</text>
-<text x="540.0" y="86" class="body" text-anchor="middle">what an element means · the vocabulary document · the shelf artwork</text>
-<text x="540.0" y="106" class="body" text-anchor="middle">prompts · tables and SQL · UI · the layout engine · the palette</text>
-<rect x="40" y="216" width="1000" height="248" rx="12" class="core"/>
+<rect x="0" y="0" width="1240" height="620" class="bg"/>
+<rect x="40" y="24" width="1160" height="112" rx="10" class="app"/>
+<text x="620.0" y="56" class="title" text-anchor="middle">Your application</text>
+<text x="620.0" y="86" class="body" text-anchor="middle">what an element means · the vocabulary document · the shelf artwork</text>
+<text x="620.0" y="106" class="body" text-anchor="middle">prompts · tables and SQL · UI · the layout engine · the palette</text>
+<rect x="40" y="216" width="1160" height="248" rx="12" class="core"/>
 <rect x="60.0" y="236" width="128" height="160" rx="8" class="box"/>
 <text x="124.0" y="260" class="name" text-anchor="middle">scene</text>
 <text x="124.0" y="278" class="half" text-anchor="middle">Python</text>
@@ -43,66 +43,76 @@ text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Ar
 <text x="70.0" y="338" class="body" text-anchor="start">extract_patch()</text>
 <text x="70.0" y="355" class="body" text-anchor="start">merge patch,</text>
 <text x="70.0" y="372" class="body" text-anchor="start">all or nothing</text>
-<rect x="198.66666666666666" y="236" width="128" height="160" rx="8" class="box"/>
-<text x="262.66666666666663" y="260" class="name" text-anchor="middle">stencils</text>
-<text x="262.66666666666663" y="278" class="half" text-anchor="middle">Python + TS</text>
-<text x="208.66666666666666" y="304" class="body" text-anchor="start">the stencil</text>
-<text x="208.66666666666666" y="321" class="body" text-anchor="start">contract</text>
-<text x="208.66666666666666" y="338" class="body" text-anchor="start">instantiate()</text>
-<text x="208.66666666666666" y="355" class="body" text-anchor="start">validate()</text>
-<text x="208.66666666666666" y="372" class="body" text-anchor="start">ghostStack()</text>
-<rect x="337.3333333333333" y="236" width="128" height="160" rx="8" class="box"/>
-<text x="401.3333333333333" y="260" class="name" text-anchor="middle">geometry</text>
-<text x="401.3333333333333" y="278" class="half" text-anchor="middle">Python + TS</text>
-<text x="347.3333333333333" y="304" class="body" text-anchor="start">anchors, routes,</text>
-<text x="347.3333333333333" y="321" class="body" text-anchor="start">loops, bends,</text>
-<text x="347.3333333333333" y="338" class="body" text-anchor="start">dragged arrow</text>
-<text x="347.3333333333333" y="355" class="body" text-anchor="start">ends, wrap</text>
-<rect x="476.0" y="236" width="128" height="160" rx="8" class="box"/>
-<text x="540.0" y="260" class="name" text-anchor="middle">vocabulary</text>
-<text x="540.0" y="278" class="half" text-anchor="middle">Python + TS</text>
-<text x="486.0" y="304" class="body" text-anchor="start">the grammar</text>
-<text x="486.0" y="321" class="body" text-anchor="start">contract</text>
-<text x="486.0" y="338" class="body" text-anchor="start">validate()</text>
-<text x="486.0" y="355" class="body" text-anchor="start">check()</text>
-<rect x="614.6666666666666" y="236" width="128" height="160" rx="8" class="box"/>
-<text x="678.6666666666666" y="260" class="name" text-anchor="middle">fidelity</text>
-<text x="678.6666666666666" y="278" class="half" text-anchor="middle">Python</text>
-<text x="624.6666666666666" y="304" class="body" text-anchor="start">explode()</text>
-<text x="624.6666666666666" y="321" class="body" text-anchor="start">reassemble()</text>
-<text x="624.6666666666666" y="338" class="body" text-anchor="start">exact database</text>
-<text x="624.6666666666666" y="355" class="body" text-anchor="start">round trip</text>
-<rect x="753.3333333333333" y="236" width="128" height="160" rx="8" class="box"/>
-<text x="817.3333333333333" y="260" class="name" text-anchor="middle">drawio</text>
-<text x="817.3333333333333" y="278" class="half" text-anchor="middle">Python</text>
-<text x="763.3333333333333" y="304" class="body" text-anchor="start">Diagram</text>
-<text x="763.3333333333333" y="321" class="body" text-anchor="start">to_drawio()</text>
-<text x="763.3333333333333" y="338" class="body" text-anchor="start">to_svg()</text>
-<text x="763.3333333333333" y="355" class="body" text-anchor="start">editable</text>
-<text x="763.3333333333333" y="372" class="body" text-anchor="start">.drawio.svg</text>
-<rect x="892.0" y="236" width="128" height="160" rx="8" class="planned"/>
-<text x="956.0" y="260" class="name brass" text-anchor="middle">contrast</text>
-<text x="956.0" y="278" class="half" text-anchor="middle">TS, planned</text>
-<text x="902.0" y="304" class="body" text-anchor="start">readable ink</text>
-<text x="902.0" y="321" class="body" text-anchor="start">against its</text>
-<text x="902.0" y="338" class="body" text-anchor="start">backgrounds</text>
-<text x="540.0" y="424" class="title brass" text-anchor="middle">excalicore</text>
-<text x="540.0" y="448" class="note" text-anchor="middle">pure functions · no I/O · no UI · no layout engine · no palette · no vocabulary of its own</text>
-<rect x="40" y="520" width="1000" height="76" rx="10" class="box"/>
-<text x="540.0" y="550" class="title" text-anchor="middle">@excalidraw/excalidraw</text>
-<text x="540.0" y="575" class="note" text-anchor="middle">elements and their styling · binding · the canvas component the application embeds</text>
+<rect x="201.71428571428572" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="265.7142857142857" y="260" class="name" text-anchor="middle">stencils</text>
+<text x="265.7142857142857" y="278" class="half" text-anchor="middle">Python + TS</text>
+<text x="211.71428571428572" y="304" class="body" text-anchor="start">the stencil</text>
+<text x="211.71428571428572" y="321" class="body" text-anchor="start">contract</text>
+<text x="211.71428571428572" y="338" class="body" text-anchor="start">instantiate()</text>
+<text x="211.71428571428572" y="355" class="body" text-anchor="start">validate()</text>
+<text x="211.71428571428572" y="372" class="body" text-anchor="start">ghostStack()</text>
+<rect x="343.42857142857144" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="407.42857142857144" y="260" class="name" text-anchor="middle">geometry</text>
+<text x="407.42857142857144" y="278" class="half" text-anchor="middle">Python + TS</text>
+<text x="353.42857142857144" y="304" class="body" text-anchor="start">anchors, routes,</text>
+<text x="353.42857142857144" y="321" class="body" text-anchor="start">loops, bends,</text>
+<text x="353.42857142857144" y="338" class="body" text-anchor="start">dragged arrow</text>
+<text x="353.42857142857144" y="355" class="body" text-anchor="start">ends, wrap</text>
+<rect x="485.14285714285717" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="549.1428571428571" y="260" class="name" text-anchor="middle">elements</text>
+<text x="549.1428571428571" y="278" class="half" text-anchor="middle">Python</text>
+<text x="495.14285714285717" y="304" class="body" text-anchor="start">complete</text>
+<text x="495.14285714285717" y="321" class="body" text-anchor="start">elements, bound</text>
+<text x="495.14285714285717" y="338" class="body" text-anchor="start">labels, bound</text>
+<text x="495.14285714285717" y="355" class="body" text-anchor="start">arrows</text>
+<text x="495.14285714285717" y="372" class="body" text-anchor="start">add_label()</text>
+<rect x="626.8571428571429" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="690.8571428571429" y="260" class="name" text-anchor="middle">vocabulary</text>
+<text x="690.8571428571429" y="278" class="half" text-anchor="middle">Python + TS</text>
+<text x="636.8571428571429" y="304" class="body" text-anchor="start">the grammar</text>
+<text x="636.8571428571429" y="321" class="body" text-anchor="start">contract</text>
+<text x="636.8571428571429" y="338" class="body" text-anchor="start">validate()</text>
+<text x="636.8571428571429" y="355" class="body" text-anchor="start">check()</text>
+<rect x="768.5714285714287" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="832.5714285714287" y="260" class="name" text-anchor="middle">fidelity</text>
+<text x="832.5714285714287" y="278" class="half" text-anchor="middle">Python</text>
+<text x="778.5714285714287" y="304" class="body" text-anchor="start">explode()</text>
+<text x="778.5714285714287" y="321" class="body" text-anchor="start">reassemble()</text>
+<text x="778.5714285714287" y="338" class="body" text-anchor="start">exact database</text>
+<text x="778.5714285714287" y="355" class="body" text-anchor="start">round trip</text>
+<rect x="910.2857142857143" y="236" width="128" height="160" rx="8" class="box"/>
+<text x="974.2857142857143" y="260" class="name" text-anchor="middle">drawio</text>
+<text x="974.2857142857143" y="278" class="half" text-anchor="middle">Python</text>
+<text x="920.2857142857143" y="304" class="body" text-anchor="start">Diagram</text>
+<text x="920.2857142857143" y="321" class="body" text-anchor="start">to_drawio()</text>
+<text x="920.2857142857143" y="338" class="body" text-anchor="start">to_svg()</text>
+<text x="920.2857142857143" y="355" class="body" text-anchor="start">editable</text>
+<text x="920.2857142857143" y="372" class="body" text-anchor="start">.drawio.svg</text>
+<rect x="1052.0" y="236" width="128" height="160" rx="8" class="planned"/>
+<text x="1116.0" y="260" class="name brass" text-anchor="middle">contrast</text>
+<text x="1116.0" y="278" class="half" text-anchor="middle">TS, planned</text>
+<text x="1062.0" y="304" class="body" text-anchor="start">readable ink</text>
+<text x="1062.0" y="321" class="body" text-anchor="start">against its</text>
+<text x="1062.0" y="338" class="body" text-anchor="start">backgrounds</text>
+<text x="620.0" y="424" class="title brass" text-anchor="middle">excalicore</text>
+<text x="620.0" y="448" class="note" text-anchor="middle">pure functions · no I/O · no UI · no layout engine · no palette · no vocabulary of its own</text>
+<rect x="40" y="520" width="1160" height="76" rx="10" class="box"/>
+<text x="620.0" y="550" class="title" text-anchor="middle">@excalidraw/excalidraw</text>
+<text x="620.0" y="575" class="note" text-anchor="middle">elements and their styling · binding · the canvas component the application embeds</text>
 <line x1="124.0" y1="136" x2="124.0" y2="229" class="use"/>
 <path d="M119.0,227 L124.0,236 L129.0,227 Z" class="head-use"/>
-<line x1="262.66666666666663" y1="136" x2="262.66666666666663" y2="229" class="use"/>
-<path d="M257.66666666666663,227 L262.66666666666663,236 L267.66666666666663,227 Z" class="head-use"/>
-<line x1="401.3333333333333" y1="136" x2="401.3333333333333" y2="229" class="use"/>
-<path d="M396.3333333333333,227 L401.3333333333333,236 L406.3333333333333,227 Z" class="head-use"/>
-<line x1="540.0" y1="136" x2="540.0" y2="229" class="use"/>
-<path d="M535.0,227 L540.0,236 L545.0,227 Z" class="head-use"/>
-<line x1="678.6666666666666" y1="136" x2="678.6666666666666" y2="229" class="use"/>
-<path d="M673.6666666666666,227 L678.6666666666666,236 L683.6666666666666,227 Z" class="head-use"/>
-<line x1="817.3333333333333" y1="136" x2="817.3333333333333" y2="229" class="use"/>
-<path d="M812.3333333333333,227 L817.3333333333333,236 L822.3333333333333,227 Z" class="head-use"/>
-<line x1="540.0" y1="464" x2="540.0" y2="513" class="down"/>
-<path d="M535.0,511 L540.0,520 L545.0,511 Z" class="head-down"/>
+<line x1="265.7142857142857" y1="136" x2="265.7142857142857" y2="229" class="use"/>
+<path d="M260.7142857142857,227 L265.7142857142857,236 L270.7142857142857,227 Z" class="head-use"/>
+<line x1="407.42857142857144" y1="136" x2="407.42857142857144" y2="229" class="use"/>
+<path d="M402.42857142857144,227 L407.42857142857144,236 L412.42857142857144,227 Z" class="head-use"/>
+<line x1="549.1428571428571" y1="136" x2="549.1428571428571" y2="229" class="use"/>
+<path d="M544.1428571428571,227 L549.1428571428571,236 L554.1428571428571,227 Z" class="head-use"/>
+<line x1="690.8571428571429" y1="136" x2="690.8571428571429" y2="229" class="use"/>
+<path d="M685.8571428571429,227 L690.8571428571429,236 L695.8571428571429,227 Z" class="head-use"/>
+<line x1="832.5714285714287" y1="136" x2="832.5714285714287" y2="229" class="use"/>
+<path d="M827.5714285714287,227 L832.5714285714287,236 L837.5714285714287,227 Z" class="head-use"/>
+<line x1="974.2857142857143" y1="136" x2="974.2857142857143" y2="229" class="use"/>
+<path d="M969.2857142857143,227 L974.2857142857143,236 L979.2857142857143,227 Z" class="head-use"/>
+<line x1="620.0" y1="464" x2="620.0" y2="513" class="down"/>
+<path d="M615.0,511 L620.0,520 L625.0,511 Z" class="head-down"/>
 </svg>
