@@ -46,9 +46,12 @@ import math
 import random
 import string
 import time
+import unicodedata
 from collections.abc import Mapping
 from typing import Any
 
+from .fontmetrics import ADVANCE, METRICS
+from .fontmetrics import ADVANCE, METRICS
 from .geometry import arrow_element, box_of, centre, exit_t, wrap
 
 # --- Excalidraw's vocabulary ---------------------------------------------------------
@@ -82,7 +85,8 @@ FRAME_INK = "#bbb"
 FONT_SIZE = 20                  # Excalidraw's DEFAULT_FONT_SIZE
 PADDING = 5                     # Excalidraw's BOUND_TEXT_PADDING
 BIND_GAP = 4.0                  # an arrow's end stands this far off its shape
-#: Average glyph width as a fraction of the font size, for the estimate.
+#: The flat glyph width (a fraction of the font size) the estimate used before
+#: per-glyph widths: kept as the floor of an empty text and an opt-in ``char_em``.
 CHAR_EM = 0.55
 
 _ALPHABET = string.ascii_letters + string.digits + "_-"
@@ -127,28 +131,70 @@ def line_height(font: int) -> float:
     return LINE_HEIGHT.get(font, DEFAULT_LINE_HEIGHT)
 
 
-def measure_text(text: str, size: float, font: int, *, char_em: float = CHAR_EM) -> tuple[float, float]:
-    """The box a text takes, estimated: widest line times an average glyph
-    width, lines times the line height. The canvas measures exactly the
-    moment the text is edited."""
+def _advance(ch: str, size: float, font: int) -> float:
+    """One glyph's advance at ``size``: the font's own width, else (a glyph the
+    tables lack) the font's average, or a full em for wide East-Asian forms."""
+    table = ADVANCE.get(font) or ADVANCE[FONT_EXCALIFONT]
+    w = table.get(ch)
+    if w is not None:
+        return w * size / 1000
+    if unicodedata.east_asian_width(ch) in ("W", "F"):
+        return size
+    return (METRICS.get(font) or METRICS[FONT_EXCALIFONT])[0] * size / 1000
+
+
+def text_width(line: str, size: float, font: int, *, char_em: float | None = None) -> float:
+    """The width of one line. With ``char_em`` every glyph is that many ems
+    wide (the old flat estimate); without, each glyph has the width of the
+    font family, so ``WIDE CAPS`` are not measured like ``narrow lowercase``."""
+    if char_em is not None:
+        return len(line) * size * char_em
+    return sum(_advance(ch, size, font) for ch in line)
+
+
+def measure_text(text: str, size: float, font: int, *, char_em: float | None = None) -> tuple[float, float]:
+    """The box a text takes, estimated: widest line (summed glyph advances of
+    the font family) by lines times the line height. The canvas measures
+    exactly the moment the text is edited, and the Observatory frontend
+    re-measures on load, so this only has to be close, and never short."""
     lines = text.split("\n") or [""]
-    width = max(len(line) for line in lines) * size * char_em
-    return (round(max(width, size * char_em), 2), round(len(lines) * size * line_height(font), 2))
+    width = max(text_width(line, size, font, char_em=char_em) for line in lines)
+    floor = size * (char_em if char_em is not None else CHAR_EM)
+    return (round(max(width, floor), 2), round(len(lines) * size * line_height(font), 2))
 
 
-def wrap_text(text: str, width: float, size: float, *, char_em: float = CHAR_EM) -> str:
+def wrap_text(text: str, width: float, size: float, font: int = FONT_EXCALIFONT, *,
+              char_em: float | None = None) -> str:
     """Wrap ``text`` to ``width`` pixels the way the canvas wraps text bound to
-    a box: line breaks kept, a word wider than the box broken across lines
-    (:func:`excalicore.geometry.wrap` with ``verbatim=True``)."""
-    cols = max(int(width / (size * char_em)), 1)
-    return "\n".join(wrap(text, cols, math.inf, verbatim=True))
+    a box: line breaks kept, words kept whole while they fit, a word wider
+    than the box broken across lines. Widths are the font's own."""
+    lines: list[str] = []
+    for paragraph in text.split("\n"):
+        line = ""
+        for word in paragraph.split(" "):
+            cand = f"{line} {word}" if line else word
+            if text_width(cand, size, font, char_em=char_em) <= width:
+                line = cand
+                continue
+            if line:
+                lines.append(line)
+                line = ""
+            while text_width(word, size, font, char_em=char_em) > width and len(word) > 1:
+                n = 1
+                while n < len(word) - 1 and text_width(word[: n + 1], size, font, char_em=char_em) <= width:
+                    n += 1
+                lines.append(word[:n])
+                word = word[n:]
+            line = word
+        lines.append(line)
+    return "\n".join(lines)
 
 
 def _in_container(container: Mapping[str, Any], text: str, size: float, font: int,
                   padding: float) -> tuple[str, float, float, float, float]:
     """``text`` wrapped to a container's width and centred in it: the wrapped
     text, its width and height, and its top-left corner."""
-    wrapped = wrap_text(text, container["width"] - 2 * padding, size)
+    wrapped = wrap_text(text, container["width"] - 2 * padding, size, font)
     w, h = measure_text(wrapped, size, font)
     return (wrapped, w, h,
             container["x"] + (container["width"] - w) / 2,

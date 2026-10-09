@@ -175,17 +175,43 @@ class TestBase(unittest.TestCase):
 
 class TestText(unittest.TestCase):
     def test_measure_counts_widest_line_and_lines(self) -> None:
-        w, h = el.measure_text("ab\nabcd", 20, el.FONT_HELVETICA)
+        w, h = el.measure_text("ab\nabcd", 20, el.FONT_HELVETICA, char_em=el.CHAR_EM)
         self.assertAlmostEqual(w, 4 * 20 * el.CHAR_EM)
         self.assertAlmostEqual(h, 2 * 20 * 1.15)
         self.assertEqual(el.measure_text("", 20, el.FONT_EXCALIFONT)[0], 20 * el.CHAR_EM)
 
     def test_wrap_keeps_breaks_and_breaks_a_long_word(self) -> None:
         room = 10 * 20 * el.CHAR_EM                     # ten columns
-        self.assertEqual(el.wrap_text("aaa bbb ccc ddd", room, 20), "aaa bbb\nccc ddd")
-        self.assertEqual(el.wrap_text("one\n\ntwo", room, 20), "one\n\ntwo")
-        self.assertEqual(el.wrap_text("x" * 25, room, 20), "x" * 10 + "\n" + "x" * 10 + "\n" + "x" * 5)
-        self.assertEqual(el.wrap_text("anything", 1, 20), "a\nn\ny\nt\nh\ni\nn\ng")
+        wrap_text = el.wrap_text
+        el_wrap = lambda t, w, s: wrap_text(t, w, s, char_em=el.CHAR_EM)  # noqa: E731
+        self.assertEqual(el_wrap("aaa bbb ccc ddd", room, 20), "aaa bbb\nccc ddd")
+        self.assertEqual(el_wrap("one\n\ntwo", room, 20), "one\n\ntwo")
+        self.assertEqual(el_wrap("x" * 25, room, 20), "x" * 10 + "\n" + "x" * 10 + "\n" + "x" * 5)
+        self.assertEqual(el_wrap("anything", 1, 20), "a\nn\ny\nt\nh\ni\nn\ng")
+
+
+    def test_measure_uses_the_glyph_widths_of_the_font(self) -> None:
+        # Excalifont's capitals are wider than the old flat 0.55 em: the labels
+        # that rendered clipped on the Observatory whiteboard.
+        for label, true_width in (("THE BASTION (proposed)", 260.2), ("NOTES & PUSHBACK", 208.1),
+                                  ("SUGGESTED ORDER", 214.2)):
+            w, _ = el.measure_text(label, 20, el.FONT_EXCALIFONT)
+            self.assertGreater(w, len(label) * 20 * el.CHAR_EM, label)
+            self.assertAlmostEqual(w, true_width, delta=0.2, msg=label)
+        caps = el.measure_text("MMMM", 20, el.FONT_EXCALIFONT)[0]
+        lows = el.measure_text("iiii", 20, el.FONT_EXCALIFONT)[0]
+        self.assertGreater(caps, 2.5 * lows)
+        # a monospace font stays flat; an unknown glyph falls back, never zero
+        self.assertEqual(el.measure_text("MMMM", 20, el.FONT_CASCADIA)[0],
+                         el.measure_text("iiii", 20, el.FONT_CASCADIA)[0])
+        self.assertGreater(el.measure_text("\u2603", 20, el.FONT_EXCALIFONT)[0], 0)
+        self.assertEqual(el.measure_text("\u4e2d", 20, el.FONT_EXCALIFONT)[0], 20)
+
+    def test_wrap_by_pixels_keeps_capitals_inside_the_box(self) -> None:
+        wrapped = el.wrap_text("SUGGESTED ORDER OF WORK", 200, 20, el.FONT_EXCALIFONT)
+        for line in wrapped.split("\n"):
+            self.assertLessEqual(el.text_width(line, 20, el.FONT_EXCALIFONT), 200, line)
+        self.assertEqual(wrapped.replace("\n", " "), "SUGGESTED ORDER OF WORK")
 
     def test_free_text_and_contained_text(self) -> None:
         t = el.text_element("Hello", 5, 6, size=20, font=el.FONT_HELVETICA, roughness=0)

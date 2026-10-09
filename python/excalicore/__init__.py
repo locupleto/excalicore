@@ -46,4 +46,4 @@ from . import elements, fidelity, geometry, scene, stencils, vocabulary
 
 __all__ = ["elements", "fidelity", "geometry", "scene", "stencils", "vocabulary", "__version__"]
 
-__version__ = "0.12.0"
+__version__ = "0.12.1"

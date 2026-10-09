@@ -129,7 +129,10 @@ consistent when they change:
   diamond), `frame_element` and `linear_element` (arrow, line) on top of it.
   Roughness, font, colours and sizes are parameters; the module has no palette.
 - `measure_text` and `wrap_text` estimate what the canvas will measure exactly
-  once the text is edited, since a server has no font metrics.
+  once the text is edited, from the per-glyph advance widths of Excalidraw's own
+  font families (`fontmetrics.py`, read from the shipped fonts; v0.12.1 — v0.12.0
+  used a flat 0.55 em and clipped capitals). A client that can should still
+  re-measure on load.
 - `add_label` binds a text into a box both ways (`containerId` on the text, a
   `text` entry in the box's `boundElements`), wraps it, centres it and grows the
   box to hold it; `fit_label` keeps it centred after the box moves.
@@ -238,14 +241,14 @@ its backgrounds) is planned for the TypeScript half.
 Python, from the `python/` subdirectory:
 
 ```
-pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.12.0#subdirectory=python"
+pip install "excalicore @ git+https://github.com/locupleto/excalicore@v0.12.1#subdirectory=python"
 ```
 
 TypeScript, from the repository root (npm cannot install a subdirectory of a
 git dependency; a `prepare` script builds `typescript/dist` on install):
 
 ```json
-"excalicore": "github:locupleto/excalicore#v0.12.0"
+"excalicore": "github:locupleto/excalicore#v0.12.1"
 ```
 
 Pin both halves to the same tag, and by tag. Canvas behaviour is the kind of thing that should only ever change
