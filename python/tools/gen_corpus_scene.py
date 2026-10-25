@@ -55,7 +55,10 @@ def _plain(value):
 def _case(fn, name, call, **fields):
     case = {"fn": fn, "name": name}
     case.update(fields)
-    case["expect"] = _plain(call())
+    try:
+        case["expect"] = _plain(call())
+    except ValueError:
+        case["expect"] = {"throws": True}
     return case
 
 
@@ -244,6 +247,12 @@ def stroke_cases():
             "points": [[0, 0], [1, 1], [2, 0.5]]})
     stroke("a missing id is null and a missing position is the origin",
            {"type": "freedraw", "width": 3, "height": 3, "points": [[0, 0], [3, 3]]})
+    stroke("a budget of 2 keeps only the ends", _scene("freedraw")[0],
+           {"maxPoints": 2}, scene="freedraw", index=0)
+    stroke("a budget of 1 is an error", _scene("freedraw")[0],
+           {"maxPoints": 1}, scene="freedraw", index=0)
+    stroke("a budget of 0 is an error, even with no points", {"id": "none", "type": "freedraw"},
+           {"maxPoints": 0})
     stroke("an empty strokeColor is left out",
            {"id": "c", "type": "freedraw", "strokeColor": "", "width": 3, "height": 3,
             "points": [[0, 0], [3, 3]]})
@@ -384,6 +393,9 @@ def patch_cases():
     valid("an element with a type", {"elements": [{"type": "rectangle", "x": 1, "y": 2}]})
     valid("an element with no type", {"elements": [{"x": 1, "y": 2}]})
     valid("an element with an empty type", {"elements": [{"type": "", "x": 1, "y": 2}]})
+    valid("an element with a list for a type rejects the patch", {"elements": [{"type": ["rectangle"], "x": 1, "y": 2}]})
+    valid("an element with an object for a type rejects the patch", {"elements": [{"type": {"a": 1}}]})
+    valid("an element with a number for a type rejects the patch", {"elements": [{"type": 5}]})
     valid("a deletion alone", {"delete": ["n7"]})
     valid("deletions drop what is not a string", {"delete": ["a", 7, None, "b", ["c"]]})
     valid("an empty patch", {"elements": [], "delete": []})
@@ -454,6 +466,10 @@ def patch_cases():
     extract("a label in backticks", "Done. `excalidraw` " + P + " Bye")
     extract("a label with space before the fence", "Here you go.\n\n  ```  excalidraw\n" + P + "\n```")
     extract("a fence with CRLF line endings", "Here.\r\n```json\r\n" + P + "\r\n```\r\nThanks.")
+    extract("a bare fence is stripped like a labelled one", "Here you go:\n```\n" + P + "\n```\nDone.")
+    extract("a bare fence with no newline before the patch", "Here:```" + P + "```")
+    extract("a list-typed element in a reply leaves the message whole",
+            'Here: {"elements": [{"type": ["rectangle"]}]}')
     extract("a fence closing line with trailing spaces", "Ok.\n```\n" + P + "\n```   \nNext.")
     extract("prose ending in the word json is not a label unless it ends there",
             "I prefer json for this. " + P + " Fine.")
@@ -523,7 +539,7 @@ def main():
           "rdp() and strokeSummary() executed from python/excalicore/scene.py. rdp cases give `points` and "
           "`eps` (or `scene` + `index` for the corpus stroke's own points); strokeSummary cases give an "
           "`element` (or `scene` + `index`) and optional `options.maxPoints`. Rounded outputs use Python's "
-          "round (half to even).",
+          "round (half to even). `{\"throws\": true}` means the call raises.",
           stroke_cases())
     write("stencils.json",
           "instanceOf(), stencilSummary() and bbox() executed from python/excalicore/scene.py. "

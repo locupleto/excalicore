@@ -1,6 +1,6 @@
 {
   "name": "excalicore",
-  "version": "0.13.0",
+  "version": "0.13.1",
   "description": "Shared Excalidraw scene handling, TypeScript half: stencils, vocabulary, geometry, elements, scene, fidelity and draw.io export",
   "license": "MIT",
   "private": true,

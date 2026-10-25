@@ -116,7 +116,8 @@ test('strokes.json: rdp, strokeSummary', () => {
         same(rdp('scene' in c ? (element.points as number[][]) : c.points, c.eps), c.expect, what)
         break
       case 'strokeSummary':
-        same(strokeSummary(element, optionsOf(c)), c.expect, what)
+        if (c.expect?.throws === true) assert.throws(() => strokeSummary(element, optionsOf(c)), what)
+        else same(strokeSummary(element, optionsOf(c)), c.expect, what)
         break
       default:
         assert.fail(`unknown fn ${c.fn}`)

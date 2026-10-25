@@ -53,7 +53,7 @@ _STENCIL_KEYS: frozenset[str] = frozenset({"stencil"})
 MAX_STROKE_POINTS = 32     # polyline budget per stroke; tolerance coarsens to fit
 MAX_COORD = 1_000_000      # beyond this it is a hallucination, not a layout
 
-_LABEL_TAIL = re.compile(r"\s*`{0,3}\s*(?:excalidraw|json)\s*`{0,3}\s*$", re.IGNORECASE)
+_LABEL_TAIL = re.compile(r"\s*(?:`{0,3}\s*(?:excalidraw|json)\s*`{0,3}|`{3})\s*$", re.IGNORECASE)
 _FENCE_HEAD = re.compile(r"^\s*`{3}[ \t]*\r?\n?")
 _decoder = json.JSONDecoder()
 
@@ -94,8 +94,11 @@ def stroke_summary(element: dict[str, Any], *,
     Returns id + bbox + a simplified polyline in absolute integer board
     coordinates, plus a ``closed`` hint when the ends nearly meet (a hand-drawn
     circle). The RDP tolerance coarsens until the polyline fits ``max_points``,
-    so a 900-point scribble costs the same as a 40-point one.
+    so a 900-point scribble costs the same as a 40-point one. Raises
+    ``ValueError`` for a budget below 2: a polyline always keeps both ends.
     """
+    if max_points < 2:
+        raise ValueError(f"max_points must be at least 2, not {max_points}")
     x0 = element.get("x") or 0
     y0 = element.get("y") or 0
     slim: dict[str, Any] = {
@@ -313,7 +316,8 @@ def valid_patch(obj: Any, *,
                 max_coord: float = MAX_COORD) -> dict[str, Any] | None:
     """Validate a parsed block as a merge patch, or return None.
 
-    A patch is ``{elements: [{type, ...}, ...]}`` and/or ``{delete: [id, ...]}``.
+    A patch is ``{elements: [{type, ...}, ...]}`` and/or ``{delete: [id, ...]}``,
+    where ``type`` is a non-empty string.
     An element may instead be a stencil placement, ``{"stencil": name, x, y}``.
     Strict all-or-nothing: one malformed element, or one insane coordinate,
     rejects the WHOLE patch, so a half-garbled reply can never half-apply.
@@ -342,7 +346,8 @@ def valid_patch(obj: Any, *,
             # from its shelf, so the position is the whole payload. Which
             # stencils exist is the application's business, not this module's.
             return _num(e.get("x")) and _num(e.get("y"))
-        return bool(e.get("type"))
+        kind = e.get("type")
+        return isinstance(kind, str) and bool(kind)
 
     if not all(_ok(e) for e in els):
         return None
@@ -356,8 +361,8 @@ def extract_patch(message: str, **kwargs: Any) -> tuple[str, dict[str, Any] | No
     """Split a model reply into ``(prose, patch)``.
 
     The patch is the LAST balanced JSON object in the message that validates;
-    it and any surrounding ``excalidraw`` label or code fence are stripped from
-    the prose. If nothing parses, the whole message is prose and the patch is
+    it and any surrounding ``excalidraw`` label or code fence (labelled or bare)
+    are stripped from the prose. If nothing parses, the whole message is prose and the patch is
     None — invalid drawing is dropped, never forced onto the canvas.
 
     Keyword arguments are passed through to :func:`valid_patch`.

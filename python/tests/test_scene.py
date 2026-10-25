@@ -309,7 +309,11 @@ class TestSceneFixtures(unittest.TestCase):
             self.assertTrue(fixture["doc"])
             for case in fixture["cases"]:
                 with self.subTest(file=name, case=case["name"]):
-                    self.assertEqual(_json_plain(self._run(case)), case["expect"])
+                    try:
+                        got = _json_plain(self._run(case))
+                    except ValueError:
+                        got = {"throws": True}
+                    self.assertEqual(got, case["expect"])
                 total += 1
         self.assertGreater(total, 0)
 

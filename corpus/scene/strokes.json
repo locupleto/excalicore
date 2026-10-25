@@ -1,5 +1,5 @@
 {
-  "doc": "rdp() and strokeSummary() executed from python/excalicore/scene.py. rdp cases give `points` and `eps` (or `scene` + `index` for the corpus stroke's own points); strokeSummary cases give an `element` (or `scene` + `index`) and optional `options.maxPoints`. Rounded outputs use Python's round (half to even).",
+  "doc": "rdp() and strokeSummary() executed from python/excalicore/scene.py. rdp cases give `points` and `eps` (or `scene` + `index` for the corpus stroke's own points); strokeSummary cases give an `element` (or `scene` + `index`) and optional `options.maxPoints`. Rounded outputs use Python's round (half to even). `{\"throws\": true}` means the call raises.",
   "cases": [
     {
       "fn": "rdp",
@@ -1184,6 +1184,60 @@
             3
           ]
         ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a budget of 2 keeps only the ends",
+      "scene": "freedraw",
+      "index": 0,
+      "options": {
+        "maxPoints": 2
+      },
+      "expect": {
+        "id": "stroke-arc-01",
+        "type": "freedraw",
+        "x": 412,
+        "y": 260,
+        "width": 373,
+        "height": 74,
+        "strokeColor": "#1e1e1e",
+        "points": [
+          [
+            414,
+            259
+          ],
+          [
+            786,
+            252
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a budget of 1 is an error",
+      "scene": "freedraw",
+      "index": 0,
+      "options": {
+        "maxPoints": 1
+      },
+      "expect": {
+        "throws": true
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a budget of 0 is an error, even with no points",
+      "element": {
+        "id": "none",
+        "type": "freedraw"
+      },
+      "options": {
+        "maxPoints": 0
+      },
+      "expect": {
+        "throws": true
       }
     },
     {

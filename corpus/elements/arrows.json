@@ -643,13 +643,51 @@
     },
     {
       "fn": "routeBetween",
-      "name": "a single point on a start shape lands on its centre",
+      "name": "a single point on a start shape is an error",
       "points": [[50, 50]],
       "start": {
         "shape": "rectangle",
         "box": {"x": 0, "y": 0, "width": 100, "height": 100}
       },
-      "expect": [[50, 50]]
+      "expect": {
+        "throws": true
+      }
+    },
+    {
+      "fn": "routeBetween",
+      "name": "a single point on an end shape is an error",
+      "points": [[50, 50]],
+      "end": {
+        "shape": "rectangle",
+        "box": {"x": 300, "y": 0, "width": 100, "height": 100}
+      },
+      "expect": {
+        "throws": true
+      }
+    },
+    {
+      "fn": "routeBetween",
+      "name": "a single free point is an error",
+      "points": [[50, 50]],
+      "expect": {
+        "throws": true
+      }
+    },
+    {
+      "fn": "routeBetween",
+      "name": "an empty point list is an error",
+      "points": [],
+      "start": {
+        "shape": "rectangle",
+        "box": {"x": 0, "y": 0, "width": 100, "height": 100}
+      },
+      "end": {
+        "shape": "rectangle",
+        "box": {"x": 300, "y": 0, "width": 100, "height": 100}
+      },
+      "expect": {
+        "throws": true
+      }
     },
     {
       "fn": "routeBetween",

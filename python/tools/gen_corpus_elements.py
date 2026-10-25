@@ -569,7 +569,10 @@ def arrow_cases() -> Cases:
           gap=0)
     k.add("routeBetween", "two points and two shapes are re-trimmed centre to centre",
           points=[[10, 10], [350, 40]], start=ra, end=rb)
-    k.add("routeBetween", "a single point on a start shape lands on its centre", points=[[50, 50]], start=ra)
+    k.add("routeBetween", "a single point on a start shape is an error", points=[[50, 50]], start=ra)
+    k.add("routeBetween", "a single point on an end shape is an error", points=[[50, 50]], end=rb)
+    k.add("routeBetween", "a single free point is an error", points=[[50, 50]])
+    k.add("routeBetween", "an empty point list is an error", points=[], start=ra, end=rb)
     k.add("routeBetween", "no points and only a start is an error", start=ra)
     k.add("routeBetween", "no points and nothing is an error")
 

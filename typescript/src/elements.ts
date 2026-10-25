@@ -505,7 +505,7 @@ export type End = readonly [string, Box]
  *  shape, `null` for a free end. A shape end is moved onto the shape's edge,
  *  aimed at the next point. With no `points` both ends must be shapes and the
  *  route is the line between their centres, trimmed to their edges. Throws
- *  when there is nothing to draw. */
+ *  when there is nothing to draw, or when `points` holds fewer than two. */
 export function routeBetween(
   points: readonly (readonly [number, number])[] | null,
   start: End | null = null,
@@ -518,10 +518,11 @@ export function routeBetween(
     if (start === null || end === null) throw new Error('a route needs points, or a shape at both ends')
     route = [[...centre(start[1])], [...centre(end[1])]]
   } else {
+    if (points.length < 2) throw new Error(`a route needs two or more points, not ${points.length}`)
     route = points.map((p) => [p[0], p[1]])
   }
   if (start !== null) {
-    route[0] = boundaryPoint(start[0], start[1], route.length > 1 ? route[1] : centre(start[1]), gap)
+    route[0] = boundaryPoint(start[0], start[1], route[1], gap)
   }
   if (end !== null) {
     route[route.length - 1] = boundaryPoint(end[0], end[1], route[route.length - 2], gap)

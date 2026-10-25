@@ -395,15 +395,18 @@ def route_between(
     stands on a shape, ``None`` for a free end. A shape end is moved onto the
     shape's edge, aimed at the next point. With no ``points`` both ends must be
     shapes and the route is the line between their centres, trimmed to their
-    edges. Raises ``ValueError`` when there is nothing to draw."""
+    edges. Raises ``ValueError`` when there is nothing to draw, or when
+    ``points`` holds fewer than two points."""
     if points is None:
         if start is None or end is None:
             raise ValueError("a route needs points, or a shape at both ends")
         route: list[Point] = [centre(start[1]), centre(end[1])]
     else:
+        if len(points) < 2:
+            raise ValueError(f"a route needs two or more points, not {len(points)}")
         route = [(p[0], p[1]) for p in points]
     if start is not None:
-        route[0] = boundary_point(start[0], start[1], route[1] if len(route) > 1 else centre(start[1]), gap)
+        route[0] = boundary_point(start[0], start[1], route[1], gap)
     if end is not None:
         route[-1] = boundary_point(end[0], end[1], route[-2], gap)
     if start is not None and end is not None and len(route) == 2:

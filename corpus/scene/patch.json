@@ -169,6 +169,48 @@
     },
     {
       "fn": "validPatch",
+      "name": "an element with a list for a type rejects the patch",
+      "obj": {
+        "elements": [
+          {
+            "type": [
+              "rectangle"
+            ],
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "an element with an object for a type rejects the patch",
+      "obj": {
+        "elements": [
+          {
+            "type": {
+              "a": 1
+            }
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "an element with a number for a type rejects the patch",
+      "obj": {
+        "elements": [
+          {
+            "type": 5
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
       "name": "a deletion alone",
       "obj": {
         "delete": [
@@ -1019,10 +1061,57 @@
     },
     {
       "fn": "extractPatch",
+      "name": "a bare fence is stripped like a labelled one",
+      "message": "Here you go:\n```\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n```\nDone.",
+      "expect": {
+        "prose": "Here you go:\nDone.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a bare fence with no newline before the patch",
+      "message": "Here:```{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}```",
+      "expect": {
+        "prose": "Here:",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a list-typed element in a reply leaves the message whole",
+      "message": "Here: {\"elements\": [{\"type\": [\"rectangle\"]}]}",
+      "expect": {
+        "prose": "Here: {\"elements\": [{\"type\": [\"rectangle\"]}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
       "name": "a fence closing line with trailing spaces",
       "message": "Ok.\n```\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n```   \nNext.",
       "expect": {
-        "prose": "Ok.\n```\nNext.",
+        "prose": "Ok.\nNext.",
         "patch": {
           "elements": [
             {

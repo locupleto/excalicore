@@ -63,7 +63,7 @@ export const MAX_COORD = 1_000_000
 // no byte-order mark.
 const WS = '\\t-\\r\\x1c-\\x20\\x85\\xa0\\u1680\\u2000-\\u200a\\u2028\\u2029\\u202f\\u205f\\u3000'
 const LABEL_TAIL = new RegExp(
-  `[${WS}]*\`{0,3}[${WS}]*(?:excalidraw|json)[${WS}]*\`{0,3}[${WS}]*$`, 'iu',
+  `[${WS}]*(?:\`{0,3}[${WS}]*(?:excalidraw|json)[${WS}]*\`{0,3}|\`{3})[${WS}]*$`, 'iu',
 )
 const FENCE_HEAD = new RegExp(`^[${WS}]*\`{3}[ \\t]*\\r?\\n?`, 'u')
 const WS_LEAD = new RegExp(`^[${WS}]+`, 'u')
@@ -169,8 +169,8 @@ export function rdp(points: number[][], eps: number): number[][] {
 }
 
 export interface StrokeOptions {
-  /** Polyline budget; default `MAX_STROKE_POINTS`. Below 2 it never ends,
-   *  as in the Python twin. */
+  /** Polyline budget; default `MAX_STROKE_POINTS`. Below 2 is an error: a
+   *  polyline always keeps both ends. */
   maxPoints?: number
 }
 
@@ -179,9 +179,11 @@ export interface StrokeOptions {
  *  Returns id + bbox + a simplified polyline in absolute integer board
  *  coordinates, plus a `closed` hint when the ends nearly meet (a hand-drawn
  *  circle). The RDP tolerance coarsens until the polyline fits `maxPoints`,
- *  so a 900-point scribble costs the same as a 40-point one. */
+ *  so a 900-point scribble costs the same as a 40-point one. Throws for a
+ *  budget below 2. */
 export function strokeSummary(element: Element, options: StrokeOptions = {}): Element {
   const maxPoints = options.maxPoints ?? MAX_STROKE_POINTS
+  if (maxPoints < 2) throw new Error(`maxPoints must be at least 2, not ${maxPoints}`)
   const x0 = orZero(element.x)
   const y0 = orZero(element.y)
   const slim: Element = {
@@ -436,7 +438,8 @@ export function saneGeometry(element: Element, options: { maxCoord?: number } = 
 
 /** Validate a parsed block as a merge patch, or return null.
  *
- *  A patch is `{elements: [{type, ...}, ...]}` and/or `{delete: [id, ...]}`.
+ *  A patch is `{elements: [{type, ...}, ...]}` and/or `{delete: [id, ...]}`,
+ *  where `type` is a non-empty string.
  *  An element may instead be a stencil placement, `{"stencil": name, x, y}`.
  *  Strict all-or-nothing: one malformed element, or one insane coordinate,
  *  rejects the WHOLE patch, so a half-garbled reply can never half-apply.
@@ -465,7 +468,7 @@ export function validPatch(obj: unknown, options: PatchOptions = {}): Patch | nu
       // the application's business, not this module's.
       return num(e.x) && num(e.y)
     }
-    return truthy(e.type)
+    return typeof e.type === 'string' && e.type !== ''
   }
 
   if (!els.every(ok)) return null
@@ -576,8 +579,8 @@ function stripRight(s: string): string {
 /** Split a model reply into `[prose, patch]`.
  *
  *  The patch is the LAST balanced JSON object in the message that validates;
- *  it and any surrounding `excalidraw` label or code fence are stripped from
- *  the prose. If nothing parses, the whole message is prose and the patch is
+ *  it and any surrounding `excalidraw` label or code fence (labelled or bare)
+ *  are stripped from the prose. If nothing parses, the whole message is prose and the patch is
  *  null — invalid drawing is dropped, never forced onto the canvas.
  *
  *  `options` are passed through to `validPatch`. */
