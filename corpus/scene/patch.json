@@ -1,0 +1,1663 @@
+{
+  "doc": "saneGeometry(), validPatch() and extractPatch() executed from python/excalicore/scene.py. extractPatch cases give the model's `message` inline, or a corpus `reply` by name, and expect {prose, patch} with patch null when nothing valid parses. Options: `opaque` (list), `maxCoord`.",
+  "cases": [
+    {
+      "fn": "saneGeometry",
+      "name": "no coordinates at all",
+      "element": {
+        "type": "rectangle"
+      },
+      "expect": true
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "ordinary numbers",
+      "element": {
+        "x": 1,
+        "y": -2.5,
+        "width": 300,
+        "height": 4
+      },
+      "expect": true
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "a null is absent",
+      "element": {
+        "x": null,
+        "width": null
+      },
+      "expect": true
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "a boolean is not a coordinate",
+      "element": {
+        "x": true
+      },
+      "expect": false
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "a string is not a coordinate",
+      "element": {
+        "width": "10"
+      },
+      "expect": false
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "a list is not a coordinate",
+      "element": {
+        "height": [
+          1
+        ]
+      },
+      "expect": false
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "exactly the bound is fine",
+      "element": {
+        "x": 1000000,
+        "y": -1000000
+      },
+      "expect": true
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "one past the bound is not",
+      "element": {
+        "y": 1000001
+      },
+      "expect": false
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "a negative past the bound is not",
+      "element": {
+        "x": -1000000.5
+      },
+      "expect": false
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "a tighter bound",
+      "element": {
+        "x": 500
+      },
+      "options": {
+        "maxCoord": 100
+      },
+      "expect": false
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "a looser bound",
+      "element": {
+        "x": 5000000
+      },
+      "options": {
+        "maxCoord": 10000000
+      },
+      "expect": true
+    },
+    {
+      "fn": "saneGeometry",
+      "name": "only x, y, width and height are checked",
+      "element": {
+        "x": 1,
+        "points": [
+          [
+            1000000000000.0,
+            0
+          ]
+        ],
+        "angle": 1000000000000.0
+      },
+      "expect": true
+    },
+    {
+      "fn": "validPatch",
+      "name": "an element with a type",
+      "obj": {
+        "elements": [
+          {
+            "type": "rectangle",
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "type": "rectangle",
+            "x": 1,
+            "y": 2
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "an element with no type",
+      "obj": {
+        "elements": [
+          {
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "an element with an empty type",
+      "obj": {
+        "elements": [
+          {
+            "type": "",
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a deletion alone",
+      "obj": {
+        "delete": [
+          "n7"
+        ]
+      },
+      "expect": {
+        "elements": [],
+        "delete": [
+          "n7"
+        ]
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "deletions drop what is not a string",
+      "obj": {
+        "delete": [
+          "a",
+          7,
+          null,
+          "b",
+          [
+            "c"
+          ]
+        ]
+      },
+      "expect": {
+        "elements": [],
+        "delete": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "an empty patch",
+      "obj": {
+        "elements": [],
+        "delete": []
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "an empty object",
+      "obj": {},
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "not an object: a list",
+      "obj": [
+        {
+          "type": "rectangle"
+        }
+      ],
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "not an object: a string",
+      "obj": "elements",
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "not an object: null",
+      "obj": null,
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "not an object: a number",
+      "obj": 3,
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "elements that is not a list counts as none",
+      "obj": {
+        "elements": {
+          "type": "rectangle"
+        },
+        "delete": [
+          "a"
+        ]
+      },
+      "expect": {
+        "elements": [],
+        "delete": [
+          "a"
+        ]
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "delete that is not a list counts as none",
+      "obj": {
+        "elements": [
+          {
+            "type": "line"
+          }
+        ],
+        "delete": "a"
+      },
+      "expect": {
+        "elements": [
+          {
+            "type": "line"
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "an element that is not an object rejects the patch",
+      "obj": {
+        "elements": [
+          {
+            "type": "line"
+          },
+          "box"
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "one insane coordinate rejects the patch",
+      "obj": {
+        "elements": [
+          {
+            "type": "line",
+            "x": 1
+          },
+          {
+            "type": "line",
+            "x": 1000000000.0
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "opaque elements are dropped, the rest stands",
+      "obj": {
+        "elements": [
+          {
+            "type": "freedraw",
+            "id": "s"
+          },
+          {
+            "type": "image",
+            "id": "i"
+          },
+          {
+            "type": "stencil",
+            "id": "t"
+          },
+          {
+            "type": "rectangle",
+            "id": "r"
+          }
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "type": "rectangle",
+            "id": "r"
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "a patch of opaque elements alone says nothing",
+      "obj": {
+        "elements": [
+          {
+            "type": "freedraw",
+            "id": "s"
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "opaque elements alone plus a deletion is still a patch",
+      "obj": {
+        "elements": [
+          {
+            "type": "image",
+            "id": "i"
+          }
+        ],
+        "delete": [
+          "x"
+        ]
+      },
+      "expect": {
+        "elements": [],
+        "delete": [
+          "x"
+        ]
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "a custom opaque set",
+      "obj": {
+        "elements": [
+          {
+            "type": "rectangle",
+            "id": "r"
+          },
+          {
+            "type": "line",
+            "id": "l"
+          }
+        ]
+      },
+      "options": {
+        "opaque": [
+          "rectangle"
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "type": "line",
+            "id": "l"
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "an empty opaque set lets a stroke through",
+      "obj": {
+        "elements": [
+          {
+            "type": "freedraw",
+            "id": "s"
+          }
+        ]
+      },
+      "options": {
+        "opaque": []
+      },
+      "expect": {
+        "elements": [
+          {
+            "type": "freedraw",
+            "id": "s"
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "a placement",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "cylinder",
+            "x": 240,
+            "y": 180,
+            "label": "Orders"
+          }
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "stencil": "cylinder",
+            "x": 240,
+            "y": 180,
+            "label": "Orders"
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "a placement missing y",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "cylinder",
+            "x": 1
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a placement with a string coordinate",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "cylinder",
+            "x": "1",
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a placement with a boolean coordinate",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "cylinder",
+            "x": true,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a blank stencil name is not a placement, and with no type rejects",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "   ",
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a Unicode-space-only stencil name is blank",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "\u00a0\u2003\u3000",
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "an information-separator stencil name is blank to Python",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "\u001c\u0085",
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a byte-order mark is not whitespace to Python",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "\ufeff",
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "stencil": "\ufeff",
+            "x": 1,
+            "y": 2
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "a blank stencil name beside a type is an ordinary element",
+      "obj": {
+        "elements": [
+          {
+            "stencil": " ",
+            "type": "rectangle"
+          }
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "stencil": " ",
+            "type": "rectangle"
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "a non-string stencil name falls back to the type",
+      "obj": {
+        "elements": [
+          {
+            "stencil": 5,
+            "type": "rectangle"
+          }
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "stencil": 5,
+            "type": "rectangle"
+          }
+        ],
+        "delete": []
+      }
+    },
+    {
+      "fn": "validPatch",
+      "name": "the old stamp placement is refused",
+      "obj": {
+        "elements": [
+          {
+            "stamp": "Operator",
+            "x": 1,
+            "y": 2
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a placement is bound by the same limit",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "Operator",
+            "x": 1000001,
+            "y": 0
+          }
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "a placement under a tighter limit",
+      "obj": {
+        "elements": [
+          {
+            "stencil": "Operator",
+            "x": 500,
+            "y": 0
+          }
+        ]
+      },
+      "options": {
+        "maxCoord": 100
+      },
+      "expect": null
+    },
+    {
+      "fn": "validPatch",
+      "name": "extra keys on the patch are dropped",
+      "obj": {
+        "elements": [
+          {
+            "type": "line"
+          }
+        ],
+        "note": "hi",
+        "delete": [
+          "z"
+        ]
+      },
+      "expect": {
+        "elements": [
+          {
+            "type": "line"
+          }
+        ],
+        "delete": [
+          "z"
+        ]
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply bare-patch",
+      "reply": "bare-patch",
+      "expect": {
+        "prose": "Dropping the stale node.",
+        "patch": {
+          "elements": [],
+          "delete": [
+            "n7"
+          ]
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply echoes-opaque",
+      "reply": "echoes-opaque",
+      "expect": {
+        "prose": "Keeping your stroke and adding a frame around it.",
+        "patch": {
+          "elements": [
+            {
+              "id": "frame-1",
+              "type": "rectangle",
+              "x": 400,
+              "y": 250,
+              "width": 420,
+              "height": 120
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply fenced-patch",
+      "reply": "fenced-patch",
+      "expect": {
+        "prose": "Two boxes and an arrow between them, then.",
+        "patch": {
+          "elements": [
+            {
+              "id": "n1",
+              "type": "rectangle",
+              "x": 100,
+              "y": 100,
+              "width": 180,
+              "height": 90,
+              "label": {
+                "text": "Ingest"
+              }
+            },
+            {
+              "id": "n2",
+              "type": "rectangle",
+              "x": 400,
+              "y": 100,
+              "width": 180,
+              "height": 90,
+              "label": {
+                "text": "Store"
+              }
+            },
+            {
+              "id": "e1",
+              "type": "arrow",
+              "start": {
+                "id": "n1"
+              },
+              "end": {
+                "id": "n2"
+              }
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply malformed-geometry",
+      "reply": "malformed-geometry",
+      "expect": {
+        "prose": "Here you go.\n{\"elements\": [\n  {\"id\": \"ok\", \"type\": \"rectangle\", \"x\": 10, \"y\": 10, \"width\": 100, \"height\": 50},\n  {\"id\": \"bad\", \"type\": \"rectangle\", \"x\": 4000000, \"y\": 10, \"width\": 100, \"height\": 50}\n]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply prose-only",
+      "reply": "prose-only",
+      "expect": {
+        "prose": "I would leave the board as it stands \u2014 the layout already says what it needs to.",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply stamp-placement",
+      "reply": "stamp-placement",
+      "expect": {
+        "prose": "An operator at the console.\n{\"elements\": [{\"stamp\": \"Operator\", \"x\": 240, \"y\": 180, \"label\": \"Duty operator\"}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply stencil-placement",
+      "reply": "stencil-placement",
+      "expect": {
+        "prose": "A data store beside the console.",
+        "patch": {
+          "elements": [
+            {
+              "stencil": "cylinder",
+              "x": 240,
+              "y": 180,
+              "label": "Orders",
+              "subject": {
+                "bastion": {
+                  "kind": "datastore"
+                }
+              }
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply two-patches-last-wins",
+      "reply": "two-patches-last-wins",
+      "expect": {
+        "prose": "First thought:\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 0, \"y\": 0, \"width\": 10, \"height\": 10}]}\nOn reflection, this one:",
+        "patch": {
+          "elements": [
+            {
+              "id": "b",
+              "type": "ellipse",
+              "x": 50,
+              "y": 50,
+              "width": 20,
+              "height": 20
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply echoes-opaque with nothing opaque",
+      "reply": "echoes-opaque",
+      "options": {
+        "opaque": []
+      },
+      "expect": {
+        "prose": "Keeping your stroke and adding a frame around it.",
+        "patch": {
+          "elements": [
+            {
+              "id": "stroke-arc-01",
+              "type": "freedraw",
+              "x": 0,
+              "y": 0,
+              "width": 10,
+              "height": 10,
+              "points": [
+                [
+                  0,
+                  0
+                ],
+                [
+                  10,
+                  10
+                ]
+              ]
+            },
+            {
+              "id": "frame-1",
+              "type": "rectangle",
+              "x": 400,
+              "y": 250,
+              "width": 420,
+              "height": 120
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the corpus reply fenced-patch under a tight bound",
+      "reply": "fenced-patch",
+      "options": {
+        "maxCoord": 300
+      },
+      "expect": {
+        "prose": "Two boxes and an arrow between them, then.\n\n```excalidraw\n{\"elements\": [\n  {\"id\": \"n1\", \"type\": \"rectangle\", \"x\": 100, \"y\": 100, \"width\": 180, \"height\": 90, \"label\": {\"text\": \"Ingest\"}},\n  {\"id\": \"n2\", \"type\": \"rectangle\", \"x\": 400, \"y\": 100, \"width\": 180, \"height\": 90, \"label\": {\"text\": \"Store\"}},\n  {\"id\": \"e1\", \"type\": \"arrow\", \"start\": {\"id\": \"n1\"}, \"end\": {\"id\": \"n2\"}}\n], \"delete\": []}\n```",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "an empty message",
+      "message": "",
+      "expect": {
+        "prose": "",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "whitespace only",
+      "message": " \n\t ",
+      "expect": {
+        "prose": "",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a patch and nothing else",
+      "message": "{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a json label before an unfenced patch",
+      "message": "Done.\njson\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}",
+      "expect": {
+        "prose": "Done.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "an upper-case JSON label inside a fence",
+      "message": "Done.\n```JSON\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n```\nBye.",
+      "expect": {
+        "prose": "Done.\nBye.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a label in backticks",
+      "message": "Done. `excalidraw` {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]} Bye",
+      "expect": {
+        "prose": "Done.\nBye",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a label with space before the fence",
+      "message": "Here you go.\n\n  ```  excalidraw\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n```",
+      "expect": {
+        "prose": "Here you go.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a fence with CRLF line endings",
+      "message": "Here.\r\n```json\r\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\r\n```\r\nThanks.",
+      "expect": {
+        "prose": "Here.\nThanks.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a fence closing line with trailing spaces",
+      "message": "Ok.\n```\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n```   \nNext.",
+      "expect": {
+        "prose": "Ok.\n```\nNext.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "prose ending in the word json is not a label unless it ends there",
+      "message": "I prefer json for this. {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]} Fine.",
+      "expect": {
+        "prose": "I prefer json for this.\nFine.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "the word json at the very end of the head is taken as a label",
+      "message": "I prefer json\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}",
+      "expect": {
+        "prose": "I prefer",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "braces in prose that are not JSON",
+      "message": "The set {a, b} is small. {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}",
+      "expect": {
+        "prose": "The set {a, b} is small.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a patch inside a larger valid object is not examined",
+      "message": "{\"wrapper\": {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}}",
+      "expect": {
+        "prose": "{\"wrapper\": {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a patch inside a broken object is found",
+      "message": "{\"wrapper\": {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}, \"oops\": ",
+      "expect": {
+        "prose": "{\"wrapper\":\n, \"oops\":",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a brace inside a JSON string does not end the object",
+      "message": "{\"elements\": [{\"type\": \"text\", \"text\": \"a } b { c\", \"x\": 1, \"y\": 1}]} done",
+      "expect": {
+        "prose": "done",
+        "patch": {
+          "elements": [
+            {
+              "type": "text",
+              "text": "a } b { c",
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "escapes and non-ASCII in strings",
+      "message": "Se h\u00e4r: {\"elements\": [{\"type\": \"text\", \"text\": \"caf\\u00e9 \\ud83d\\ude00 \\n \\\"q\\\" \u00e5\u00e4\u00f6 \ud83d\ude00\", \"x\": 1, \"y\": 1}]}",
+      "expect": {
+        "prose": "Se h\u00e4r:",
+        "patch": {
+          "elements": [
+            {
+              "type": "text",
+              "text": "caf\u00e9 \ud83d\ude00 \n \"q\" \u00e5\u00e4\u00f6 \ud83d\ude00",
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a trailing comma is not JSON",
+      "message": "{\"elements\": [{\"type\": \"line\"},]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"line\"},]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a single-quoted object is not JSON",
+      "message": "{'elements': []}",
+      "expect": {
+        "prose": "{'elements': []}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "an unterminated string",
+      "message": "{\"elements\": [{\"type\": \"line\", \"text\": \"oops}]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"line\", \"text\": \"oops}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a raw newline inside a string is refused",
+      "message": "{\"elements\": [{\"type\": \"text\", \"text\": \"a\nb\"}]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"text\", \"text\": \"a\nb\"}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a bad escape is refused",
+      "message": "{\"elements\": [{\"type\": \"text\", \"text\": \"\\q\"}]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"text\", \"text\": \"\\q\"}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a short unicode escape is refused",
+      "message": "{\"elements\": [{\"type\": \"text\", \"text\": \"\\u12\"}]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"text\", \"text\": \"\\u12\"}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a lone surrogate escape is accepted",
+      "message": "{\"elements\": [{\"type\": \"text\", \"text\": \"\\ud800\"}]}",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "type": "text",
+              "text": "\ud800"
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a leading-zero number is refused",
+      "message": "{\"elements\": [{\"type\": \"line\", \"x\": 01}]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"line\", \"x\": 01}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "numbers in every form",
+      "message": "{\"elements\": [{\"type\": \"line\", \"x\": -0, \"y\": 1.5e2, \"width\": 2E-2, \"height\": 10, \"angle\": -0.0}]}",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "type": "line",
+              "x": 0,
+              "y": 150.0,
+              "width": 0.02,
+              "height": 10,
+              "angle": -0.0
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a fraction without digits is refused",
+      "message": "{\"elements\": [{\"type\": \"line\", \"x\": 1.}]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"line\", \"x\": 1.}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "NaN as a coordinate rejects the patch",
+      "message": "{\"elements\": [{\"type\": \"line\", \"x\": NaN}]}",
+      "expect": {
+        "prose": "{\"elements\": [{\"type\": \"line\", \"x\": NaN}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a duplicate key: the later value wins",
+      "message": "{\"elements\": [{\"type\": \"line\", \"x\": 1, \"x\": 2, \"y\": 0}]}",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "type": "line",
+              "x": 2,
+              "y": 0
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "literals: true, false, null, nested",
+      "message": "{\"elements\": [{\"type\": \"line\", \"locked\": true, \"isDeleted\": false, \"link\": null, \"groupIds\": [], \"meta\": {\"a\": [1, {\"b\": null}]}}]}",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "type": "line",
+              "locked": true,
+              "isDeleted": false,
+              "link": null,
+              "groupIds": [],
+              "meta": {
+                "a": [
+                  1,
+                  {
+                    "b": null
+                  }
+                ]
+              }
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "whitespace everywhere in the object",
+      "message": "{ \"elements\" :\n[ { \"type\" : \"line\" } ] ,\t\"delete\" : [ ] }",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "type": "line"
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "two patches: the last valid wins, an invalid one after it does not displace it",
+      "message": "{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\nThen: {\"elements\": [{\"id\": \"b\", \"type\": \"ellipse\"}]}\nThen: {\"elements\": [{\"x\": 1}]} bye",
+      "expect": {
+        "prose": "{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\nThen:\nThen: {\"elements\": [{\"x\": 1}]} bye",
+        "patch": {
+          "elements": [
+            {
+              "id": "b",
+              "type": "ellipse"
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "an empty patch after a good one does not displace it",
+      "message": "{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]} {\"elements\": [], \"delete\": []}",
+      "expect": {
+        "prose": "{\"elements\": [], \"delete\": []}",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a deletion-only patch",
+      "message": "Removing it. {\"delete\": [\"n7\", \"n8\"]}",
+      "expect": {
+        "prose": "Removing it.",
+        "patch": {
+          "elements": [],
+          "delete": [
+            "n7",
+            "n8"
+          ]
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a patch of only opaque elements leaves the message whole",
+      "message": "Echo: {\"elements\": [{\"id\": \"s\", \"type\": \"freedraw\"}]}",
+      "expect": {
+        "prose": "Echo: {\"elements\": [{\"id\": \"s\", \"type\": \"freedraw\"}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a patch in the middle: prose on both sides is joined",
+      "message": "Before the patch.\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\nAfter the patch.",
+      "expect": {
+        "prose": "Before the patch.\nAfter the patch.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a patch in the middle in a fence: prose on both sides is joined",
+      "message": "Before.\n```json\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n```\n\nAfter.",
+      "expect": {
+        "prose": "Before.\nAfter.",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a message that is only a patch in a fence",
+      "message": "```json\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n```",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "Unicode whitespace around the patch is stripped as Python strips it",
+      "message": "\u00a0\u2003Hello\u3000\n{\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}\n\u2028Bye\u0085",
+      "expect": {
+        "prose": "Hello\nBye",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a byte-order mark is not stripped from the prose",
+      "message": "\ufeffHello {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]}",
+      "expect": {
+        "prose": "\ufeffHello",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "an information separator at the edge is stripped",
+      "message": "\u001cHello\u001d {\"elements\": [{\"id\": \"a\", \"type\": \"rectangle\", \"x\": 1, \"y\": 2}]} \u001eBye\u001f",
+      "expect": {
+        "prose": "Hello\nBye",
+        "patch": {
+          "elements": [
+            {
+              "id": "a",
+              "type": "rectangle",
+              "x": 1,
+              "y": 2
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a deep nesting still parses",
+      "message": "{\"elements\": [{\"type\": \"line\", \"a\": [[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]}]}",
+      "expect": {
+        "prose": "",
+        "patch": {
+          "elements": [
+            {
+              "type": "line",
+              "a": [
+                [
+                  [
+                    [
+                      [
+                        [
+                          [
+                            [
+                              [
+                                [
+                                  [
+                                    [
+                                      [
+                                        [
+                                          [
+                                            [
+                                              [
+                                                [
+                                                  [
+                                                    [
+                                                      [
+                                                        [
+                                                          [
+                                                            [
+                                                              [
+                                                                [
+                                                                  [
+                                                                    [
+                                                                      [
+                                                                        [
+                                                                          [
+                                                                            [
+                                                                              [
+                                                                                [
+                                                                                  [
+                                                                                    [
+                                                                                      [
+                                                                                        [
+                                                                                          [
+                                                                                            []
+                                                                                          ]
+                                                                                        ]
+                                                                                      ]
+                                                                                    ]
+                                                                                  ]
+                                                                                ]
+                                                                              ]
+                                                                            ]
+                                                                          ]
+                                                                        ]
+                                                                      ]
+                                                                    ]
+                                                                  ]
+                                                                ]
+                                                              ]
+                                                            ]
+                                                          ]
+                                                        ]
+                                                      ]
+                                                    ]
+                                                  ]
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ]
+                                      ]
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a placement in a reply",
+      "message": "Here. {\"elements\": [{\"stencil\": \"server\", \"x\": 10, \"y\": 20, \"label\": \"API\", \"subject\": {\"app\": {\"id\": 1}}}]}",
+      "expect": {
+        "prose": "Here.",
+        "patch": {
+          "elements": [
+            {
+              "stencil": "server",
+              "x": 10,
+              "y": 20,
+              "label": "API",
+              "subject": {
+                "app": {
+                  "id": 1
+                }
+              }
+            }
+          ],
+          "delete": []
+        }
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "an opaque option applied to a reply",
+      "message": "x {\"elements\": [{\"id\": \"r\", \"type\": \"rectangle\", \"x\": 0, \"y\": 0}]}",
+      "options": {
+        "opaque": [
+          "rectangle"
+        ]
+      },
+      "expect": {
+        "prose": "x {\"elements\": [{\"id\": \"r\", \"type\": \"rectangle\", \"x\": 0, \"y\": 0}]}",
+        "patch": null
+      }
+    },
+    {
+      "fn": "extractPatch",
+      "name": "a max coordinate option applied to a reply",
+      "message": "x {\"elements\": [{\"id\": \"r\", \"type\": \"rectangle\", \"x\": 5000, \"y\": 0}]}",
+      "options": {
+        "maxCoord": 1000
+      },
+      "expect": {
+        "prose": "x {\"elements\": [{\"id\": \"r\", \"type\": \"rectangle\", \"x\": 5000, \"y\": 0}]}",
+        "patch": null
+      }
+    }
+  ]
+}

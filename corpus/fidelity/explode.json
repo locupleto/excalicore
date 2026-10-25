@@ -1,0 +1,1204 @@
+{
+  "doc": "explode() executed from python/excalicore/fidelity.py. A case gives `elements` inline (or null), or a corpus `scene`, and optional `options.anonPrefix`; `expect` is the list of rows with the column names ElementRow has: element_id, z, type, x, y, width, height, angle, json, anonymous. `json` is the remainder's text exactly as json.dumps wrote it. Caveat for the TypeScript half: an integer-valued number is written as an integer there, because JavaScript has no float 2.0; no input here is a float with an integer value.",
+  "cases": [
+    {
+      "fn": "explode",
+      "name": "the corpus scene arrow-bindings",
+      "scene": "arrow-bindings",
+      "expect": [
+        {
+          "element_id": "box-src",
+          "z": 0,
+          "type": "rectangle",
+          "x": 100,
+          "y": 100,
+          "width": 180,
+          "height": 90,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"link\": null, \"locked\": false, \"index\": \"a0\", \"seed\": 101, \"version\": 12, \"versionNonce\": 202, \"updated\": 1756000100001, \"boundElements\": [{\"type\": \"arrow\", \"id\": \"arrow-1\"}]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "box-dst",
+          "z": 1,
+          "type": "rectangle",
+          "x": 460,
+          "y": 100,
+          "width": 180,
+          "height": 90,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"link\": null, \"locked\": false, \"index\": \"a1\", \"seed\": 303, \"version\": 15, \"versionNonce\": 404, \"updated\": 1756000100002, \"boundElements\": [{\"type\": \"arrow\", \"id\": \"arrow-1\"}]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "arrow-1",
+          "z": 2,
+          "type": "arrow",
+          "x": 285,
+          "y": 145,
+          "width": 170,
+          "height": 0,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"link\": null, \"locked\": false, \"index\": \"a2\", \"seed\": 505, \"version\": 31, \"versionNonce\": 606, \"updated\": 1756000100003, \"boundElements\": null, \"points\": [[0, 0], [170, 0]], \"startBinding\": {\"elementId\": \"box-src\", \"focus\": 0.02, \"gap\": 5}, \"endBinding\": {\"elementId\": \"box-dst\", \"focus\": -0.03, \"gap\": 5}, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"lastCommittedPoint\": null, \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "arrow-2",
+          "z": 3,
+          "type": "arrow",
+          "x": 300,
+          "y": 300,
+          "width": 100,
+          "height": 40,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"link\": null, \"locked\": false, \"index\": \"a3\", \"seed\": 707, \"version\": 4, \"versionNonce\": 808, \"updated\": 1756000100004, \"boundElements\": null, \"points\": [[0, 0], [100, 40]], \"startBinding\": {\"elementId\": \"box-that-was-deleted\", \"focus\": 0, \"gap\": 4}, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"lastCommittedPoint\": null, \"elbowed\": false}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "the corpus scene bound-labels",
+      "scene": "bound-labels",
+      "expect": [
+        {
+          "element_id": "title",
+          "z": 0,
+          "type": "text",
+          "x": 155,
+          "y": 35,
+          "width": 900,
+          "height": 48,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a0\", \"roundness\": null, \"seed\": 644918429, \"version\": 3, \"versionNonce\": 1012631123, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109975573, \"link\": null, \"locked\": false, \"text\": \"Fable orchestrates. Lighter agents gather signal and write code.\", \"fontSize\": 32, \"fontFamily\": 5, \"textAlign\": \"left\", \"verticalAlign\": \"top\", \"containerId\": null, \"originalText\": \"Fable orchestrates. Lighter agents gather signal and write code.\", \"autoResize\": true, \"lineHeight\": 1.25}",
+          "anonymous": false
+        },
+        {
+          "element_id": "goal",
+          "z": 1,
+          "type": "rectangle",
+          "x": 70,
+          "y": 145,
+          "width": 250,
+          "height": 120,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"#ffffff\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a1\", \"roundness\": {\"type\": 3}, \"seed\": 934524851, \"version\": 2, \"versionNonce\": 1841626205, \"isDeleted\": false, \"boundElements\": [{\"type\": \"text\", \"id\": \"M0JK0f_BOBUY28IKkNh9F\"}], \"updated\": 1781109453369, \"link\": null, \"locked\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "fable",
+          "z": 2,
+          "type": "rectangle",
+          "x": 450,
+          "y": 120,
+          "width": 350,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"#ffffff\", \"fillStyle\": \"solid\", \"strokeWidth\": 4, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a2\", \"roundness\": {\"type\": 3}, \"seed\": 407572733, \"version\": 2, \"versionNonce\": 2052932595, \"isDeleted\": false, \"boundElements\": [{\"type\": \"text\", \"id\": \"OVvxuy7UWrLLbiQPXduax\"}], \"updated\": 1781109453369, \"link\": null, \"locked\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "output",
+          "z": 3,
+          "type": "rectangle",
+          "x": 920,
+          "y": 145,
+          "width": 310,
+          "height": 120,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"#ffffff\", \"fillStyle\": \"solid\", \"strokeWidth\": 4, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a3\", \"roundness\": {\"type\": 3}, \"seed\": 845695315, \"version\": 2, \"versionNonce\": 1476356285, \"isDeleted\": false, \"boundElements\": [{\"type\": \"text\", \"id\": \"7fUSOZnEqBYtktgF47dUh\"}], \"updated\": 1781109453369, \"link\": null, \"locked\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "research",
+          "z": 4,
+          "type": "rectangle",
+          "x": 70,
+          "y": 420,
+          "width": 300,
+          "height": 135,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"#ffffff\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"dashed\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a4\", \"roundness\": {\"type\": 3}, \"seed\": 1041885533, \"version\": 2, \"versionNonce\": 949374355, \"isDeleted\": false, \"boundElements\": [{\"type\": \"text\", \"id\": \"SosOaQ7xBE5k1ASPDPk_S\"}], \"updated\": 1781109453369, \"link\": null, \"locked\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "coding",
+          "z": 5,
+          "type": "rectangle",
+          "x": 450,
+          "y": 420,
+          "width": 350,
+          "height": 135,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"#ffffff\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"dashed\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a5\", \"roundness\": {\"type\": 3}, \"seed\": 937010931, \"version\": 2, \"versionNonce\": 2095925533, \"isDeleted\": false, \"boundElements\": [{\"type\": \"text\", \"id\": \"rvn2GErYZ0cR4baVThLBs\"}], \"updated\": 1781109453369, \"link\": null, \"locked\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "testing",
+          "z": 6,
+          "type": "rectangle",
+          "x": 920,
+          "y": 420,
+          "width": 310,
+          "height": 135,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"#ffffff\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"dashed\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a6\", \"roundness\": {\"type\": 3}, \"seed\": 154056125, \"version\": 2, \"versionNonce\": 171778867, \"isDeleted\": false, \"boundElements\": [{\"type\": \"text\", \"id\": \"Lon84DSksbfve8e6YUOca\"}], \"updated\": 1781109453369, \"link\": null, \"locked\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "a-goal-fable",
+          "z": 7,
+          "type": "arrow",
+          "x": 320,
+          "y": 205,
+          "width": 130,
+          "height": 0,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a7\", \"roundness\": null, \"seed\": 1854820499, \"version\": 2, \"versionNonce\": 503324029, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[0.5, 0], [129.5, 0]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "a-fable-output",
+          "z": 8,
+          "type": "arrow",
+          "x": 800,
+          "y": 205,
+          "width": 120,
+          "height": 0,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a8\", \"roundness\": null, \"seed\": 1152054813, \"version\": 2, \"versionNonce\": 1471694035, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[0.5, 0], [119.5, 0]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "a-fable-research",
+          "z": 9,
+          "type": "arrow",
+          "x": 500,
+          "y": 270,
+          "width": 250,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a9\", \"roundness\": null, \"seed\": 1748813363, \"version\": 2, \"versionNonce\": 1383687645, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[-0.5, 0.5], [-249.5, 149.5]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "a-fable-coding",
+          "z": 10,
+          "type": "arrow",
+          "x": 625,
+          "y": 270,
+          "width": 0,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aA\", \"roundness\": null, \"seed\": 1535126141, \"version\": 2, \"versionNonce\": 949891699, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[0, 0.5], [0, 149.5]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "a-fable-testing",
+          "z": 11,
+          "type": "arrow",
+          "x": 750,
+          "y": 270,
+          "width": 285,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aB\", \"roundness\": null, \"seed\": 1003194323, \"version\": 2, \"versionNonce\": 1298833981, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[0.5, 0.5], [284.5, 149.5]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "r-research-fable",
+          "z": 12,
+          "type": "arrow",
+          "x": 340,
+          "y": 420,
+          "width": 180,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"dashed\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aC\", \"roundness\": null, \"seed\": 1584386781, \"version\": 2, \"versionNonce\": 229993491, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[0.5, -0.5], [179.5, -149.5]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "r-coding-fable",
+          "z": 13,
+          "type": "arrow",
+          "x": 675,
+          "y": 420,
+          "width": 0,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"dashed\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aD\", \"roundness\": null, \"seed\": 1599149427, \"version\": 2, \"versionNonce\": 1672827549, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[0, -0.5], [0, -149.5]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "r-testing-fable",
+          "z": 14,
+          "type": "arrow",
+          "x": 950,
+          "y": 420,
+          "width": 220,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"dashed\", \"roughness\": 1.2, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aE\", \"roundness\": null, \"seed\": 1242263357, \"version\": 2, \"versionNonce\": 1525969331, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453369, \"link\": null, \"locked\": false, \"points\": [[-0.5, -0.5], [-219.5, -149.5]], \"lastCommittedPoint\": null, \"startBinding\": null, \"endBinding\": null, \"startArrowhead\": null, \"endArrowhead\": \"arrow\", \"elbowed\": false}",
+          "anonymous": false
+        },
+        {
+          "element_id": "M0JK0f_BOBUY28IKkNh9F",
+          "z": 15,
+          "type": "text",
+          "x": 135.357421875,
+          "y": 160,
+          "width": 119.28515625,
+          "height": 90,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aJ\", \"roundness\": null, \"seed\": 346889149, \"version\": 3, \"versionNonce\": 2073455101, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453371, \"link\": null, \"locked\": false, \"text\": \"User goal\\nrepo context\\nconstraints\", \"fontSize\": 24, \"fontFamily\": 5, \"textAlign\": \"center\", \"verticalAlign\": \"middle\", \"containerId\": \"goal\", \"originalText\": \"User goal\\nrepo context\\nconstraints\", \"autoResize\": true, \"lineHeight\": 1.25}",
+          "anonymous": false
+        },
+        {
+          "element_id": "OVvxuy7UWrLLbiQPXduax",
+          "z": 16,
+          "type": "text",
+          "x": 505.90234375,
+          "y": 150,
+          "width": 238.1953125,
+          "height": 90,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aK\", \"roundness\": null, \"seed\": 1600953373, \"version\": 3, \"versionNonce\": 2128281683, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453371, \"link\": null, \"locked\": false, \"text\": \"Claude Fable\\norchestrator + judge\\nplan, tradeoffs, synthesis\", \"fontSize\": 24, \"fontFamily\": 5, \"textAlign\": \"center\", \"verticalAlign\": \"middle\", \"containerId\": \"fable\", \"originalText\": \"Claude Fable\\norchestrator + judge\\nplan, tradeoffs, synthesis\", \"autoResize\": true, \"lineHeight\": 1.25}",
+          "anonymous": false
+        },
+        {
+          "element_id": "7fUSOZnEqBYtktgF47dUh",
+          "z": 17,
+          "type": "text",
+          "x": 957.388916015625,
+          "y": 161.875,
+          "width": 235.22216796875,
+          "height": 86.25,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aL\", \"roundness\": null, \"seed\": 991760509, \"version\": 3, \"versionNonce\": 814883421, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453371, \"link\": null, \"locked\": false, \"text\": \"Integrated result\\nfinal review\\nuser answer + next action\", \"fontSize\": 23, \"fontFamily\": 5, \"textAlign\": \"center\", \"verticalAlign\": \"middle\", \"containerId\": \"output\", \"originalText\": \"Integrated result\\nfinal review\\nuser answer + next action\", \"autoResize\": true, \"lineHeight\": 1.25}",
+          "anonymous": false
+        },
+        {
+          "element_id": "SosOaQ7xBE5k1ASPDPk_S",
+          "z": 18,
+          "type": "text",
+          "x": 121.306640625,
+          "y": 444.375,
+          "width": 197.38671875,
+          "height": 86.25,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aM\", \"roundness\": null, \"seed\": 1166014685, \"version\": 3, \"versionNonce\": 1927118323, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453371, \"link\": null, \"locked\": false, \"text\": \"Lighter agents\\nresearch scans\\ndocs, APIs, repo map\", \"fontSize\": 23, \"fontFamily\": 5, \"textAlign\": \"center\", \"verticalAlign\": \"middle\", \"containerId\": \"research\", \"originalText\": \"Lighter agents\\nresearch scans\\ndocs, APIs, repo map\", \"autoResize\": true, \"lineHeight\": 1.25}",
+          "anonymous": false
+        },
+        {
+          "element_id": "rvn2GErYZ0cR4baVThLBs",
+          "z": 19,
+          "type": "text",
+          "x": 544.544921875,
+          "y": 444.375,
+          "width": 160.91015625,
+          "height": 86.25,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aN\", \"roundness\": null, \"seed\": 1747375421, \"version\": 3, \"versionNonce\": 1379389117, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453371, \"link\": null, \"locked\": false, \"text\": \"Lighter agents\\nbounded coding\\npatches, refactors\", \"fontSize\": 23, \"fontFamily\": 5, \"textAlign\": \"center\", \"verticalAlign\": \"middle\", \"containerId\": \"coding\", \"originalText\": \"Lighter agents\\nbounded coding\\npatches, refactors\", \"autoResize\": true, \"lineHeight\": 1.25}",
+          "anonymous": false
+        },
+        {
+          "element_id": "Lon84DSksbfve8e6YUOca",
+          "z": 20,
+          "type": "text",
+          "x": 977.716064453125,
+          "y": 444.375,
+          "width": 194.56787109375,
+          "height": 86.25,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"aO\", \"roundness\": null, \"seed\": 1584604573, \"version\": 3, \"versionNonce\": 1761560467, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1781109453371, \"link\": null, \"locked\": false, \"text\": \"Lighter agents\\ntesting passes\\nscripts, browser, logs\", \"fontSize\": 23, \"fontFamily\": 5, \"textAlign\": \"center\", \"verticalAlign\": \"middle\", \"containerId\": \"testing\", \"originalText\": \"Lighter agents\\ntesting passes\\nscripts, browser, logs\", \"autoResize\": true, \"lineHeight\": 1.25}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "the corpus scene freedraw",
+      "scene": "freedraw",
+      "expect": [
+        {
+          "element_id": "stroke-arc-01",
+          "z": 0,
+          "type": "freedraw",
+          "x": 412.5,
+          "y": 260.25,
+          "width": 373.0175,
+          "height": 73.7454,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 1, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"index\": \"a0\", \"roundness\": null, \"seed\": 1284733921, \"version\": 412, \"versionNonce\": 733919284, \"isDeleted\": false, \"boundElements\": null, \"updated\": 1756000000000, \"link\": null, \"locked\": false, \"points\": [[1.6643, -1.22], [3.2829, -2.5566], [5.2471, -4.1353], [7.1, -5.4602], [8.5654, -6.68], [10.2379, -7.9685], [11.6874, -9.3561], [13.1798, -10.5839], [14.7898, -12.0602], [16.4627, -13.4388], [18.3281, -14.4319], [19.9173, -15.4632], [21.9026, -16.4444], [23.5079, -17.6524], [25.3265, -18.8078], [27.285, -20.1217], [29.0348, -20.9591], [31.1144, -22.2965], [32.4145, -23.2251], [33.7383, -24.5676], [35.7611, -25.4644], [37.6363, -26.6102], [39.4405, -27.5895], [40.9454, -28.6096], [42.4814, -29.8724], [44.0219, -30.6842], [45.6894, -31.7297], [47.1104, -32.7213], [49.0463, -33.8691], [51.1034, -35.1201], [52.894, -36.018], [54.7401, -37.1318], [56.6315, -37.9193], [58.4182, -38.9956], [60.0627, -40.1127], [61.7774, -41.3083], [63.1142, -42.0663], [64.4364, -42.7428], [65.8323, -43.3291], [67.4386, -44.4632], [69.4151, -45.083], [71.4418, -46.1619], [72.8672, -47.0796], [74.8343, -47.8049], [76.6598, -48.6001], [78.2629, -49.1639], [80.0884, -49.642], [82.0979, -50.6689], [83.7794, -51.6082], [85.4616, -52.6098], [86.8129, -53.6281], [88.2284, -54.2027], [89.6176, -54.8558], [91.4342, -55.6962], [92.8606, -56.129], [94.8091, -56.591], [96.6875, -57.2076], [98.0869, -58.1349], [100.0607, -59.0527], [101.6343, -59.5477], [103.3041, -60.2488], [105.1606, -60.5932], [106.9808, -61.4153], [109.0443, -62.1206], [111.0994, -62.6665], [112.6938, -63.0509], [114.3985, -63.4122], [116.2887, -64.1986], [117.9321, -64.7011], [119.4839, -65.224], [121.1845, -65.4564], [123.0117, -65.7764], [124.654, -66.3623], [126.3208, -66.6613], [128.042, -67.1501], [129.6865, -67.5095], [131.3766, -67.8028], [133.4365, -68.1201], [135.2366, -68.4742], [137.287, -68.7679], [139.3348, -68.9835], [141.2845, -69.4669], [143.3361, -69.6885], [145.0454, -69.9391], [147.0126, -70.4244], [148.5293, -70.8594], [150.3104, -70.9465], [151.6639, -71.2998], [153.4348, -71.6534], [155.2, -71.9765], [157.2839, -72.1965], [159.0518, -72.2965], [160.5252, -72.8004], [162.3621, -73.147], [164.2561, -73.493], [166.1044, -73.5706], [167.5121, -73.6556], [169.142, -73.8788], [170.9234, -73.754], [172.6642, -73.9301], [174.6681, -74.3353], [176.1908, -74.6567], [178.0969, -74.7085], [180.1231, -74.533], [181.7607, -74.5184], [183.312, -74.8584], [184.7383, -74.7082], [186.2418, -74.5457], [187.9707, -74.5078], [189.2913, -74.5577], [191.3845, -74.2675], [193.0988, -74.1771], [194.8033, -74.3799], [196.171, -74.5585], [197.7083, -74.7895], [199.0789, -74.9654], [200.6512, -74.8896], [202.1592, -74.8382], [203.5346, -74.9166], [205.4497, -74.7386], [207.1431, -74.9177], [208.5153, -74.4993], [210.3256, -74.4983], [211.7268, -74.3988], [213.2274, -74.1497], [214.7033, -74.175], [216.0686, -74.0582], [217.8551, -73.9867], [219.882, -74.026], [221.4389, -73.7338], [222.8215, -73.3359], [224.7636, -73.3155], [226.5431, -72.9089], [227.9324, -72.8619], [229.2978, -72.6804], [230.6084, -72.2027], [232.4577, -71.8105], [234.4509, -71.4152], [235.7908, -71.176], [237.5428, -70.8728], [238.9098, -70.8036], [240.6157, -70.7], [242.1813, -70.4601], [244.0783, -70.2234], [245.9381, -69.9909], [247.8817, -69.7588], [249.3075, -69.3958], [251.1676, -68.7403], [252.6597, -68.4836], [254.376, -68.2428], [255.9815, -67.6455], [257.4398, -67.2793], [258.816, -67.0323], [260.1806, -66.6133], [262.0165, -66.1552], [263.6591, -65.5892], [265.3424, -64.82], [266.9623, -64.5032], [268.5029, -63.9923], [270.196, -63.6235], [271.7987, -62.9687], [273.7641, -62.1918], [275.2051, -61.7282], [277.1092, -61.0878], [278.9151, -60.6477], [280.6984, -60.1336], [282.5863, -59.5208], [284.1366, -59.1352], [285.9216, -58.2009], [287.9892, -57.7642], [289.3706, -57.1631], [290.8849, -56.2782], [292.2226, -55.5387], [293.979, -54.9066], [295.6032, -54.346], [297.5717, -53.835], [299.0489, -53.0421], [301.0481, -52.4817], [302.4115, -51.8387], [303.8573, -51.1366], [305.9257, -50.434], [307.7756, -49.5869], [309.5112, -48.9408], [310.8537, -48.0038], [312.6232, -46.9837], [314.2465, -46.0522], [316.1981, -45.2888], [318.1913, -44.1761], [320.0441, -42.9764], [322.0998, -42.0469], [324.1119, -41.0686], [325.632, -40.2889], [327.6596, -39.1427], [329.4434, -38.2959], [331.4883, -37.4622], [332.8923, -36.1499], [334.1953, -34.9295], [336.1156, -33.7914], [337.9145, -32.5253], [339.7957, -31.4389], [341.3398, -30.6181], [342.9612, -29.4382], [345.0255, -28.2316], [346.6359, -27.0492], [348.6562, -26.0172], [350.4803, -24.7637], [352.3006, -23.4224], [353.8155, -22.3261], [355.1779, -21.0082], [356.6619, -19.811], [358.1482, -18.4503], [359.5963, -17.4042], [361.6533, -16.3394], [363.4008, -15.1384], [364.967, -14.0822], [366.2949, -12.9424], [367.9122, -11.5965], [369.6115, -10.335], [370.9182, -9.2458], [373.0175, -8.0674]], \"pressures\": [0.3608, 0.44, 0.5188, 0.4786, 0.7662, 0.3535, 0.6651, 0.3483, 0.4101, 0.8636, 0.6901, 0.6726, 0.343, 0.7192, 0.667, 0.8583, 0.3566, 0.7849, 0.7873, 0.308, 0.7516, 0.7391, 0.767, 0.5156, 0.8314, 0.7724, 0.4574, 0.4833, 0.4097, 0.4226, 0.5004, 0.8622, 0.866, 0.3603, 0.5567, 0.6683, 0.7213, 0.5446, 0.7556, 0.6131, 0.6318, 0.3352, 0.6304, 0.5276, 0.3945, 0.6253, 0.7682, 0.4155, 0.5137, 0.4376, 0.7031, 0.6349, 0.8926, 0.6195, 0.443, 0.7978, 0.8708, 0.4892, 0.8929, 0.7321, 0.8029, 0.8763, 0.4578, 0.8441, 0.5629, 0.5211, 0.4434, 0.7189, 0.6895, 0.748, 0.3405, 0.79, 0.5224, 0.5081, 0.6523, 0.6852, 0.3026, 0.6437, 0.3952, 0.7241, 0.8461, 0.3812, 0.866, 0.5007, 0.3088, 0.5817, 0.5871, 0.6876, 0.4326, 0.3627, 0.3482, 0.4645, 0.5239, 0.8881, 0.3079, 0.6169, 0.55, 0.871, 0.7602, 0.7269, 0.6073, 0.7891, 0.3121, 0.4733, 0.6647, 0.6561, 0.4293, 0.4995, 0.7003, 0.793, 0.5521, 0.3337, 0.6422, 0.4811, 0.5467, 0.7153, 0.4355, 0.7693, 0.816, 0.3204, 0.5639, 0.3061, 0.4466, 0.837, 0.6615, 0.4395, 0.8399, 0.7476, 0.5847, 0.3087, 0.6344, 0.72, 0.831, 0.3306, 0.863, 0.4093, 0.5506, 0.6927, 0.6297, 0.6343, 0.4142, 0.4839, 0.558, 0.6259, 0.5091, 0.3986, 0.5972, 0.6619, 0.3529, 0.3745, 0.6771, 0.5259, 0.3514, 0.3666, 0.4563, 0.3827, 0.3269, 0.3091, 0.4025, 0.4257, 0.8562, 0.5101, 0.6875, 0.5972, 0.3113, 0.4815, 0.7293, 0.4398, 0.8595, 0.6517, 0.8827, 0.3012, 0.7362, 0.7787, 0.5318, 0.3041, 0.6391, 0.403, 0.4708, 0.4859, 0.8484, 0.5032, 0.5211, 0.7458, 0.4879, 0.3846, 0.8224, 0.5439, 0.433, 0.4638, 0.6038, 0.3684, 0.7511, 0.8226, 0.8925, 0.8807, 0.6911, 0.5946, 0.859, 0.3199, 0.5283, 0.6873, 0.7859, 0.6659, 0.5396, 0.3212, 0.7257, 0.3373, 0.6484, 0.8446, 0.8608, 0.6713, 0.7013, 0.5412, 0.7213, 0.3216, 0.6741, 0.3325, 0.3857, 0.8929], \"simulatePressure\": false, \"lastCommittedPoint\": [373.0175, -8.0674]}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "the corpus scene image-and-files",
+      "scene": "image-and-files",
+      "expect": [
+        {
+          "element_id": "img-01",
+          "z": 0,
+          "type": "image",
+          "x": 40,
+          "y": 40,
+          "width": 200,
+          "height": 150,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"boundElements\": null, \"link\": null, \"locked\": false, \"index\": \"a0\", \"seed\": 999, \"version\": 2, \"versionNonce\": 1010, \"updated\": 1756000000005, \"fileId\": \"f-abc123\", \"scale\": [1, 1], \"status\": \"saved\", \"crop\": null}",
+          "anonymous": false
+        },
+        {
+          "element_id": "img-02",
+          "z": 1,
+          "type": "image",
+          "x": 300,
+          "y": 40,
+          "width": 100,
+          "height": 100,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": true, \"boundElements\": null, \"link\": null, \"locked\": false, \"index\": \"a1\", \"seed\": 1011, \"version\": 2, \"versionNonce\": 1012, \"updated\": 1756000000006, \"fileId\": \"f-orphan\", \"scale\": [1, 1], \"status\": \"saved\", \"crop\": null}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "the corpus scene instance-group",
+      "scene": "instance-group",
+      "expect": [
+        {
+          "element_id": "instance-a1",
+          "z": 0,
+          "type": "ellipse",
+          "x": 100,
+          "y": 100,
+          "width": 40,
+          "height": 40,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"boundElements\": null, \"link\": null, \"locked\": false, \"index\": \"a0\", \"seed\": 111, \"version\": 7, \"versionNonce\": 222, \"updated\": 1756000000001, \"customData\": {\"stencil\": {\"name\": \"Operator\", \"instance\": \"sg-77\", \"role\": \"body\"}}}",
+          "anonymous": false
+        },
+        {
+          "element_id": "instance-a2",
+          "z": 1,
+          "type": "line",
+          "x": 120,
+          "y": 140,
+          "width": 0,
+          "height": 50,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"boundElements\": null, \"link\": null, \"locked\": false, \"index\": \"a1\", \"points\": [[0, 0], [0, 50]], \"seed\": 333, \"version\": 9, \"versionNonce\": 444, \"updated\": 1756000000002, \"customData\": {\"stencil\": {\"name\": \"Operator\", \"instance\": \"sg-77\", \"role\": \"decoration\"}}}",
+          "anonymous": false
+        },
+        {
+          "element_id": "instance-a3",
+          "z": 2,
+          "type": "line",
+          "x": 95,
+          "y": 160,
+          "width": 50,
+          "height": 0,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"boundElements\": null, \"link\": null, \"locked\": false, \"index\": \"a2\", \"points\": [[0, 0], [50, 0]], \"seed\": 555, \"version\": 4, \"versionNonce\": 666, \"updated\": 1756000000003, \"customData\": {\"stencil\": {\"name\": \"Operator\", \"instance\": \"sg-77\", \"role\": \"decoration\"}}}",
+          "anonymous": false
+        },
+        {
+          "element_id": "box-next-to-instance",
+          "z": 3,
+          "type": "rectangle",
+          "x": 220,
+          "y": 100,
+          "width": 160,
+          "height": 80,
+          "angle": 0,
+          "json": "{\"strokeColor\": \"#1e1e1e\", \"backgroundColor\": \"transparent\", \"fillStyle\": \"solid\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roughness\": 1, \"opacity\": 100, \"groupIds\": [], \"frameId\": null, \"roundness\": null, \"isDeleted\": false, \"boundElements\": null, \"link\": null, \"locked\": false, \"index\": \"a3\", \"seed\": 777, \"version\": 3, \"versionNonce\": 888, \"updated\": 1756000000004}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "the corpus scene stencil-instances",
+      "scene": "stencil-instances",
+      "expect": [
+        {
+          "element_id": "c-itil",
+          "z": 0,
+          "type": "ellipse",
+          "x": 169.2,
+          "y": 147,
+          "width": 33.6,
+          "height": 33.6,
+          "angle": null,
+          "json": "{\"strokeColor\": \"#1b1914\", \"backgroundColor\": \"transparent\", \"strokeWidth\": 2, \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"itil\"}, \"stencil\": {\"name\": \"bastion-actor\", \"instance\": \"g-c-itil\", \"role\": \"body\", \"frame\": {\"dx\": -43.2, \"dy\": -6, \"sw\": 3.571428571428571, \"sh\": 3.8095238095238093}}}, \"groupIds\": [\"g-c-itil\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "cp-itil-spine",
+          "z": 1,
+          "type": "line",
+          "x": 186,
+          "y": 180.6,
+          "width": 0,
+          "height": 38.4,
+          "angle": null,
+          "json": "{\"points\": [[0, 0], [0, 38.4]], \"strokeColor\": \"#1b1914\", \"strokeWidth\": 2, \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"itil\"}, \"stencil\": {\"name\": \"bastion-actor\", \"instance\": \"g-c-itil\", \"role\": \"decoration\", \"anchor\": {\"u\": 0.4999999999999999, \"v\": 1}, \"offset\": {\"dx\": 0, \"dy\": 0}, \"size\": \"fit\"}}, \"groupIds\": [\"g-c-itil\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "cp-itil-arms",
+          "z": 2,
+          "type": "line",
+          "x": 159.6,
+          "y": 190.84,
+          "width": 52.8,
+          "height": 0,
+          "angle": null,
+          "json": "{\"points\": [[0, 0], [52.8, 0]], \"strokeColor\": \"#1b1914\", \"strokeWidth\": 2, \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"itil\"}, \"stencil\": {\"name\": \"bastion-actor\", \"instance\": \"g-c-itil\", \"role\": \"decoration\", \"anchor\": {\"u\": -0.28571428571428575, \"v\": 1.3047619047619048}, \"offset\": {\"dx\": 0, \"dy\": 0}, \"size\": \"fit\"}}, \"groupIds\": [\"g-c-itil\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "cp-itil-legs",
+          "z": 3,
+          "type": "line",
+          "x": 186,
+          "y": 219,
+          "width": 40.800000000000004,
+          "height": 30.72,
+          "angle": null,
+          "json": "{\"points\": [[-20.400000000000002, 30.72], [0, 0], [20.400000000000002, 30.72]], \"strokeColor\": \"#1b1914\", \"strokeWidth\": 2, \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"itil\"}, \"stencil\": {\"name\": \"bastion-actor\", \"instance\": \"g-c-itil\", \"role\": \"decoration\", \"anchor\": {\"u\": 0.4999999999999999, \"v\": 2.142857142857143}, \"offset\": {\"dx\": 0, \"dy\": 0}, \"size\": \"fit\"}}, \"groupIds\": [\"g-c-itil\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "cp-itil-name",
+          "z": 4,
+          "type": "text",
+          "x": 186,
+          "y": 251,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"text\": \"ITIL Users\", \"fontSize\": 16, \"textAlign\": \"center\", \"strokeColor\": \"#1b1914\", \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"itil\"}, \"stencil\": {\"name\": \"bastion-actor\", \"instance\": \"g-c-itil\", \"role\": \"label\", \"anchor\": {\"u\": 0.5, \"v\": 3.630952380952381}, \"offset\": {\"dx\": 0, \"dy\": -18}, \"size\": \"fixed\"}}, \"groupIds\": [\"g-c-itil\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "c-cmdb",
+          "z": 5,
+          "type": "rectangle",
+          "x": 502,
+          "y": 202,
+          "width": 200,
+          "height": 76,
+          "angle": null,
+          "json": "{\"strokeColor\": \"#1b1914\", \"backgroundColor\": \"transparent\", \"strokeWidth\": 2, \"strokeStyle\": \"solid\", \"roundness\": null, \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"cmdb\"}, \"stencil\": {\"name\": \"bastion-datastore\", \"instance\": \"g-c-cmdb\", \"role\": \"body\", \"frame\": {\"dx\": 0, \"dy\": 0, \"sw\": 1, \"sh\": 1}}}, \"groupIds\": [\"g-c-cmdb\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "cp-cmdb-label",
+          "z": 6,
+          "type": "text",
+          "x": 502,
+          "y": 230,
+          "width": 200,
+          "height": 20,
+          "angle": null,
+          "json": "{\"text\": \"CMDB\", \"fontSize\": 16, \"textAlign\": \"center\", \"verticalAlign\": \"middle\", \"containerId\": \"c-cmdb\", \"strokeColor\": \"#1b1914\", \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"cmdb\"}, \"stencil\": {\"name\": \"bastion-datastore\", \"instance\": \"g-c-cmdb\", \"role\": \"label\"}}, \"groupIds\": [\"g-c-cmdb\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "cp-cmdb-rule-top",
+          "z": 7,
+          "type": "line",
+          "x": 502,
+          "y": 202,
+          "width": 200,
+          "height": 0,
+          "angle": null,
+          "json": "{\"points\": [[0, 0], [200, 0]], \"strokeColor\": \"#1b1914\", \"strokeWidth\": 3, \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"cmdb\"}, \"stencil\": {\"name\": \"bastion-datastore\", \"instance\": \"g-c-cmdb\", \"role\": \"decoration\", \"anchor\": {\"u\": 0, \"v\": 0}, \"offset\": {\"dx\": 0, \"dy\": 0}, \"size\": \"fit\"}}, \"groupIds\": [\"g-c-cmdb\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "cp-cmdb-rule-bottom",
+          "z": 8,
+          "type": "line",
+          "x": 502,
+          "y": 278,
+          "width": 200,
+          "height": 0,
+          "angle": null,
+          "json": "{\"points\": [[0, 0], [200, 0]], \"strokeColor\": \"#1b1914\", \"strokeWidth\": 3, \"customData\": {\"bastion\": {\"kind\": \"component\", \"key\": \"cmdb\"}, \"stencil\": {\"name\": \"bastion-datastore\", \"instance\": \"g-c-cmdb\", \"role\": \"decoration\", \"anchor\": {\"u\": 0, \"v\": 1}, \"offset\": {\"dx\": 0, \"dy\": 0}, \"size\": \"fit\"}}, \"groupIds\": [\"g-c-cmdb\"]}",
+          "anonymous": false
+        },
+        {
+          "element_id": "f-read",
+          "z": 9,
+          "type": "arrow",
+          "x": 246,
+          "y": 205,
+          "width": 256,
+          "height": 35,
+          "angle": null,
+          "json": "{\"points\": [[0, 0], [256, 35]], \"strokeColor\": \"#1b1914\", \"strokeStyle\": \"dotted\", \"startBinding\": {\"elementId\": \"c-itil\", \"focus\": 0, \"gap\": 6}, \"endBinding\": {\"elementId\": \"c-cmdb\", \"focus\": 0, \"gap\": 6}, \"customData\": {\"bastion\": {\"kind\": \"flow\", \"key\": \"read\"}}}",
+          "anonymous": false
+        },
+        {
+          "element_id": "neighbour",
+          "z": 10,
+          "type": "rectangle",
+          "x": 800,
+          "y": 100,
+          "width": 120,
+          "height": 60,
+          "angle": null,
+          "json": "{\"strokeColor\": \"#1b1914\"}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "none",
+      "elements": null,
+      "expect": []
+    },
+    {
+      "fn": "explode",
+      "name": "an empty list",
+      "elements": [],
+      "expect": []
+    },
+    {
+      "fn": "explode",
+      "name": "an element with every column",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 1.5,
+          "y": -2,
+          "width": 100,
+          "height": 40,
+          "angle": 0.5,
+          "seed": 7,
+          "strokeColor": "#1e1e1e"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": 1.5,
+          "y": -2,
+          "width": 100,
+          "height": 40,
+          "angle": 0.5,
+          "json": "{\"seed\": 7, \"strokeColor\": \"#1e1e1e\"}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "columns that are absent stay absent",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 1,
+          "y": 2
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": 1,
+          "y": 2,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "a null column stays in the remainder and null in the column",
+      "elements": [
+        {
+          "id": "a",
+          "type": "line",
+          "x": null,
+          "y": 3,
+          "angle": null
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "line",
+          "x": null,
+          "y": 3,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"x\": null, \"angle\": null}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "an element without an id is keyed by its position",
+      "elements": [
+        {
+          "type": "rectangle",
+          "x": 1
+        },
+        {
+          "id": "b",
+          "type": "text"
+        },
+        {
+          "type": "line"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "anon-0",
+          "z": 0,
+          "type": "rectangle",
+          "x": 1,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "text",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        },
+        {
+          "element_id": "anon-2",
+          "z": 2,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "an empty-string id is anonymous",
+      "elements": [
+        {
+          "id": "",
+          "type": "rectangle"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "anon-0",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "a non-string id is anonymous",
+      "elements": [
+        {
+          "id": 5,
+          "type": "rectangle"
+        },
+        {
+          "id": null,
+          "type": "line"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "anon-0",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        },
+        {
+          "element_id": "anon-1",
+          "z": 1,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"id\": null}",
+          "anonymous": true
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "anonymous keys use the prefix asked for",
+      "elements": [
+        {
+          "type": "rectangle"
+        },
+        {
+          "type": "line"
+        }
+      ],
+      "options": {
+        "anonPrefix": "tmp:"
+      },
+      "expect": [
+        {
+          "element_id": "tmp:0",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        },
+        {
+          "element_id": "tmp:1",
+          "z": 1,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "an empty prefix",
+      "elements": [
+        {
+          "type": "rectangle"
+        }
+      ],
+      "options": {
+        "anonPrefix": ""
+      },
+      "expect": [
+        {
+          "element_id": "0",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "entries that are not objects are dropped, and z counts only what is kept",
+      "elements": [
+        "nonsense",
+        null,
+        7,
+        [
+          1
+        ],
+        {
+          "id": "a",
+          "type": "rectangle"
+        },
+        {
+          "id": "b",
+          "type": "line"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "a missing or empty type is the empty string",
+      "elements": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "b",
+          "type": ""
+        },
+        {
+          "id": "c",
+          "type": null
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        },
+        {
+          "element_id": "c",
+          "z": 2,
+          "type": "",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"type\": null}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "a numeric type is its string",
+      "elements": [
+        {
+          "id": "a",
+          "type": 5
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "5",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "the remainder is json.dumps text: separators, key order, nesting",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "zeta": 1,
+          "alpha": [
+            1,
+            2,
+            {
+              "k": null
+            }
+          ],
+          "flag": true,
+          "other": false,
+          "nested": {
+            "b": {
+              "c": []
+            },
+            "a": {}
+          }
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"zeta\": 1, \"alpha\": [1, 2, {\"k\": null}], \"flag\": true, \"other\": false, \"nested\": {\"b\": {\"c\": []}, \"a\": {}}}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "non-ASCII is escaped as json.dumps escapes it",
+      "elements": [
+        {
+          "id": "a",
+          "type": "text",
+          "text": "caf\u00e9 \u2014 \ud83d\ude00 \u00e5\u00e4\u00f6",
+          "emoji": "\ud83d\ude00"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "text",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"text\": \"caf\\u00e9 \\u2014 \\ud83d\\ude00 \\u00e5\\u00e4\\u00f6\", \"emoji\": \"\\ud83d\\ude00\"}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "control characters, quotes, backslashes and DEL",
+      "elements": [
+        {
+          "id": "a",
+          "type": "text",
+          "text": "a\"b\\c\nd\re\tf\bg\fh\u0001i\u001fj\u007fk/l"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "text",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"text\": \"a\\\"b\\\\c\\nd\\re\\tf\\bg\\fh\\u0001i\\u001fj\\u007fk/l\"}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "keys are escaped like strings",
+      "elements": [
+        {
+          "id": "a",
+          "type": "text",
+          "ke\"y\u00e9": 1
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "text",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"ke\\\"y\\u00e9\": 1}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "floats print as Python prints them",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "f1": 0.1,
+          "f2": 123.456,
+          "f3": -0.5,
+          "f4": 1.5e-07,
+          "f5": 1e-05,
+          "f6": 0.0001,
+          "f7": 1.2345678901234567,
+          "f8": 3.5714285714285716,
+          "f9": 12345678.9,
+          "f10": 1e-05,
+          "f11": 1.5e+300,
+          "f12": 2.5e-10,
+          "f13": 99999999999999.9,
+          "f14": 123456789012345.6
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"f1\": 0.1, \"f2\": 123.456, \"f3\": -0.5, \"f4\": 1.5e-07, \"f5\": 1e-05, \"f6\": 0.0001, \"f7\": 1.2345678901234567, \"f8\": 3.5714285714285716, \"f9\": 12345678.9, \"f10\": 1e-05, \"f11\": 1.5e+300, \"f12\": 2.5e-10, \"f13\": 99999999999999.9, \"f14\": 123456789012345.6}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "integers print as integers, large ones in full",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "i1": 0,
+          "i2": -7,
+          "i3": 1700000000000,
+          "i4": 9007199254740991
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"i1\": 0, \"i2\": -7, \"i3\": 1700000000000, \"i4\": 9007199254740991}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "a lone surrogate is escaped",
+      "elements": [
+        {
+          "id": "a",
+          "type": "text",
+          "text": "\ud800"
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "text",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"text\": \"\\ud800\"}",
+          "anonymous": false
+        }
+      ]
+    },
+    {
+      "fn": "explode",
+      "name": "empty containers",
+      "elements": [
+        {
+          "id": "a",
+          "type": "group",
+          "list": [],
+          "obj": {},
+          "s": ""
+        }
+      ],
+      "expect": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "group",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"list\": [], \"obj\": {}, \"s\": \"\"}",
+          "anonymous": false
+        }
+      ]
+    }
+  ]
+}

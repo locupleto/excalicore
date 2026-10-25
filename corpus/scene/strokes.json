@@ -1,0 +1,1229 @@
+{
+  "doc": "rdp() and strokeSummary() executed from python/excalicore/scene.py. rdp cases give `points` and `eps` (or `scene` + `index` for the corpus stroke's own points); strokeSummary cases give an `element` (or `scene` + `index`) and optional `options.maxPoints`. Rounded outputs use Python's round (half to even).",
+  "cases": [
+    {
+      "fn": "rdp",
+      "name": "fewer than three points pass through",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "eps": 1,
+      "expect": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          5
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "a straight run collapses to its ends",
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          3.0,
+          0.0
+        ],
+        [
+          4.0,
+          0.0
+        ],
+        [
+          5.0,
+          0.0
+        ],
+        [
+          6.0,
+          0.0
+        ],
+        [
+          7.0,
+          0.0
+        ],
+        [
+          8.0,
+          0.0
+        ],
+        [
+          9.0,
+          0.0
+        ]
+      ],
+      "eps": 0.1,
+      "expect": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          9.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "a spike above the tolerance is kept",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          10,
+          0
+        ]
+      ],
+      "eps": 1,
+      "expect": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          10,
+          0
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "a bump below the tolerance is dropped",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0.5
+        ],
+        [
+          10,
+          0
+        ]
+      ],
+      "eps": 1,
+      "expect": [
+        [
+          0,
+          0
+        ],
+        [
+          10,
+          0
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "coincident ends measure distance to the point",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "eps": 1,
+      "expect": [
+        [
+          0,
+          0
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "a staircase at three tolerances",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "eps": 0.5,
+      "expect": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "the same staircase, coarser",
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "eps": 1.5,
+      "expect": [
+        [
+          0,
+          0
+        ],
+        [
+          6,
+          0
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "a wave",
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          2.333
+        ],
+        [
+          2.0,
+          1.0
+        ],
+        [
+          3.0,
+          3.333
+        ],
+        [
+          4.0,
+          2.0
+        ],
+        [
+          5.0,
+          0.667
+        ],
+        [
+          6.0,
+          3.0
+        ],
+        [
+          7.0,
+          1.667
+        ],
+        [
+          8.0,
+          0.333
+        ],
+        [
+          9.0,
+          2.667
+        ],
+        [
+          10.0,
+          1.333
+        ],
+        [
+          11.0,
+          0.0
+        ],
+        [
+          12.0,
+          2.333
+        ],
+        [
+          13.0,
+          1.0
+        ],
+        [
+          14.0,
+          3.333
+        ],
+        [
+          15.0,
+          2.0
+        ],
+        [
+          16.0,
+          0.667
+        ],
+        [
+          17.0,
+          3.0
+        ],
+        [
+          18.0,
+          1.667
+        ],
+        [
+          19.0,
+          0.333
+        ],
+        [
+          20.0,
+          2.667
+        ],
+        [
+          21.0,
+          1.333
+        ],
+        [
+          22.0,
+          0.0
+        ],
+        [
+          23.0,
+          2.333
+        ],
+        [
+          24.0,
+          1.0
+        ],
+        [
+          25.0,
+          3.333
+        ],
+        [
+          26.0,
+          2.0
+        ],
+        [
+          27.0,
+          0.667
+        ],
+        [
+          28.0,
+          3.0
+        ],
+        [
+          29.0,
+          1.667
+        ]
+      ],
+      "eps": 0.8,
+      "expect": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          2.333
+        ],
+        [
+          2.0,
+          1.0
+        ],
+        [
+          3.0,
+          3.333
+        ],
+        [
+          5.0,
+          0.667
+        ],
+        [
+          6.0,
+          3.0
+        ],
+        [
+          8.0,
+          0.333
+        ],
+        [
+          9.0,
+          2.667
+        ],
+        [
+          11.0,
+          0.0
+        ],
+        [
+          12.0,
+          2.333
+        ],
+        [
+          13.0,
+          1.0
+        ],
+        [
+          14.0,
+          3.333
+        ],
+        [
+          16.0,
+          0.667
+        ],
+        [
+          17.0,
+          3.0
+        ],
+        [
+          19.0,
+          0.333
+        ],
+        [
+          20.0,
+          2.667
+        ],
+        [
+          22.0,
+          0.0
+        ],
+        [
+          23.0,
+          2.333
+        ],
+        [
+          24.0,
+          1.0
+        ],
+        [
+          25.0,
+          3.333
+        ],
+        [
+          27.0,
+          0.667
+        ],
+        [
+          28.0,
+          3.0
+        ],
+        [
+          29.0,
+          1.667
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "no points",
+      "points": [],
+      "eps": 1,
+      "expect": []
+    },
+    {
+      "fn": "rdp",
+      "name": "the corpus stroke at tolerance 1",
+      "scene": "freedraw",
+      "index": 0,
+      "eps": 1,
+      "expect": [
+        [
+          1.6643,
+          -1.22
+        ],
+        [
+          16.4627,
+          -13.4388
+        ],
+        [
+          47.1104,
+          -32.7213
+        ],
+        [
+          67.4386,
+          -44.4632
+        ],
+        [
+          91.4342,
+          -55.6962
+        ],
+        [
+          129.6865,
+          -67.5095
+        ],
+        [
+          164.2561,
+          -73.493
+        ],
+        [
+          183.312,
+          -74.8584
+        ],
+        [
+          207.1431,
+          -74.9177
+        ],
+        [
+          229.2978,
+          -72.6804
+        ],
+        [
+          254.376,
+          -68.2428
+        ],
+        [
+          284.1366,
+          -59.1352
+        ],
+        [
+          309.5112,
+          -48.9408
+        ],
+        [
+          331.4883,
+          -37.4622
+        ],
+        [
+          373.0175,
+          -8.0674
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "the corpus stroke at tolerance 4",
+      "scene": "freedraw",
+      "index": 0,
+      "eps": 4,
+      "expect": [
+        [
+          1.6643,
+          -1.22
+        ],
+        [
+          91.4342,
+          -55.6962
+        ],
+        [
+          183.312,
+          -74.8584
+        ],
+        [
+          229.2978,
+          -72.6804
+        ],
+        [
+          284.1366,
+          -59.1352
+        ],
+        [
+          331.4883,
+          -37.4622
+        ],
+        [
+          373.0175,
+          -8.0674
+        ]
+      ]
+    },
+    {
+      "fn": "rdp",
+      "name": "the corpus stroke at tolerance 16",
+      "scene": "freedraw",
+      "index": 0,
+      "eps": 16,
+      "expect": [
+        [
+          1.6643,
+          -1.22
+        ],
+        [
+          91.4342,
+          -55.6962
+        ],
+        [
+          183.312,
+          -74.8584
+        ],
+        [
+          284.1366,
+          -59.1352
+        ],
+        [
+          373.0175,
+          -8.0674
+        ]
+      ]
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "the corpus stroke",
+      "scene": "freedraw",
+      "index": 0,
+      "expect": {
+        "id": "stroke-arc-01",
+        "type": "freedraw",
+        "x": 412,
+        "y": 260,
+        "width": 373,
+        "height": 74,
+        "strokeColor": "#1e1e1e",
+        "points": [
+          [
+            414,
+            259
+          ],
+          [
+            504,
+            205
+          ],
+          [
+            596,
+            185
+          ],
+          [
+            697,
+            201
+          ],
+          [
+            786,
+            252
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "the corpus stroke with a budget of 8",
+      "scene": "freedraw",
+      "index": 0,
+      "options": {
+        "maxPoints": 8
+      },
+      "expect": {
+        "id": "stroke-arc-01",
+        "type": "freedraw",
+        "x": 412,
+        "y": 260,
+        "width": 373,
+        "height": 74,
+        "strokeColor": "#1e1e1e",
+        "points": [
+          [
+            414,
+            259
+          ],
+          [
+            504,
+            205
+          ],
+          [
+            596,
+            185
+          ],
+          [
+            697,
+            201
+          ],
+          [
+            786,
+            252
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "the corpus stroke with a budget of 3",
+      "scene": "freedraw",
+      "index": 0,
+      "options": {
+        "maxPoints": 3
+      },
+      "expect": {
+        "id": "stroke-arc-01",
+        "type": "freedraw",
+        "x": 412,
+        "y": 260,
+        "width": 373,
+        "height": 74,
+        "strokeColor": "#1e1e1e",
+        "points": [
+          [
+            414,
+            259
+          ],
+          [
+            596,
+            185
+          ],
+          [
+            786,
+            252
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a hand-drawn circle is closed",
+      "element": {
+        "id": "ring",
+        "type": "freedraw",
+        "x": 10,
+        "y": 20,
+        "width": 100,
+        "height": 100,
+        "strokeColor": "#e03131",
+        "points": [
+          [
+            100,
+            50
+          ],
+          [
+            85.0,
+            85.0
+          ],
+          [
+            50,
+            100
+          ],
+          [
+            15.0,
+            85.0
+          ],
+          [
+            0,
+            50
+          ],
+          [
+            15.0,
+            15.0
+          ],
+          [
+            50,
+            0
+          ],
+          [
+            85.0,
+            15.0
+          ],
+          [
+            99.5,
+            47.5
+          ]
+        ]
+      },
+      "expect": {
+        "id": "ring",
+        "type": "freedraw",
+        "x": 10,
+        "y": 20,
+        "width": 100,
+        "height": 100,
+        "strokeColor": "#e03131",
+        "points": [
+          [
+            110,
+            70
+          ],
+          [
+            95,
+            105
+          ],
+          [
+            60,
+            120
+          ],
+          [
+            25,
+            105
+          ],
+          [
+            10,
+            70
+          ],
+          [
+            25,
+            35
+          ],
+          [
+            60,
+            20
+          ],
+          [
+            95,
+            35
+          ],
+          [
+            110,
+            68
+          ]
+        ],
+        "closed": true
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a line is not closed",
+      "element": {
+        "id": "line",
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 0,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            50,
+            1
+          ],
+          [
+            100,
+            0
+          ]
+        ]
+      },
+      "expect": {
+        "id": "line",
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 0,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            100,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a stroke drawn right to left, in absolute coordinates",
+      "element": {
+        "id": "rtl",
+        "type": "freedraw",
+        "x": 200,
+        "y": 200,
+        "width": 60,
+        "height": 20,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            -30,
+            10
+          ],
+          [
+            -60,
+            20
+          ]
+        ]
+      },
+      "expect": {
+        "id": "rtl",
+        "type": "freedraw",
+        "x": 200,
+        "y": 200,
+        "width": 60,
+        "height": 20,
+        "points": [
+          [
+            200,
+            200
+          ],
+          [
+            140,
+            220
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a single point has no polyline",
+      "element": {
+        "id": "dot",
+        "type": "freedraw",
+        "x": 1.5,
+        "y": 2.5,
+        "width": 0,
+        "height": 0,
+        "points": [
+          [
+            0,
+            0
+          ]
+        ]
+      },
+      "expect": {
+        "id": "dot",
+        "type": "freedraw",
+        "x": 2,
+        "y": 2,
+        "width": 0,
+        "height": 0
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "no points at all",
+      "element": {
+        "id": "none",
+        "type": "freedraw",
+        "x": 5,
+        "y": 6
+      },
+      "expect": {
+        "id": "none",
+        "type": "freedraw",
+        "x": 5,
+        "y": 6,
+        "width": 0,
+        "height": 0
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "points with bad entries are skipped",
+      "element": {
+        "id": "bad",
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "points": [
+          [
+            0,
+            0
+          ],
+          "x",
+          [
+            1
+          ],
+          [
+            true,
+            1
+          ],
+          [
+            null,
+            2
+          ],
+          [
+            3,
+            "4"
+          ],
+          [
+            2,
+            2,
+            0.5
+          ],
+          [
+            10,
+            10
+          ]
+        ]
+      },
+      "expect": {
+        "id": "bad",
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            10,
+            10
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a zero-sized box falls back to a unit diagonal",
+      "element": {
+        "id": "flat",
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            0.1,
+            0.1
+          ],
+          [
+            0.05,
+            0.02
+          ]
+        ]
+      },
+      "expect": {
+        "id": "flat",
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "closed": true
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "positions round half to even",
+      "element": {
+        "id": "half",
+        "type": "freedraw",
+        "x": 0.5,
+        "y": 1.5,
+        "width": 2.5,
+        "height": 3.5,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            0.5
+          ]
+        ]
+      },
+      "expect": {
+        "id": "half",
+        "type": "freedraw",
+        "x": 0,
+        "y": 2,
+        "width": 2,
+        "height": 4,
+        "points": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "a missing id is null and a missing position is the origin",
+      "element": {
+        "type": "freedraw",
+        "width": 3,
+        "height": 3,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      },
+      "expect": {
+        "id": null,
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 3,
+        "height": 3,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "fn": "strokeSummary",
+      "name": "an empty strokeColor is left out",
+      "element": {
+        "id": "c",
+        "type": "freedraw",
+        "strokeColor": "",
+        "width": 3,
+        "height": 3,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      },
+      "expect": {
+        "id": "c",
+        "type": "freedraw",
+        "x": 0,
+        "y": 0,
+        "width": 3,
+        "height": 3,
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            3
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,11 +1,13 @@
 {
   "name": "excalicore",
-  "version": "0.12.2",
-  "description": "Shared Excalidraw scene handling, browser half: the stencil and vocabulary contracts and geometry",
+  "version": "0.13.0",
+  "description": "Shared Excalidraw scene handling, TypeScript half: stencils, vocabulary, geometry, elements, scene, fidelity and draw.io export",
   "license": "MIT",
   "private": true,
   "type": "module",
-  "files": ["typescript/dist"],
+  "files": [
+    "typescript/dist"
+  ],
   "exports": {
     "./stencils": {
       "types": "./typescript/dist/stencils.d.ts",
@@ -18,6 +20,26 @@
     "./geometry": {
       "types": "./typescript/dist/geometry.d.ts",
       "default": "./typescript/dist/geometry.js"
+    },
+    "./elements": {
+      "types": "./typescript/dist/elements.d.ts",
+      "default": "./typescript/dist/elements.js"
+    },
+    "./fontmetrics": {
+      "types": "./typescript/dist/fontmetrics.d.ts",
+      "default": "./typescript/dist/fontmetrics.js"
+    },
+    "./scene": {
+      "types": "./typescript/dist/scene.d.ts",
+      "default": "./typescript/dist/scene.js"
+    },
+    "./fidelity": {
+      "types": "./typescript/dist/fidelity.d.ts",
+      "default": "./typescript/dist/fidelity.js"
+    },
+    "./drawio": {
+      "types": "./typescript/dist/drawio.d.ts",
+      "default": "./typescript/dist/drawio.js"
     }
   },
   "scripts": {

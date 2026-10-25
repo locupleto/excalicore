@@ -395,6 +395,14 @@ test('lineCount is exactly wrap(text, cols, Infinity).length, by construction', 
   }
 })
 
+test('wrap verbatim keeps breaks and spacing, and breaks an over-long word (the Python half\'s cases)', () => {
+  assert.deepEqual(wrap('aaa  bbb\nccc', 7, 5), ['aaa bbb', 'ccc'], 'the default is unchanged')
+  assert.deepEqual(wrap('aaa  bbb\n\nccc', 20, Infinity, { verbatim: true }), ['aaa  bbb', '', 'ccc'])
+  assert.deepEqual(wrap('x'.repeat(12), 5, Infinity, { verbatim: true }), ['xxxxx', 'xxxxx', 'xx'])
+  assert.deepEqual(wrap('a\nb\nc\nd', 5, 2, { verbatim: true }), ['a', 'b…'])
+  assert.deepEqual(wrap('', 5, Infinity, { verbatim: true }), [''])
+})
+
 // --- the skeleton pipeline ---------------------------------------------------
 
 test('routes.json: normalizeBoundArrows', () => {

@@ -183,8 +183,19 @@ export function anchorXY(uv: { u: number; v: number }, box: Box): Point {
  *  `box`'s bounding box, measured from the box's own centre. Used to trim a
  *  centre-to-centre line back to the box's edge without ever computing an
  *  intersection: the smaller of how far the segment can travel before it
- *  clears the box horizontally or vertically. */
-export function exitT(box: Box, dx: number, dy: number): number {
+ *  clears the box horizontally or vertically.
+ *
+ *  `shape` says what is drawn inside the bounding box. The default,
+ *  `'rectangle'`, is the box itself. An `'ellipse'` and a `'diamond'` are
+ *  INSIDE their bounding box, so the same segment leaves them sooner; any
+ *  other word is read as a rectangle. */
+export function exitT(box: Box, dx: number, dy: number, shape: string = 'rectangle'): number {
+  if (shape === 'ellipse' || shape === 'diamond') {
+    const hw = Math.max(box.width / 2, 1e-6)
+    const hh = Math.max(box.height / 2, 1e-6)
+    const norm = shape === 'ellipse' ? Math.hypot(dx / hw, dy / hh) : Math.abs(dx) / hw + Math.abs(dy) / hh
+    return norm === 0 ? Infinity : 1 / norm
+  }
   const tx = dx === 0 ? Infinity : box.width / 2 / Math.abs(dx)
   const ty = dy === 0 ? Infinity : box.height / 2 / Math.abs(dy)
   return Math.min(tx, ty)
@@ -552,8 +563,15 @@ export function ellipsise(line: string, cols: number): string {
 /** Greedy word wrap to `cols` characters per line, capped at `maxLines` with
  *  an ellipsis on the last line when the text does not fit. A word longer
  *  than the budget on its own is cut to fit, with its own ellipsis, rather
- *  than being pushed whole onto an overflowing line. */
-export function wrap(text: string, cols: number, maxLines: number): string[] {
+ *  than being pushed whole onto an overflowing line.
+ *
+ *  `verbatim: true` wraps text the way a text box does while it is being
+ *  typed, not the way a label is shortened: line breaks and runs of spaces
+ *  are kept as written, and a word wider than the budget is broken across
+ *  lines instead of being cut with an ellipsis, so nothing is lost. The
+ *  `maxLines` cap still ends the last kept line with an ellipsis. */
+export function wrap(text: string, cols: number, maxLines: number, options: { verbatim?: boolean } = {}): string[] {
+  if (options.verbatim) return wrapVerbatim(text || '', Math.max(Math.trunc(cols), 1), maxLines)
   const words = (text || '').trim().split(/\s+/).filter(Boolean)
   const lines: string[] = []
   let line = ''
@@ -576,6 +594,36 @@ export function wrap(text: string, cols: number, maxLines: number): string[] {
     else lines[maxLines - 1] = ellipsise(lines[maxLines - 1], cols)
   }
   return lines
+}
+
+function wrapVerbatim(text: string, cols: number, maxLines: number): string[] {
+  let out: string[] = []
+  for (const paragraph of text.split('\n')) {
+    let line = ''
+    for (let word of paragraph.split(' ')) {
+      while (word.length > cols) {
+        if (line) {
+          out.push(line)
+          line = ''
+        }
+        out.push(word.slice(0, cols))
+        word = word.slice(cols)
+      }
+      const trial = line ? `${line} ${word}` : word
+      if (trial.length <= cols) {
+        line = trial
+      } else {
+        out.push(line)
+        line = word
+      }
+    }
+    out.push(line)
+  }
+  if (out.length > maxLines) {
+    out = out.slice(0, Math.trunc(maxLines))
+    out[out.length - 1] = ellipsise(out[out.length - 1], cols)
+  }
+  return out
 }
 
 /** The first `maxWords` words of `text`, with a trailing ellipsis appended

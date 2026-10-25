@@ -1,0 +1,1055 @@
+{
+  "doc": "instanceOf(), stencilSummary() and bbox() executed from python/excalicore/scene.py. stencilSummary cases give the `instance` id and its `members` inline, or a corpus `scene` whose elements carrying that instance are the members. bbox cases give `elements` (or a `scene`); `expect` is [width, height].",
+  "cases": [
+    {
+      "fn": "instanceOf",
+      "name": "an element carrying the tag",
+      "element": {
+        "id": "a",
+        "type": "rectangle",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "customData": {
+          "stencil": {
+            "name": "widget",
+            "instance": "g-1"
+          }
+        }
+      },
+      "expect": "g-1"
+    },
+    {
+      "fn": "instanceOf",
+      "name": "an element with no customData",
+      "element": {
+        "id": "a",
+        "type": "rectangle",
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 50,
+        "strokeColor": "#1e1e1e",
+        "backgroundColor": "transparent",
+        "seed": 1,
+        "version": 3,
+        "versionNonce": 99
+      },
+      "expect": null
+    },
+    {
+      "fn": "instanceOf",
+      "name": "customData that is not an object",
+      "element": {
+        "customData": [
+          1
+        ]
+      },
+      "expect": null
+    },
+    {
+      "fn": "instanceOf",
+      "name": "a stencil tag that is not an object",
+      "element": {
+        "customData": {
+          "stencil": "x"
+        }
+      },
+      "expect": null
+    },
+    {
+      "fn": "instanceOf",
+      "name": "a tag with no instance",
+      "element": {
+        "customData": {
+          "stencil": {
+            "name": "n"
+          }
+        }
+      },
+      "expect": null
+    },
+    {
+      "fn": "instanceOf",
+      "name": "an empty instance",
+      "element": {
+        "customData": {
+          "stencil": {
+            "instance": ""
+          }
+        }
+      },
+      "expect": null
+    },
+    {
+      "fn": "instanceOf",
+      "name": "a numeric instance is read as its string",
+      "element": {
+        "customData": {
+          "stencil": {
+            "instance": 12
+          }
+        }
+      },
+      "expect": "12"
+    },
+    {
+      "fn": "instanceOf",
+      "name": "the pre-contract stamp tags are not read",
+      "element": {
+        "customData": {
+          "stamp": "Operator",
+          "stampGroup": "sg-77"
+        }
+      },
+      "expect": null
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "instance g-c-itil of the corpus scene stencil-instances",
+      "instance": "g-c-itil",
+      "scene": "stencil-instances",
+      "expect": {
+        "id": "g-c-itil",
+        "type": "stencil",
+        "name": "bastion-actor",
+        "x": 126,
+        "y": 141,
+        "width": 120,
+        "height": 128,
+        "label": "ITIL Users",
+        "subject": {
+          "bastion": {
+            "kind": "component",
+            "key": "itil"
+          }
+        }
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "instance g-c-cmdb of the corpus scene stencil-instances",
+      "instance": "g-c-cmdb",
+      "scene": "stencil-instances",
+      "expect": {
+        "id": "g-c-cmdb",
+        "type": "stencil",
+        "name": "bastion-datastore",
+        "x": 502,
+        "y": 202,
+        "width": 200,
+        "height": 76,
+        "label": "CMDB",
+        "subject": {
+          "bastion": {
+            "kind": "component",
+            "key": "cmdb"
+          }
+        }
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "instance sg-77 of the corpus scene instance-group",
+      "instance": "sg-77",
+      "scene": "instance-group",
+      "expect": {
+        "id": "sg-77",
+        "type": "stencil",
+        "name": "Operator",
+        "x": 95,
+        "y": 100,
+        "width": 50,
+        "height": 90
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a body with a frame reports the subject's box",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "limb",
+          "type": "rectangle",
+          "x": 5,
+          "y": 5,
+          "width": 1,
+          "height": 1,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "decoration"
+            }
+          }
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 20,
+          "y": 30,
+          "width": 40,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body",
+              "frame": {
+                "dx": -10,
+                "dy": -5,
+                "sw": 2,
+                "sh": 3
+              }
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 10,
+        "y": 25,
+        "width": 80,
+        "height": 30
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a frame given as numeric strings still reads",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 20,
+          "y": 30,
+          "width": 40,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body",
+              "frame": {
+                "dx": "1",
+                "dy": " 2 ",
+                "sw": "1.5",
+                "sh": "2e0"
+              }
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 21,
+        "y": 32,
+        "width": 60,
+        "height": 20
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a frame with a missing field falls back to the footprint",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 20,
+          "y": 30,
+          "width": 40,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body",
+              "frame": {
+                "dx": 1,
+                "dy": 2,
+                "sw": 1
+              }
+            }
+          }
+        },
+        {
+          "id": "c",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 5,
+          "height": 5,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "decoration"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 60,
+        "height": 40
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a frame with a null field falls back to the footprint",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 20,
+          "y": 30,
+          "width": 40,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body",
+              "frame": {
+                "dx": null,
+                "dy": 2,
+                "sw": 1,
+                "sh": 1
+              }
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 20,
+        "y": 30,
+        "width": 40,
+        "height": 10
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a frame that is not an object falls back",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 20,
+          "y": 30,
+          "width": 40,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body",
+              "frame": "wide"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 20,
+        "y": 30,
+        "width": 40,
+        "height": 10
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a body that is not first still supplies the frame",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 3,
+          "height": 3,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "decoration"
+            }
+          }
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 100,
+          "y": 100,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body",
+              "frame": {
+                "dx": -10,
+                "dy": -5,
+                "sw": 2,
+                "sh": 3
+              }
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 90,
+        "y": 95,
+        "width": 20,
+        "height": 30
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "without a body the footprint is the union of the parts' own x, y",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 10.5,
+          "y": 20.5,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 40,
+          "y": 5,
+          "width": 2.5,
+          "height": 100,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 10,
+        "y": 5,
+        "width": 32,
+        "height": 100
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a label part names the label, preferring originalText",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body"
+            }
+          }
+        },
+        {
+          "id": "l",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "text": "wrapped",
+          "originalText": "Orig",
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "label"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "label": "Orig"
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a label-role part wins over an earlier text",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "t",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "text": "first",
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        },
+        {
+          "id": "l",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "text": "second",
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "label"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "label": "second"
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "without a label role the first text is the label",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        },
+        {
+          "id": "t1",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "text": "one",
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        },
+        {
+          "id": "t2",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "text": "two",
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "label": "one"
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a label carried as a property on the body counts",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "label": {
+            "text": "Carried"
+          },
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "label": "Carried"
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a label property that is not an object is ignored",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "label": "plain",
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "an empty label text is no label",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "t",
+          "type": "text",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "text": "",
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "label": {
+            "text": "fallback"
+          },
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "label": "fallback"
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "other namespaces become the subject; the stencil namespace does not",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "cd": {
+            "bastion": {
+              "kind": "node",
+              "key": "k"
+            },
+            "extra": 1
+          },
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1",
+              "role": "body"
+            },
+            "bastion": {
+              "kind": "node",
+              "key": "k"
+            },
+            "extra": 1
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 0,
+        "width": 10,
+        "height": 10,
+        "subject": {
+          "bastion": {
+            "kind": "node",
+            "key": "k"
+          },
+          "extra": 1
+        }
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a part with no stencil name reports a null name",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "n",
+          "type": "rectangle",
+          "x": 1,
+          "y": 2,
+          "width": 3,
+          "height": 4,
+          "customData": {
+            "stencil": {
+              "instance": "w1"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": null,
+        "x": 1,
+        "y": 2,
+        "width": 3,
+        "height": 4
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "positions round half to even",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0.5,
+          "y": 1.5,
+          "width": 2,
+          "height": 3,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "w1"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "widget",
+        "x": 0,
+        "y": 2,
+        "width": 2,
+        "height": 3
+      }
+    },
+    {
+      "fn": "stencilSummary",
+      "name": "a single member with no size",
+      "instance": "w1",
+      "members": [
+        {
+          "id": "n",
+          "customData": {
+            "stencil": {
+              "instance": "w1",
+              "name": "n"
+            }
+          }
+        }
+      ],
+      "expect": {
+        "id": "w1",
+        "type": "stencil",
+        "name": "n",
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      }
+    },
+    {
+      "fn": "bbox",
+      "name": "none",
+      "elements": null,
+      "expect": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "an empty list",
+      "elements": [],
+      "expect": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "two boxes",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 20,
+          "y": 30,
+          "width": 5,
+          "height": 5,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        }
+      ],
+      "expect": [
+        25.0,
+        35.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "a line drawn right to left starts before its own x",
+      "elements": [
+        {
+          "type": "line",
+          "x": 100,
+          "y": 100,
+          "width": 50,
+          "height": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              -50,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 100,
+          "y": 100,
+          "width": 10,
+          "height": 10,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        }
+      ],
+      "expect": [
+        60.0,
+        10.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "entries that are not placed elements are skipped",
+      "elements": [
+        1,
+        "x",
+        null,
+        {
+          "type": "rectangle"
+        },
+        {
+          "x": 1
+        },
+        {
+          "x": "1",
+          "y": 2
+        },
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 5,
+          "y": 5,
+          "width": 10,
+          "height": 20,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        }
+      ],
+      "expect": [
+        10.0,
+        20.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "a boolean position counts as a number, and reads as zero",
+      "elements": [
+        {
+          "x": true,
+          "y": 3,
+          "width": 4,
+          "height": 5
+        }
+      ],
+      "expect": [
+        4.0,
+        5.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "the whole corpus scene stencil-instances",
+      "scene": "stencil-instances",
+      "expect": [
+        760.4,
+        178.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "the whole corpus scene instance-group",
+      "scene": "instance-group",
+      "expect": [
+        285.0,
+        90.0
+      ]
+    },
+    {
+      "fn": "bbox",
+      "name": "the whole corpus scene bound-labels",
+      "scene": "bound-labels",
+      "expect": [
+        1160.0,
+        520.0
+      ]
+    }
+  ]
+}

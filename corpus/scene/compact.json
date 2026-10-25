@@ -1,0 +1,1888 @@
+{
+  "doc": "compact() executed from python/excalicore/scene.py. A case gives the raw canvas either inline (`elements`, possibly null) or as a corpus scene by name (`scene`), plus optional `options` (`keep`, `opaque` as lists, `maxPoints`); `expect` is the skeleton list, key order included (it is the order the prompt shows the fields in). Cases cover every corpus scene and the binding, label, stencil-instance and opaque-type rules.",
+  "cases": [
+    {
+      "fn": "compact",
+      "name": "the corpus scene arrow-bindings, default dialect",
+      "scene": "arrow-bindings",
+      "expect": [
+        {
+          "id": "box-src",
+          "type": "rectangle",
+          "x": 100,
+          "y": 100,
+          "width": 180,
+          "height": 90,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "angle": 0
+        },
+        {
+          "id": "box-dst",
+          "type": "rectangle",
+          "x": 460,
+          "y": 100,
+          "width": 180,
+          "height": 90,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "angle": 0
+        },
+        {
+          "id": "arrow-1",
+          "type": "arrow",
+          "x": 285,
+          "y": 145,
+          "width": 170,
+          "height": 0,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "angle": 0,
+          "start": {
+            "id": "box-src"
+          },
+          "end": {
+            "id": "box-dst"
+          }
+        },
+        {
+          "id": "arrow-2",
+          "type": "arrow",
+          "x": 300,
+          "y": 300,
+          "width": 100,
+          "height": 40,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              100,
+              40
+            ]
+          ],
+          "angle": 0
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "the corpus scene bound-labels, default dialect",
+      "scene": "bound-labels",
+      "expect": [
+        {
+          "id": "title",
+          "type": "text",
+          "x": 155,
+          "y": 35,
+          "width": 900,
+          "height": 48,
+          "text": "Fable orchestrates. Lighter agents gather signal and write code.",
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "fontSize": 32,
+          "angle": 0
+        },
+        {
+          "id": "goal",
+          "type": "rectangle",
+          "x": 70,
+          "y": 145,
+          "width": 250,
+          "height": 120,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "#ffffff",
+          "angle": 0,
+          "label": {
+            "text": "User goal\nrepo context\nconstraints",
+            "fontSize": 24
+          }
+        },
+        {
+          "id": "fable",
+          "type": "rectangle",
+          "x": 450,
+          "y": 120,
+          "width": 350,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "#ffffff",
+          "angle": 0,
+          "label": {
+            "text": "Claude Fable\norchestrator + judge\nplan, tradeoffs, synthesis",
+            "fontSize": 24
+          }
+        },
+        {
+          "id": "output",
+          "type": "rectangle",
+          "x": 920,
+          "y": 145,
+          "width": 310,
+          "height": 120,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "#ffffff",
+          "angle": 0,
+          "label": {
+            "text": "Integrated result\nfinal review\nuser answer + next action",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "research",
+          "type": "rectangle",
+          "x": 70,
+          "y": 420,
+          "width": 300,
+          "height": 135,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "#ffffff",
+          "angle": 0,
+          "label": {
+            "text": "Lighter agents\nresearch scans\ndocs, APIs, repo map",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "coding",
+          "type": "rectangle",
+          "x": 450,
+          "y": 420,
+          "width": 350,
+          "height": 135,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "#ffffff",
+          "angle": 0,
+          "label": {
+            "text": "Lighter agents\nbounded coding\npatches, refactors",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "testing",
+          "type": "rectangle",
+          "x": 920,
+          "y": 420,
+          "width": 310,
+          "height": 135,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "#ffffff",
+          "angle": 0,
+          "label": {
+            "text": "Lighter agents\ntesting passes\nscripts, browser, logs",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "a-goal-fable",
+          "type": "arrow",
+          "x": 320,
+          "y": 205,
+          "width": 130,
+          "height": 0,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              0.5,
+              0
+            ],
+            [
+              129.5,
+              0
+            ]
+          ],
+          "angle": 0
+        },
+        {
+          "id": "a-fable-output",
+          "type": "arrow",
+          "x": 800,
+          "y": 205,
+          "width": 120,
+          "height": 0,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              0.5,
+              0
+            ],
+            [
+              119.5,
+              0
+            ]
+          ],
+          "angle": 0
+        },
+        {
+          "id": "a-fable-research",
+          "type": "arrow",
+          "x": 500,
+          "y": 270,
+          "width": 250,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              -0.5,
+              0.5
+            ],
+            [
+              -249.5,
+              149.5
+            ]
+          ],
+          "angle": 0
+        },
+        {
+          "id": "a-fable-coding",
+          "type": "arrow",
+          "x": 625,
+          "y": 270,
+          "width": 0,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              0,
+              0.5
+            ],
+            [
+              0,
+              149.5
+            ]
+          ],
+          "angle": 0
+        },
+        {
+          "id": "a-fable-testing",
+          "type": "arrow",
+          "x": 750,
+          "y": 270,
+          "width": 285,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              0.5,
+              0.5
+            ],
+            [
+              284.5,
+              149.5
+            ]
+          ],
+          "angle": 0
+        },
+        {
+          "id": "r-research-fable",
+          "type": "arrow",
+          "x": 340,
+          "y": 420,
+          "width": 180,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              0.5,
+              -0.5
+            ],
+            [
+              179.5,
+              -149.5
+            ]
+          ],
+          "angle": 0
+        },
+        {
+          "id": "r-coding-fable",
+          "type": "arrow",
+          "x": 675,
+          "y": 420,
+          "width": 0,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              0,
+              -0.5
+            ],
+            [
+              0,
+              -149.5
+            ]
+          ],
+          "angle": 0
+        },
+        {
+          "id": "r-testing-fable",
+          "type": "arrow",
+          "x": 950,
+          "y": 420,
+          "width": 220,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "points": [
+            [
+              -0.5,
+              -0.5
+            ],
+            [
+              -219.5,
+              -149.5
+            ]
+          ],
+          "angle": 0
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "the corpus scene freedraw, default dialect",
+      "scene": "freedraw",
+      "expect": [
+        {
+          "id": "stroke-arc-01",
+          "type": "freedraw",
+          "x": 412,
+          "y": 260,
+          "width": 373,
+          "height": 74,
+          "strokeColor": "#1e1e1e",
+          "points": [
+            [
+              414,
+              259
+            ],
+            [
+              504,
+              205
+            ],
+            [
+              596,
+              185
+            ],
+            [
+              697,
+              201
+            ],
+            [
+              786,
+              252
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "the corpus scene image-and-files, default dialect",
+      "scene": "image-and-files",
+      "expect": [
+        {
+          "id": "img-01",
+          "type": "image",
+          "x": 40,
+          "y": 40,
+          "width": 200,
+          "height": 150
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "the corpus scene instance-group, default dialect",
+      "scene": "instance-group",
+      "expect": [
+        {
+          "id": "sg-77",
+          "type": "stencil",
+          "name": "Operator",
+          "x": 95,
+          "y": 100,
+          "width": 50,
+          "height": 90
+        },
+        {
+          "id": "box-next-to-instance",
+          "type": "rectangle",
+          "x": 220,
+          "y": 100,
+          "width": 160,
+          "height": 80,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "angle": 0
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "the corpus scene stencil-instances, default dialect",
+      "scene": "stencil-instances",
+      "expect": [
+        {
+          "id": "g-c-itil",
+          "type": "stencil",
+          "name": "bastion-actor",
+          "x": 126,
+          "y": 141,
+          "width": 120,
+          "height": 128,
+          "label": "ITIL Users",
+          "subject": {
+            "bastion": {
+              "kind": "component",
+              "key": "itil"
+            }
+          }
+        },
+        {
+          "id": "g-c-cmdb",
+          "type": "stencil",
+          "name": "bastion-datastore",
+          "x": 502,
+          "y": 202,
+          "width": 200,
+          "height": 76,
+          "label": "CMDB",
+          "subject": {
+            "bastion": {
+              "kind": "component",
+              "key": "cmdb"
+            }
+          }
+        },
+        {
+          "id": "f-read",
+          "type": "arrow",
+          "x": 246,
+          "y": 205,
+          "width": 256,
+          "height": 35,
+          "strokeColor": "#1b1914",
+          "start": {
+            "id": "c-itil"
+          },
+          "end": {
+            "id": "c-cmdb"
+          }
+        },
+        {
+          "id": "neighbour",
+          "type": "rectangle",
+          "x": 800,
+          "y": 100,
+          "width": 120,
+          "height": 60,
+          "strokeColor": "#1b1914"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "the corpus stroke with a tighter polyline budget",
+      "scene": "freedraw",
+      "options": {
+        "maxPoints": 8
+      },
+      "expect": [
+        {
+          "id": "stroke-arc-01",
+          "type": "freedraw",
+          "x": 412,
+          "y": 260,
+          "width": 373,
+          "height": 74,
+          "strokeColor": "#1e1e1e",
+          "points": [
+            [
+              414,
+              259
+            ],
+            [
+              504,
+              205
+            ],
+            [
+              596,
+              185
+            ],
+            [
+              697,
+              201
+            ],
+            [
+              786,
+              252
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "bound labels, keeping only id, type and label",
+      "scene": "bound-labels",
+      "options": {
+        "keep": [
+          "id",
+          "type",
+          "label"
+        ]
+      },
+      "expect": [
+        {
+          "id": "title",
+          "type": "text"
+        },
+        {
+          "id": "goal",
+          "type": "rectangle",
+          "label": {
+            "text": "User goal\nrepo context\nconstraints",
+            "fontSize": 24
+          }
+        },
+        {
+          "id": "fable",
+          "type": "rectangle",
+          "label": {
+            "text": "Claude Fable\norchestrator + judge\nplan, tradeoffs, synthesis",
+            "fontSize": 24
+          }
+        },
+        {
+          "id": "output",
+          "type": "rectangle",
+          "label": {
+            "text": "Integrated result\nfinal review\nuser answer + next action",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "research",
+          "type": "rectangle",
+          "label": {
+            "text": "Lighter agents\nresearch scans\ndocs, APIs, repo map",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "coding",
+          "type": "rectangle",
+          "label": {
+            "text": "Lighter agents\nbounded coding\npatches, refactors",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "testing",
+          "type": "rectangle",
+          "label": {
+            "text": "Lighter agents\ntesting passes\nscripts, browser, logs",
+            "fontSize": 23
+          }
+        },
+        {
+          "id": "a-goal-fable",
+          "type": "arrow"
+        },
+        {
+          "id": "a-fable-output",
+          "type": "arrow"
+        },
+        {
+          "id": "a-fable-research",
+          "type": "arrow"
+        },
+        {
+          "id": "a-fable-coding",
+          "type": "arrow"
+        },
+        {
+          "id": "a-fable-testing",
+          "type": "arrow"
+        },
+        {
+          "id": "r-research-fable",
+          "type": "arrow"
+        },
+        {
+          "id": "r-coding-fable",
+          "type": "arrow"
+        },
+        {
+          "id": "r-testing-fable",
+          "type": "arrow"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "images treated as ordinary elements when opaque is empty",
+      "scene": "image-and-files",
+      "options": {
+        "opaque": []
+      },
+      "expect": [
+        {
+          "id": "img-01",
+          "type": "image",
+          "x": 40,
+          "y": 40,
+          "width": 200,
+          "height": 150,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "angle": 0
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "none compacts to nothing",
+      "elements": null,
+      "expect": []
+    },
+    {
+      "fn": "compact",
+      "name": "an empty list compacts to nothing",
+      "elements": [],
+      "expect": []
+    },
+    {
+      "fn": "compact",
+      "name": "anything that is not a dict is skipped",
+      "elements": [
+        1,
+        "x",
+        null,
+        [
+          1,
+          2
+        ],
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a deleted element is not shown, nor a label that points at it",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99,
+          "isDeleted": true
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "ghost",
+          "containerId": "a"
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        }
+      ],
+      "expect": [
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "ghost"
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a label folds into its container, preferring originalText, with its fontSize",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "wrapped\ntext",
+          "containerId": "a",
+          "originalText": "wrapped text",
+          "fontSize": 20
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "label": {
+            "text": "wrapped text",
+            "fontSize": 20
+          }
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a label without a fontSize folds to text alone",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "plain",
+          "containerId": "a",
+          "fontSize": 0
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "label": {
+            "text": "plain"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a container's own label wins over a bound text",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99,
+          "label": {
+            "text": "own"
+          }
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "bound",
+          "containerId": "a"
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "label": {
+            "text": "own"
+          },
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "text bound to a container that is not on the board stays standalone",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "orphan",
+          "containerId": "nowhere"
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "orphan"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a bound text with no content folds to no label",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "",
+          "containerId": "a"
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "two texts bound to one container: the later wins",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "t1",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "first",
+          "containerId": "a"
+        },
+        {
+          "id": "t2",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "second",
+          "containerId": "a"
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "label": {
+            "text": "second"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "an arrow with only an end binding keeps its start free and loses its points",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "e",
+          "type": "arrow",
+          "x": 100,
+          "y": 25,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              200,
+              0
+            ]
+          ],
+          "endBinding": {
+            "elementId": "b",
+            "focus": 0,
+            "gap": 1
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "e",
+          "type": "arrow",
+          "x": 100,
+          "y": 25,
+          "end": {
+            "id": "b"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "both ends bound",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "e",
+          "type": "arrow",
+          "x": 100,
+          "y": 25,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              200,
+              0
+            ]
+          ],
+          "startBinding": {
+            "elementId": "a"
+          },
+          "endBinding": {
+            "elementId": "b"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 300,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "e",
+          "type": "arrow",
+          "x": 100,
+          "y": 25,
+          "start": {
+            "id": "a"
+          },
+          "end": {
+            "id": "b"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a binding to a deleted element is dangling",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99,
+          "isDeleted": true
+        },
+        {
+          "id": "e",
+          "type": "arrow",
+          "x": 0,
+          "y": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "startBinding": {
+            "elementId": "a"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "e",
+          "type": "arrow",
+          "x": 0,
+          "y": 0,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "an element that is not an arrow is folded the same way",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99,
+          "startBinding": {
+            "elementId": "a"
+          },
+          "points": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "start": {
+            "id": "a"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "elements without an id are kept, and unknown keys are stripped",
+      "elements": [
+        {
+          "type": "rectangle",
+          "x": 1,
+          "y": 2,
+          "customThing": 1
+        },
+        {
+          "type": "text",
+          "text": "hi"
+        }
+      ],
+      "expect": [
+        {
+          "type": "rectangle",
+          "x": 1,
+          "y": 2
+        },
+        {
+          "type": "text",
+          "text": "hi"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a duplicate id: the later element owns the id for binding",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 5,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "e",
+          "type": "arrow",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "startBinding": {
+            "elementId": "a"
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 5,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "e",
+          "type": "arrow",
+          "start": {
+            "id": "a"
+          }
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "opaque rounds half to even, as Python's round does",
+      "elements": [
+        {
+          "id": "i1",
+          "type": "image",
+          "x": 2.5,
+          "y": 3.5,
+          "width": 0.5,
+          "height": 1.5,
+          "fileId": "f"
+        },
+        {
+          "id": "i2",
+          "type": "image",
+          "x": -0.5,
+          "y": -1.5,
+          "width": 2.4999,
+          "height": 2.5001
+        }
+      ],
+      "expect": [
+        {
+          "id": "i1",
+          "type": "image",
+          "x": 2,
+          "y": 4,
+          "width": 0,
+          "height": 2
+        },
+        {
+          "id": "i2",
+          "type": "image",
+          "x": 0,
+          "y": -2,
+          "width": 2,
+          "height": 3
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a custom opaque type is read-only geometry",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "d",
+          "type": "diamond",
+          "x": 3,
+          "y": 4,
+          "width": 5,
+          "height": 6
+        }
+      ],
+      "options": {
+        "opaque": [
+          "diamond"
+        ]
+      },
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "d",
+          "type": "diamond",
+          "x": 3,
+          "y": 4,
+          "width": 5,
+          "height": 6
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a custom opaque type with a bound label keeps the label out",
+      "elements": [
+        {
+          "id": "d",
+          "type": "diamond",
+          "x": 3,
+          "y": 4,
+          "width": 5,
+          "height": 6
+        },
+        {
+          "id": "t",
+          "type": "text",
+          "x": 5,
+          "y": 5,
+          "width": 40,
+          "height": 20,
+          "text": "inside",
+          "containerId": "d"
+        }
+      ],
+      "options": {
+        "opaque": [
+          "diamond"
+        ]
+      },
+      "expect": [
+        {
+          "id": "d",
+          "type": "diamond",
+          "x": 3,
+          "y": 4,
+          "width": 5,
+          "height": 6
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "stencil instances come first, in first-seen order, even with numeric-looking ids",
+      "elements": [
+        {
+          "id": "plain",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        },
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "10",
+              "role": "body"
+            }
+          }
+        },
+        {
+          "id": "b",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "2",
+              "role": "body"
+            }
+          }
+        },
+        {
+          "id": "c",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "10"
+            }
+          }
+        },
+        {
+          "id": "plain2",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent",
+          "seed": 1,
+          "version": 3,
+          "versionNonce": 99
+        }
+      ],
+      "expect": [
+        {
+          "id": "10",
+          "type": "stencil",
+          "name": "widget",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "id": "2",
+          "type": "stencil",
+          "name": "widget",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "id": "plain",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        },
+        {
+          "id": "plain2",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 100,
+          "height": 50,
+          "strokeColor": "#1e1e1e",
+          "backgroundColor": "transparent"
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "an element with no id is not swallowed by a placed one",
+      "elements": [
+        {
+          "id": "p",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "g1",
+              "role": "body"
+            }
+          }
+        },
+        {
+          "type": "rectangle",
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "expect": [
+        {
+          "id": "g1",
+          "type": "stencil",
+          "name": "widget",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10
+        },
+        {
+          "type": "rectangle",
+          "x": 1,
+          "y": 1
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a placed member without an id hides every id-less element",
+      "elements": [
+        {
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "customData": {
+            "stencil": {
+              "name": "w",
+              "instance": "g1",
+              "role": "body"
+            }
+          }
+        },
+        {
+          "type": "rectangle",
+          "x": 1,
+          "y": 1
+        }
+      ],
+      "expect": [
+        {
+          "id": "g1",
+          "type": "stencil",
+          "name": "w",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a stroke inside a stencil instance is part of the instance",
+      "elements": [
+        {
+          "id": "body",
+          "type": "rectangle",
+          "x": 10,
+          "y": 10,
+          "width": 40,
+          "height": 40,
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "g1",
+              "role": "body"
+            }
+          }
+        },
+        {
+          "id": "pen",
+          "type": "freedraw",
+          "x": 0,
+          "y": 0,
+          "width": 10,
+          "height": 10,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              5,
+              5
+            ]
+          ],
+          "customData": {
+            "stencil": {
+              "name": "widget",
+              "instance": "g1"
+            }
+          }
+        }
+      ],
+      "expect": [
+        {
+          "id": "g1",
+          "type": "stencil",
+          "name": "widget",
+          "x": 0,
+          "y": 0,
+          "width": 50,
+          "height": 50
+        }
+      ]
+    },
+    {
+      "fn": "compact",
+      "name": "a freedraw is summarised even when it is not in the opaque set",
+      "elements": [
+        {
+          "id": "s",
+          "type": "freedraw",
+          "x": 0,
+          "y": 0,
+          "width": 4,
+          "height": 4,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      ],
+      "options": {
+        "opaque": []
+      },
+      "expect": [
+        {
+          "id": "s",
+          "type": "freedraw",
+          "x": 0,
+          "y": 0,
+          "width": 4,
+          "height": 4,
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              4,
+              4
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,321 @@
+{
+  "doc": "file_ids() and unreferenced_files() executed from python/excalicore/fidelity.py. Cases give `elements` (and `files`) inline or a corpus `scene` (its elements and files); `expect` is the resulting set, sorted.",
+  "cases": [
+    {
+      "fn": "fileIds",
+      "name": "the corpus scene arrow-bindings",
+      "scene": "arrow-bindings",
+      "expect": []
+    },
+    {
+      "fn": "fileIds",
+      "name": "the corpus scene bound-labels",
+      "scene": "bound-labels",
+      "expect": []
+    },
+    {
+      "fn": "fileIds",
+      "name": "the corpus scene freedraw",
+      "scene": "freedraw",
+      "expect": []
+    },
+    {
+      "fn": "fileIds",
+      "name": "the corpus scene image-and-files",
+      "scene": "image-and-files",
+      "expect": [
+        "f-abc123",
+        "f-orphan"
+      ]
+    },
+    {
+      "fn": "fileIds",
+      "name": "the corpus scene instance-group",
+      "scene": "instance-group",
+      "expect": []
+    },
+    {
+      "fn": "fileIds",
+      "name": "the corpus scene stencil-instances",
+      "scene": "stencil-instances",
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "the corpus scene arrow-bindings",
+      "scene": "arrow-bindings",
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "the corpus scene bound-labels",
+      "scene": "bound-labels",
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "the corpus scene freedraw",
+      "scene": "freedraw",
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "the corpus scene image-and-files",
+      "scene": "image-and-files",
+      "expect": [
+        "f-unreferenced"
+      ]
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "the corpus scene instance-group",
+      "scene": "instance-group",
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "the corpus scene stencil-instances",
+      "scene": "stencil-instances",
+      "expect": []
+    },
+    {
+      "fn": "fileIds",
+      "name": "none",
+      "elements": null,
+      "expect": []
+    },
+    {
+      "fn": "fileIds",
+      "name": "an empty list",
+      "elements": [],
+      "expect": []
+    },
+    {
+      "fn": "fileIds",
+      "name": "a deleted element still holds its file",
+      "elements": [
+        {
+          "id": "a",
+          "type": "image",
+          "fileId": "f1",
+          "isDeleted": true
+        },
+        {
+          "id": "b",
+          "type": "image",
+          "fileId": "f2"
+        }
+      ],
+      "expect": [
+        "f1",
+        "f2"
+      ]
+    },
+    {
+      "fn": "fileIds",
+      "name": "the same file twice counts once",
+      "elements": [
+        {
+          "id": "a",
+          "type": "image",
+          "fileId": "f1"
+        },
+        {
+          "id": "b",
+          "type": "image",
+          "fileId": "f1"
+        }
+      ],
+      "expect": [
+        "f1"
+      ]
+    },
+    {
+      "fn": "fileIds",
+      "name": "falsy file ids are no reference",
+      "elements": [
+        {
+          "fileId": null
+        },
+        {
+          "fileId": ""
+        },
+        {
+          "fileId": 0
+        },
+        {
+          "type": "rectangle"
+        },
+        {
+          "fileId": "ok"
+        }
+      ],
+      "expect": [
+        "ok"
+      ]
+    },
+    {
+      "fn": "fileIds",
+      "name": "a numeric file id is its string",
+      "elements": [
+        {
+          "fileId": 12
+        }
+      ],
+      "expect": [
+        "12"
+      ]
+    },
+    {
+      "fn": "fileIds",
+      "name": "entries that are not objects are skipped",
+      "elements": [
+        "x",
+        null,
+        3,
+        [
+          1
+        ],
+        {
+          "fileId": "f"
+        }
+      ],
+      "expect": [
+        "f"
+      ]
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "some files referenced",
+      "elements": [
+        {
+          "fileId": "f1"
+        }
+      ],
+      "files": {
+        "f1": {
+          "mimeType": "image/png"
+        },
+        "f2": {},
+        "f3": null
+      },
+      "expect": [
+        "f2",
+        "f3"
+      ]
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "every file referenced",
+      "elements": [
+        {
+          "fileId": "f1"
+        },
+        {
+          "fileId": "f2"
+        },
+        {
+          "fileId": "f3"
+        }
+      ],
+      "files": {
+        "f1": {
+          "mimeType": "image/png"
+        },
+        "f2": {},
+        "f3": null
+      },
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "no elements: every file is collectable",
+      "elements": [],
+      "files": {
+        "f1": {
+          "mimeType": "image/png"
+        },
+        "f2": {},
+        "f3": null
+      },
+      "expect": [
+        "f1",
+        "f2",
+        "f3"
+      ]
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "no elements at all",
+      "elements": null,
+      "files": {
+        "f1": {
+          "mimeType": "image/png"
+        },
+        "f2": {},
+        "f3": null
+      },
+      "expect": [
+        "f1",
+        "f2",
+        "f3"
+      ]
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "a reference to a file that is not stored changes nothing",
+      "elements": [
+        {
+          "fileId": "ghost"
+        }
+      ],
+      "files": {
+        "f1": {
+          "mimeType": "image/png"
+        },
+        "f2": {},
+        "f3": null
+      },
+      "expect": [
+        "f1",
+        "f2",
+        "f3"
+      ]
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "files that is not an object",
+      "elements": [
+        {
+          "fileId": "f1"
+        }
+      ],
+      "files": [
+        "f1"
+      ],
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "files that is null",
+      "elements": [
+        {
+          "fileId": "f1"
+        }
+      ],
+      "files": null,
+      "expect": []
+    },
+    {
+      "fn": "unreferencedFiles",
+      "name": "empty files",
+      "elements": [
+        {
+          "fileId": "f1"
+        }
+      ],
+      "files": {},
+      "expect": []
+    }
+  ]
+}

@@ -1,0 +1,3713 @@
+{
+  "doc": "The glyph tables of python/excalicore/fontmetrics.py: per font its size, average advance, sum and a position-weighted checksum (`tables`), and single glyphs at 1000px (so the advance reads in thousandths of an em) at the edges of the tables and of every East Asian wide range (`textWidth`): a glyph the tables lack is the font's average, or 1000 when wide.",
+  "cases": [
+    {
+      "fn": "tables",
+      "name": "the glyph table of font 1: size, average, sum and a position-weighted checksum",
+      "font": 1,
+      "expect": {
+        "codepoints": 319,
+        "average": 562,
+        "glyphs": 310,
+        "sum": 180510,
+        "weighted": 999578
+      }
+    },
+    {
+      "fn": "tables",
+      "name": "the glyph table of font 2: size, average, sum and a position-weighted checksum",
+      "font": 2,
+      "expect": {
+        "codepoints": 319,
+        "average": 527,
+        "glyphs": 319,
+        "sum": 176402,
+        "weighted": 526794
+      }
+    },
+    {
+      "fn": "tables",
+      "name": "the glyph table of font 3: size, average, sum and a position-weighted checksum",
+      "font": 3,
+      "expect": {
+        "codepoints": 319,
+        "average": 586,
+        "glyphs": 319,
+        "sum": 186934,
+        "weighted": 722419
+      }
+    },
+    {
+      "fn": "tables",
+      "name": "the glyph table of font 5: size, average, sum and a position-weighted checksum",
+      "font": 5,
+      "expect": {
+        "codepoints": 319,
+        "average": 570,
+        "glyphs": 308,
+        "sum": 181087,
+        "weighted": 57304
+      }
+    },
+    {
+      "fn": "tables",
+      "name": "the glyph table of font 6: size, average, sum and a position-weighted checksum",
+      "font": 6,
+      "expect": {
+        "codepoints": 319,
+        "average": 538,
+        "glyphs": 317,
+        "sum": 176082,
+        "weighted": 222194
+      }
+    },
+    {
+      "fn": "textWidth",
+      "name": "space, font 1",
+      "line": " ",
+      "size": 1000,
+      "font": 1,
+      "expect": 500
+    },
+    {
+      "fn": "textWidth",
+      "name": "space, font 5",
+      "line": " ",
+      "size": 1000,
+      "font": 5,
+      "expect": 400
+    },
+    {
+      "fn": "textWidth",
+      "name": "the last ASCII glyph, font 1",
+      "line": "~",
+      "size": 1000,
+      "font": 1,
+      "expect": 841
+    },
+    {
+      "fn": "textWidth",
+      "name": "the last ASCII glyph, font 5",
+      "line": "~",
+      "size": 1000,
+      "font": 5,
+      "expect": 669
+    },
+    {
+      "fn": "textWidth",
+      "name": "no-break space, the first Latin-1 glyph, font 1",
+      "line": " ",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "no-break space, the first Latin-1 glyph, font 5",
+      "line": " ",
+      "size": 1000,
+      "font": 5,
+      "expect": 400
+    },
+    {
+      "fn": "textWidth",
+      "name": "soft hyphen, a zero advance in some fonts, font 1",
+      "line": "­",
+      "size": 1000,
+      "font": 1,
+      "expect": 692
+    },
+    {
+      "fn": "textWidth",
+      "name": "soft hyphen, a zero advance in some fonts, font 5",
+      "line": "­",
+      "size": 1000,
+      "font": 5,
+      "expect": 692
+    },
+    {
+      "fn": "textWidth",
+      "name": "the last Latin Extended-A glyph, font 1",
+      "line": "ſ",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "the last Latin Extended-A glyph, font 5",
+      "line": "ſ",
+      "size": 1000,
+      "font": 5,
+      "expect": 570
+    },
+    {
+      "fn": "textWidth",
+      "name": "the first codepoint past the tables, font 1",
+      "line": "ƀ",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "the first codepoint past the tables, font 5",
+      "line": "ƀ",
+      "size": 1000,
+      "font": 5,
+      "expect": 570
+    },
+    {
+      "fn": "textWidth",
+      "name": "DEL, between the blocks, font 1",
+      "line": "",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "DEL, between the blocks, font 5",
+      "line": "",
+      "size": 1000,
+      "font": 5,
+      "expect": 570
+    },
+    {
+      "fn": "textWidth",
+      "name": "a C1 control, between the blocks, font 1",
+      "line": "",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "a C1 control, between the blocks, font 5",
+      "line": "",
+      "size": 1000,
+      "font": 5,
+      "expect": 570
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+10FF: just below a wide range",
+      "line": "ჿ",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1100: first of a wide range",
+      "line": "ᄀ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+115F: last of a wide range",
+      "line": "ᅟ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1160: just above a wide range",
+      "line": "ᅠ",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2319: just below a wide range",
+      "line": "⌙",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+231A: first of a wide range",
+      "line": "⌚",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+231B: last of a wide range",
+      "line": "⌛",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+231C: just above a wide range",
+      "line": "⌜",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2328: just below a wide range",
+      "line": "⌨",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2329: first of a wide range",
+      "line": "〈",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+232A: last of a wide range",
+      "line": "〉",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+232B: just above a wide range",
+      "line": "⌫",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23E8: just below a wide range",
+      "line": "⏨",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23E9: first of a wide range",
+      "line": "⏩",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23EC: last of a wide range",
+      "line": "⏬",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23ED: just above a wide range",
+      "line": "⏭",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23EF: just below a wide range",
+      "line": "⏯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23F0: first of a wide range",
+      "line": "⏰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23F1: just above a wide range",
+      "line": "⏱",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23F2: just below a wide range",
+      "line": "⏲",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23F3: first of a wide range",
+      "line": "⏳",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+23F4: just above a wide range",
+      "line": "⏴",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+25FC: just below a wide range",
+      "line": "◼",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+25FD: first of a wide range",
+      "line": "◽",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+25FE: last of a wide range",
+      "line": "◾",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+25FF: just above a wide range",
+      "line": "◿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2613: just below a wide range",
+      "line": "☓",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2614: first of a wide range",
+      "line": "☔",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2615: last of a wide range",
+      "line": "☕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2616: just above a wide range",
+      "line": "☖",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+262F: just below a wide range",
+      "line": "☯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2630: first of a wide range",
+      "line": "☰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2637: last of a wide range",
+      "line": "☷",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2638: just above a wide range",
+      "line": "☸",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2647: just below a wide range",
+      "line": "♇",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2648: first of a wide range",
+      "line": "♈",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2653: last of a wide range",
+      "line": "♓",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2654: just above a wide range",
+      "line": "♔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+267E: just below a wide range",
+      "line": "♾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+267F: first of a wide range",
+      "line": "♿",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2680: just above a wide range",
+      "line": "⚀",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2689: just below a wide range",
+      "line": "⚉",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+268A: first of a wide range",
+      "line": "⚊",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+268F: last of a wide range",
+      "line": "⚏",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2690: just above a wide range",
+      "line": "⚐",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2692: just below a wide range",
+      "line": "⚒",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2693: first of a wide range",
+      "line": "⚓",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2694: just above a wide range",
+      "line": "⚔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26A0: just below a wide range",
+      "line": "⚠",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26A1: first of a wide range",
+      "line": "⚡",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26A2: just above a wide range",
+      "line": "⚢",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26A9: just below a wide range",
+      "line": "⚩",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26AA: first of a wide range",
+      "line": "⚪",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26AB: last of a wide range",
+      "line": "⚫",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26AC: just above a wide range",
+      "line": "⚬",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26BC: just below a wide range",
+      "line": "⚼",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26BD: first of a wide range",
+      "line": "⚽",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26BE: last of a wide range",
+      "line": "⚾",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26BF: just above a wide range",
+      "line": "⚿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26C3: just below a wide range",
+      "line": "⛃",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26C4: first of a wide range",
+      "line": "⛄",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26C5: last of a wide range",
+      "line": "⛅",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26C6: just above a wide range",
+      "line": "⛆",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26CD: just below a wide range",
+      "line": "⛍",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26CE: first of a wide range",
+      "line": "⛎",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26CF: just above a wide range",
+      "line": "⛏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26D3: just below a wide range",
+      "line": "⛓",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26D4: first of a wide range",
+      "line": "⛔",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26D5: just above a wide range",
+      "line": "⛕",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26E9: just below a wide range",
+      "line": "⛩",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26EA: first of a wide range",
+      "line": "⛪",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26EB: just above a wide range",
+      "line": "⛫",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26F1: just below a wide range",
+      "line": "⛱",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26F2: first of a wide range",
+      "line": "⛲",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26F3: last of a wide range",
+      "line": "⛳",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26F4: just above a wide range",
+      "line": "⛴",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26F5: first of a wide range",
+      "line": "⛵",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26F6: just above a wide range",
+      "line": "⛶",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26F9: just below a wide range",
+      "line": "⛹",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26FA: first of a wide range",
+      "line": "⛺",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26FB: just above a wide range",
+      "line": "⛻",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26FC: just below a wide range",
+      "line": "⛼",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26FD: first of a wide range",
+      "line": "⛽",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+26FE: just above a wide range",
+      "line": "⛾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2704: just below a wide range",
+      "line": "✄",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2705: first of a wide range",
+      "line": "✅",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2706: just above a wide range",
+      "line": "✆",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2709: just below a wide range",
+      "line": "✉",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+270A: first of a wide range",
+      "line": "✊",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+270B: last of a wide range",
+      "line": "✋",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+270C: just above a wide range",
+      "line": "✌",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2727: just below a wide range",
+      "line": "✧",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2728: first of a wide range",
+      "line": "✨",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2729: just above a wide range",
+      "line": "✩",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+274B: just below a wide range",
+      "line": "❋",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+274C: first of a wide range",
+      "line": "❌",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+274D: just above a wide range",
+      "line": "❍",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+274E: first of a wide range",
+      "line": "❎",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+274F: just above a wide range",
+      "line": "❏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2752: just below a wide range",
+      "line": "❒",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2753: first of a wide range",
+      "line": "❓",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2755: last of a wide range",
+      "line": "❕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2756: just above a wide range",
+      "line": "❖",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2757: first of a wide range",
+      "line": "❗",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2758: just above a wide range",
+      "line": "❘",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2794: just below a wide range",
+      "line": "➔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2795: first of a wide range",
+      "line": "➕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2797: last of a wide range",
+      "line": "➗",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2798: just above a wide range",
+      "line": "➘",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+27AF: just below a wide range",
+      "line": "➯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+27B0: first of a wide range",
+      "line": "➰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+27B1: just above a wide range",
+      "line": "➱",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+27BE: just below a wide range",
+      "line": "➾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+27BF: first of a wide range",
+      "line": "➿",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+27C0: just above a wide range",
+      "line": "⟀",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B1A: just below a wide range",
+      "line": "⬚",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B1B: first of a wide range",
+      "line": "⬛",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B1C: last of a wide range",
+      "line": "⬜",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B1D: just above a wide range",
+      "line": "⬝",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B4F: just below a wide range",
+      "line": "⭏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B50: first of a wide range",
+      "line": "⭐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B51: just above a wide range",
+      "line": "⭑",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B54: just below a wide range",
+      "line": "⭔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B55: first of a wide range",
+      "line": "⭕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2B56: just above a wide range",
+      "line": "⭖",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2E7F: just below a wide range",
+      "line": "⹿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2E80: first of a wide range",
+      "line": "⺀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2E99: last of a wide range",
+      "line": "⺙",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2E9A: just above a wide range",
+      "line": "⺚",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2E9B: first of a wide range",
+      "line": "⺛",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2EF3: last of a wide range",
+      "line": "⻳",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2EF4: just above a wide range",
+      "line": "⻴",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2EFF: just below a wide range",
+      "line": "⻿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2F00: first of a wide range",
+      "line": "⼀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2FD5: last of a wide range",
+      "line": "⿕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2FD6: just above a wide range",
+      "line": "⿖",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2FEF: just below a wide range",
+      "line": "⿯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2FF0: first of a wide range",
+      "line": "⿰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+303E: last of a wide range",
+      "line": "〾",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+303F: just above a wide range",
+      "line": "〿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3040: just below a wide range",
+      "line": "぀",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3041: first of a wide range",
+      "line": "ぁ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3096: last of a wide range",
+      "line": "ゖ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3097: just above a wide range",
+      "line": "゗",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3098: just below a wide range",
+      "line": "゘",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3099: first of a wide range",
+      "line": "゙",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+30FF: last of a wide range",
+      "line": "ヿ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3100: just above a wide range",
+      "line": "㄀",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3104: just below a wide range",
+      "line": "㄄",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3105: first of a wide range",
+      "line": "ㄅ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+312F: last of a wide range",
+      "line": "ㄯ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3130: just above a wide range",
+      "line": "㄰",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3131: first of a wide range",
+      "line": "ㄱ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+318E: last of a wide range",
+      "line": "ㆎ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+318F: just above a wide range",
+      "line": "㆏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3190: first of a wide range",
+      "line": "㆐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+31E5: last of a wide range",
+      "line": "㇥",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+31E6: just above a wide range",
+      "line": "㇦",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+31EE: just below a wide range",
+      "line": "㇮",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+31EF: first of a wide range",
+      "line": "㇯",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+321E: last of a wide range",
+      "line": "㈞",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+321F: just above a wide range",
+      "line": "㈟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3220: first of a wide range",
+      "line": "㈠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3247: last of a wide range",
+      "line": "㉇",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3248: just above a wide range",
+      "line": "㉈",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+324F: just below a wide range",
+      "line": "㉏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3250: first of a wide range",
+      "line": "㉐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A48C: last of a wide range",
+      "line": "ꒌ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A48D: just above a wide range",
+      "line": "꒍",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A48F: just below a wide range",
+      "line": "꒏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A490: first of a wide range",
+      "line": "꒐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A4C6: last of a wide range",
+      "line": "꓆",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A4C7: just above a wide range",
+      "line": "꓇",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A95F: just below a wide range",
+      "line": "꥟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A960: first of a wide range",
+      "line": "ꥠ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A97C: last of a wide range",
+      "line": "ꥼ",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+A97D: just above a wide range",
+      "line": "꥽",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+ABFF: just below a wide range",
+      "line": "꯿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+AC00: first of a wide range",
+      "line": "가",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+D7A3: last of a wide range",
+      "line": "힣",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+D7A4: just above a wide range",
+      "line": "힤",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+F8FF: just below a wide range",
+      "line": "",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+F900: first of a wide range",
+      "line": "豈",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FAFF: last of a wide range",
+      "line": "﫿",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FB00: just above a wide range",
+      "line": "ﬀ",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE0F: just below a wide range",
+      "line": "️",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE10: first of a wide range",
+      "line": "︐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE19: last of a wide range",
+      "line": "︙",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE1A: just above a wide range",
+      "line": "︚",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE2F: just below a wide range",
+      "line": "︯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE30: first of a wide range",
+      "line": "︰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE52: last of a wide range",
+      "line": "﹒",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE53: just above a wide range",
+      "line": "﹓",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE54: first of a wide range",
+      "line": "﹔",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE66: last of a wide range",
+      "line": "﹦",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE67: just above a wide range",
+      "line": "﹧",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE68: first of a wide range",
+      "line": "﹨",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE6B: last of a wide range",
+      "line": "﹫",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FE6C: just above a wide range",
+      "line": "﹬",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FF00: just below a wide range",
+      "line": "＀",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FF01: first of a wide range",
+      "line": "！",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FF60: last of a wide range",
+      "line": "｠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FF61: just above a wide range",
+      "line": "｡",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FFDF: just below a wide range",
+      "line": "￟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FFE0: first of a wide range",
+      "line": "￠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FFE6: last of a wide range",
+      "line": "￦",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+FFE7: just above a wide range",
+      "line": "￧",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FDF: just below a wide range",
+      "line": "𖿟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FE0: first of a wide range",
+      "line": "𖿠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FE4: last of a wide range",
+      "line": "𖿤",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FE5: just above a wide range",
+      "line": "𖿥",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FEF: just below a wide range",
+      "line": "𖿯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FF0: first of a wide range",
+      "line": "𖿰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FF6: last of a wide range",
+      "line": "𖿶",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FF7: just above a wide range",
+      "line": "𖿷",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+16FFF: just below a wide range",
+      "line": "𖿿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+17000: first of a wide range",
+      "line": "𗀀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18CD5: last of a wide range",
+      "line": "𘳕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18CD6: just above a wide range",
+      "line": "𘳖",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18CFE: just below a wide range",
+      "line": "𘳾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18CFF: first of a wide range",
+      "line": "𘳿",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18D1E: last of a wide range",
+      "line": "𘴞",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18D1F: just above a wide range",
+      "line": "𘴟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18D7F: just below a wide range",
+      "line": "𘵿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18D80: first of a wide range",
+      "line": "𘶀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18DF2: last of a wide range",
+      "line": "𘷲",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+18DF3: just above a wide range",
+      "line": "𘷳",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFEF: just below a wide range",
+      "line": "𚿯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFF0: first of a wide range",
+      "line": "𚿰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFF3: last of a wide range",
+      "line": "𚿳",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFF4: just above a wide range",
+      "line": "𚿴",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFF5: first of a wide range",
+      "line": "𚿵",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFFB: last of a wide range",
+      "line": "𚿻",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFFC: just above a wide range",
+      "line": "𚿼",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFFD: first of a wide range",
+      "line": "𚿽",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFFE: last of a wide range",
+      "line": "𚿾",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1AFFF: just above a wide range",
+      "line": "𚿿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B000: first of a wide range",
+      "line": "𛀀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B122: last of a wide range",
+      "line": "𛄢",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B123: just above a wide range",
+      "line": "𛄣",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B131: just below a wide range",
+      "line": "𛄱",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B132: first of a wide range",
+      "line": "𛄲",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B133: just above a wide range",
+      "line": "𛄳",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B14F: just below a wide range",
+      "line": "𛅏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B150: first of a wide range",
+      "line": "𛅐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B152: last of a wide range",
+      "line": "𛅒",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B153: just above a wide range",
+      "line": "𛅓",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B154: just below a wide range",
+      "line": "𛅔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B155: first of a wide range",
+      "line": "𛅕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B156: just above a wide range",
+      "line": "𛅖",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B163: just below a wide range",
+      "line": "𛅣",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B164: first of a wide range",
+      "line": "𛅤",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B167: last of a wide range",
+      "line": "𛅧",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B168: just above a wide range",
+      "line": "𛅨",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B16F: just below a wide range",
+      "line": "𛅯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B170: first of a wide range",
+      "line": "𛅰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B2FB: last of a wide range",
+      "line": "𛋻",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1B2FC: just above a wide range",
+      "line": "𛋼",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D2FF: just below a wide range",
+      "line": "𝋿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D300: first of a wide range",
+      "line": "𝌀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D356: last of a wide range",
+      "line": "𝍖",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D357: just above a wide range",
+      "line": "𝍗",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D35F: just below a wide range",
+      "line": "𝍟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D360: first of a wide range",
+      "line": "𝍠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D376: last of a wide range",
+      "line": "𝍶",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1D377: just above a wide range",
+      "line": "𝍷",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F003: just below a wide range",
+      "line": "🀃",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F004: first of a wide range",
+      "line": "🀄",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F005: just above a wide range",
+      "line": "🀅",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F0CE: just below a wide range",
+      "line": "🃎",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F0CF: first of a wide range",
+      "line": "🃏",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F0D0: just above a wide range",
+      "line": "🃐",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F18D: just below a wide range",
+      "line": "🆍",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F18E: first of a wide range",
+      "line": "🆎",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F18F: just above a wide range",
+      "line": "🆏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F190: just below a wide range",
+      "line": "🆐",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F191: first of a wide range",
+      "line": "🆑",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F19A: last of a wide range",
+      "line": "🆚",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F19B: just above a wide range",
+      "line": "🆛",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F1FF: just below a wide range",
+      "line": "🇿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F200: first of a wide range",
+      "line": "🈀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F202: last of a wide range",
+      "line": "🈂",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F203: just above a wide range",
+      "line": "🈃",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F20F: just below a wide range",
+      "line": "🈏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F210: first of a wide range",
+      "line": "🈐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F23B: last of a wide range",
+      "line": "🈻",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F23C: just above a wide range",
+      "line": "🈼",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F23F: just below a wide range",
+      "line": "🈿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F240: first of a wide range",
+      "line": "🉀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F248: last of a wide range",
+      "line": "🉈",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F249: just above a wide range",
+      "line": "🉉",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F24F: just below a wide range",
+      "line": "🉏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F250: first of a wide range",
+      "line": "🉐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F251: last of a wide range",
+      "line": "🉑",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F252: just above a wide range",
+      "line": "🉒",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F25F: just below a wide range",
+      "line": "🉟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F260: first of a wide range",
+      "line": "🉠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F265: last of a wide range",
+      "line": "🉥",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F266: just above a wide range",
+      "line": "🉦",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F2FF: just below a wide range",
+      "line": "🋿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F300: first of a wide range",
+      "line": "🌀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F320: last of a wide range",
+      "line": "🌠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F321: just above a wide range",
+      "line": "🌡",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F32C: just below a wide range",
+      "line": "🌬",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F32D: first of a wide range",
+      "line": "🌭",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F335: last of a wide range",
+      "line": "🌵",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F336: just above a wide range",
+      "line": "🌶",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F337: first of a wide range",
+      "line": "🌷",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F37C: last of a wide range",
+      "line": "🍼",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F37D: just above a wide range",
+      "line": "🍽",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F37E: first of a wide range",
+      "line": "🍾",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F393: last of a wide range",
+      "line": "🎓",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F394: just above a wide range",
+      "line": "🎔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F39F: just below a wide range",
+      "line": "🎟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3A0: first of a wide range",
+      "line": "🎠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3CA: last of a wide range",
+      "line": "🏊",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3CB: just above a wide range",
+      "line": "🏋",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3CE: just below a wide range",
+      "line": "🏎",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3CF: first of a wide range",
+      "line": "🏏",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3D3: last of a wide range",
+      "line": "🏓",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3D4: just above a wide range",
+      "line": "🏔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3DF: just below a wide range",
+      "line": "🏟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3E0: first of a wide range",
+      "line": "🏠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3F0: last of a wide range",
+      "line": "🏰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3F1: just above a wide range",
+      "line": "🏱",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3F3: just below a wide range",
+      "line": "🏳",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3F4: first of a wide range",
+      "line": "🏴",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3F5: just above a wide range",
+      "line": "🏵",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3F7: just below a wide range",
+      "line": "🏷",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F3F8: first of a wide range",
+      "line": "🏸",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F43E: last of a wide range",
+      "line": "🐾",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F43F: just above a wide range",
+      "line": "🐿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F440: first of a wide range",
+      "line": "👀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F441: just above a wide range",
+      "line": "👁",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F442: first of a wide range",
+      "line": "👂",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F4FC: last of a wide range",
+      "line": "📼",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F4FD: just above a wide range",
+      "line": "📽",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F4FE: just below a wide range",
+      "line": "📾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F4FF: first of a wide range",
+      "line": "📿",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F53D: last of a wide range",
+      "line": "🔽",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F53E: just above a wide range",
+      "line": "🔾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F54A: just below a wide range",
+      "line": "🕊",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F54B: first of a wide range",
+      "line": "🕋",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F54E: last of a wide range",
+      "line": "🕎",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F54F: just above a wide range",
+      "line": "🕏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F550: first of a wide range",
+      "line": "🕐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F567: last of a wide range",
+      "line": "🕧",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F568: just above a wide range",
+      "line": "🕨",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F579: just below a wide range",
+      "line": "🕹",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F57A: first of a wide range",
+      "line": "🕺",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F57B: just above a wide range",
+      "line": "🕻",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F594: just below a wide range",
+      "line": "🖔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F595: first of a wide range",
+      "line": "🖕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F596: last of a wide range",
+      "line": "🖖",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F597: just above a wide range",
+      "line": "🖗",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F5A3: just below a wide range",
+      "line": "🖣",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F5A4: first of a wide range",
+      "line": "🖤",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F5A5: just above a wide range",
+      "line": "🖥",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F5FA: just below a wide range",
+      "line": "🗺",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F5FB: first of a wide range",
+      "line": "🗻",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F64F: last of a wide range",
+      "line": "🙏",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F650: just above a wide range",
+      "line": "🙐",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F67F: just below a wide range",
+      "line": "🙿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F680: first of a wide range",
+      "line": "🚀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6C5: last of a wide range",
+      "line": "🛅",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6C6: just above a wide range",
+      "line": "🛆",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6CB: just below a wide range",
+      "line": "🛋",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6CC: first of a wide range",
+      "line": "🛌",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6CD: just above a wide range",
+      "line": "🛍",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6CF: just below a wide range",
+      "line": "🛏",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6D0: first of a wide range",
+      "line": "🛐",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6D2: last of a wide range",
+      "line": "🛒",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6D3: just above a wide range",
+      "line": "🛓",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6D4: just below a wide range",
+      "line": "🛔",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6D5: first of a wide range",
+      "line": "🛕",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6D8: last of a wide range",
+      "line": "🛘",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6D9: just above a wide range",
+      "line": "🛙",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6DB: just below a wide range",
+      "line": "🛛",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6DC: first of a wide range",
+      "line": "🛜",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6DF: last of a wide range",
+      "line": "🛟",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6E0: just above a wide range",
+      "line": "🛠",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6EA: just below a wide range",
+      "line": "🛪",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6EB: first of a wide range",
+      "line": "🛫",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6EC: last of a wide range",
+      "line": "🛬",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6ED: just above a wide range",
+      "line": "🛭",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6F3: just below a wide range",
+      "line": "🛳",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6F4: first of a wide range",
+      "line": "🛴",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6FC: last of a wide range",
+      "line": "🛼",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F6FD: just above a wide range",
+      "line": "🛽",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F7DF: just below a wide range",
+      "line": "🟟",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F7E0: first of a wide range",
+      "line": "🟠",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F7EB: last of a wide range",
+      "line": "🟫",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F7EC: just above a wide range",
+      "line": "🟬",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F7EF: just below a wide range",
+      "line": "🟯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F7F0: first of a wide range",
+      "line": "🟰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F7F1: just above a wide range",
+      "line": "🟱",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F90B: just below a wide range",
+      "line": "🤋",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F90C: first of a wide range",
+      "line": "🤌",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F93A: last of a wide range",
+      "line": "🤺",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F93B: just above a wide range",
+      "line": "🤻",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F93C: first of a wide range",
+      "line": "🤼",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F945: last of a wide range",
+      "line": "🥅",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F946: just above a wide range",
+      "line": "🥆",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F947: first of a wide range",
+      "line": "🥇",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1F9FF: last of a wide range",
+      "line": "🧿",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA00: just above a wide range",
+      "line": "🨀",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA6F: just below a wide range",
+      "line": "🩯",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA70: first of a wide range",
+      "line": "🩰",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA7C: last of a wide range",
+      "line": "🩼",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA7D: just above a wide range",
+      "line": "🩽",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA7F: just below a wide range",
+      "line": "🩿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA80: first of a wide range",
+      "line": "🪀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA8A: last of a wide range",
+      "line": "🪊",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA8B: just above a wide range",
+      "line": "🪋",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA8D: just below a wide range",
+      "line": "🪍",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FA8E: first of a wide range",
+      "line": "🪎",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAC6: last of a wide range",
+      "line": "🫆",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAC7: just above a wide range",
+      "line": "🫇",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAC8: first of a wide range",
+      "line": "🫈",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAC9: just above a wide range",
+      "line": "🫉",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FACC: just below a wide range",
+      "line": "🫌",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FACD: first of a wide range",
+      "line": "🫍",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FADC: last of a wide range",
+      "line": "🫜",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FADD: just above a wide range",
+      "line": "🫝",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FADE: just below a wide range",
+      "line": "🫞",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FADF: first of a wide range",
+      "line": "🫟",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAEA: last of a wide range",
+      "line": "🫪",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAEB: just above a wide range",
+      "line": "🫫",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAEE: just below a wide range",
+      "line": "🫮",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAEF: first of a wide range",
+      "line": "🫯",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAF8: last of a wide range",
+      "line": "🫸",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FAF9: just above a wide range",
+      "line": "🫹",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+1FFFF: just below a wide range",
+      "line": "🿿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+20000: first of a wide range",
+      "line": "𠀀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2FFFD: last of a wide range",
+      "line": "𯿽",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2FFFE: just above a wide range",
+      "line": "𯿾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+2FFFF: just below a wide range",
+      "line": "𯿿",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+30000: first of a wide range",
+      "line": "𰀀",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3FFFD: last of a wide range",
+      "line": "𿿽",
+      "size": 1000,
+      "font": 1,
+      "expect": 1000
+    },
+    {
+      "fn": "textWidth",
+      "name": "U+3FFFE: just above a wide range",
+      "line": "𿿾",
+      "size": 1000,
+      "font": 1,
+      "expect": 562
+    }
+  ]
+}

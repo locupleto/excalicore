@@ -47,7 +47,7 @@ import random
 import string
 import time
 import unicodedata
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from typing import Any
 
 from .fontmetrics import ADVANCE, METRICS
@@ -98,19 +98,49 @@ Point = tuple[float, float]
 # --- small things ---------------------------------------------------------------------
 
 
+def _default_id() -> str:
+    return "".join(random.choices(_ALPHABET, k=21))
+
+
+def _default_nonce() -> int:
+    return random.randint(1, 2**31 - 1)
+
+
+def _default_clock() -> int:
+    return int(time.time() * 1000)
+
+
+_ids: Callable[[], str] = _default_id
+_nonces: Callable[[], int] = _default_nonce
+_clock: Callable[[], int] = _default_clock
+
+
+def set_source(*, ids: Callable[[], str] | None = None, nonces: Callable[[], int] | None = None,
+               clock: Callable[[], int] | None = None) -> None:
+    """Replace where :func:`new_id`, :func:`nonce` and :func:`now_ms` get their
+    values, so a caller can render the same scene identically every time
+    (fixed seeds). Each is a zero-argument callable; ``None`` restores that
+    one's default, so ``set_source()`` restores all three. Every call replaces
+    the whole source: to change one and keep another, pass both."""
+    global _ids, _nonces, _clock
+    _ids = ids or _default_id
+    _nonces = nonces or _default_nonce
+    _clock = clock or _default_clock
+
+
 def new_id() -> str:
     """An id the way Excalidraw makes them: 21 characters of nanoid's alphabet."""
-    return "".join(random.choices(_ALPHABET, k=21))
+    return _ids()
 
 
 def nonce() -> int:
     """A ``seed`` or ``versionNonce``: a random positive 31-bit integer."""
-    return random.randint(1, 2**31 - 1)
+    return _nonces()
 
 
 def now_ms() -> int:
     """Epoch milliseconds, as an element's ``updated``."""
-    return int(time.time() * 1000)
+    return _clock()
 
 
 def touch(element: dict) -> dict:

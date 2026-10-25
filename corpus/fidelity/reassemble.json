@@ -1,0 +1,995 @@
+{
+  "doc": "reassemble() and the round trip, executed from python/excalicore/fidelity.py. `reassemble` cases give `rows` as plain objects keyed by column name (what a SQL cursor returns) and expect the elements back. `roundTrip` cases give `elements` inline or a corpus `scene` (optionally with `reversed`: rows handed over in reverse order) and expect true when reassemble(explode(x)) equals x exactly.",
+  "cases": [
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene arrow-bindings survives exactly",
+      "scene": "arrow-bindings",
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene arrow-bindings survives exactly when rows arrive reversed",
+      "scene": "arrow-bindings",
+      "reversed": true,
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene bound-labels survives exactly",
+      "scene": "bound-labels",
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene bound-labels survives exactly when rows arrive reversed",
+      "scene": "bound-labels",
+      "reversed": true,
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene freedraw survives exactly",
+      "scene": "freedraw",
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene freedraw survives exactly when rows arrive reversed",
+      "scene": "freedraw",
+      "reversed": true,
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene image-and-files survives exactly",
+      "scene": "image-and-files",
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene image-and-files survives exactly when rows arrive reversed",
+      "scene": "image-and-files",
+      "reversed": true,
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene instance-group survives exactly",
+      "scene": "instance-group",
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene instance-group survives exactly when rows arrive reversed",
+      "scene": "instance-group",
+      "reversed": true,
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene stencil-instances survives exactly",
+      "scene": "stencil-instances",
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "the corpus scene stencil-instances survives exactly when rows arrive reversed",
+      "scene": "stencil-instances",
+      "reversed": true,
+      "expect": true
+    },
+    {
+      "fn": "roundTrip",
+      "name": "inline elements: nulls, anonymous, unknown fields, non-ASCII",
+      "elements": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 1.5,
+          "y": 2,
+          "width": 3,
+          "height": 4,
+          "angle": 0.25,
+          "seed": 9,
+          "boundElements": [
+            {
+              "id": "t",
+              "type": "text"
+            }
+          ],
+          "future": {
+            "deep": [
+              1,
+              {
+                "x": null
+              }
+            ]
+          }
+        },
+        {
+          "type": "line",
+          "x": null,
+          "y": null
+        },
+        {
+          "id": "c",
+          "type": "text",
+          "angle": null,
+          "text": "caf\u00e9"
+        }
+      ],
+      "expect": true
+    },
+    {
+      "fn": "reassemble",
+      "name": "none",
+      "rows": null,
+      "expect": []
+    },
+    {
+      "fn": "reassemble",
+      "name": "no rows",
+      "rows": [],
+      "expect": []
+    },
+    {
+      "fn": "reassemble",
+      "name": "a row with typed columns",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": 1,
+          "y": 2,
+          "width": 3,
+          "height": 4,
+          "angle": 0.5,
+          "json": "{\"seed\": 9}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "seed": 9,
+          "id": "a",
+          "type": "rectangle",
+          "x": 1,
+          "y": 2,
+          "width": 3,
+          "height": 4,
+          "angle": 0.5
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a zero column is a value, not an absence",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "angle": 0,
+          "json": "{}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "angle": 0
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "rows come back in z order, whatever order they arrive in",
+      "rows": [
+        {
+          "element_id": "c",
+          "z": 2,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle"
+        },
+        {
+          "id": "b",
+          "type": "rectangle"
+        },
+        {
+          "id": "c",
+          "type": "rectangle"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "equal z keeps arrival order",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 1,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "c",
+          "z": 0,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "id": "c",
+          "type": "rectangle"
+        },
+        {
+          "id": "a",
+          "type": "rectangle"
+        },
+        {
+          "id": "b",
+          "type": "rectangle"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a missing z sorts as zero",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 3,
+          "type": "rectangle",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "b",
+          "json": "{}"
+        }
+      ],
+      "expect": [
+        {
+          "id": "b"
+        },
+        {
+          "id": "a",
+          "type": "rectangle"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "an anonymous flag drops the key",
+      "rows": [
+        {
+          "element_id": "anon-0",
+          "z": 0,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 1
+        }
+      ],
+      "expect": [
+        {
+          "type": "line"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a fabricated key is recognised by its prefix alone",
+      "rows": [
+        {
+          "element_id": "anon-3",
+          "z": 0,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "type": "line"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a custom prefix",
+      "rows": [
+        {
+          "element_id": "tmp:0",
+          "z": 0,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "anon-1",
+          "z": 1,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        }
+      ],
+      "options": {
+        "anonPrefix": "tmp:"
+      },
+      "expect": [
+        {
+          "type": "line"
+        },
+        {
+          "id": "anon-1",
+          "type": "line"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "the anonymous flag in its stored spellings",
+      "rows": [
+        {
+          "element_id": "k0",
+          "z": 0,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "k1",
+          "z": 1,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 1
+        },
+        {
+          "element_id": "k2",
+          "z": 2,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": "0"
+        },
+        {
+          "element_id": "k3",
+          "z": 3,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": "1"
+        },
+        {
+          "element_id": "k4",
+          "z": 4,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": ""
+        },
+        {
+          "element_id": "k5",
+          "z": 5,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": true
+        },
+        {
+          "element_id": "k6",
+          "z": 6,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": false
+        },
+        {
+          "element_id": "k7",
+          "z": 7,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": null
+        },
+        {
+          "element_id": "k8",
+          "z": 8,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 2
+        }
+      ],
+      "expect": [
+        {
+          "id": "k0",
+          "type": "r"
+        },
+        {
+          "type": "r"
+        },
+        {
+          "id": "k2",
+          "type": "r"
+        },
+        {
+          "type": "r"
+        },
+        {
+          "id": "k4",
+          "type": "r"
+        },
+        {
+          "type": "r"
+        },
+        {
+          "id": "k6",
+          "type": "r"
+        },
+        {
+          "id": "k7",
+          "type": "r"
+        },
+        {
+          "type": "r"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a null element_id gives no id",
+      "rows": [
+        {
+          "element_id": null,
+          "z": 0,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "type": "line"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a missing element_id gives no id",
+      "rows": [
+        {
+          "z": 0,
+          "json": "{}",
+          "type": "line"
+        }
+      ],
+      "expect": [
+        {
+          "type": "line"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "an id in the remainder survives when the key is anonymous",
+      "rows": [
+        {
+          "element_id": "anon-0",
+          "z": 0,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"id\": null}",
+          "anonymous": 1
+        }
+      ],
+      "expect": [
+        {
+          "id": null,
+          "type": "line"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "the id column overrides the remainder",
+      "rows": [
+        {
+          "element_id": "real",
+          "z": 0,
+          "type": "line",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"id\": \"stale\"}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "id": "real",
+          "type": "line"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "the type column overrides the remainder, an empty one does not",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "ellipse",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"type\": \"stale\"}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"type\": \"kept\"}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "type": "ellipse",
+          "id": "a"
+        },
+        {
+          "type": "kept",
+          "id": "b"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "columns override the remainder only when they hold a value",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "r",
+          "x": 1,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"x\": 5, \"y\": 6}",
+          "anonymous": 0
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"x\": 5, \"angle\": null}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "x": 1,
+          "y": 6,
+          "id": "a",
+          "type": "r"
+        },
+        {
+          "x": 5,
+          "angle": null,
+          "id": "b",
+          "type": "r"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a corrupt remainder degrades to the columns",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "rectangle",
+          "x": 5,
+          "y": 6,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{not json",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "rectangle",
+          "x": 5,
+          "y": 6
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a remainder that is not an object degrades to the columns",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "[1, 2]",
+          "anonymous": 0
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "\"text\"",
+          "anonymous": 0
+        },
+        {
+          "element_id": "c",
+          "z": 2,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "null",
+          "anonymous": 0
+        },
+        {
+          "element_id": "d",
+          "z": 3,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "7",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "r"
+        },
+        {
+          "id": "b",
+          "type": "r"
+        },
+        {
+          "id": "c",
+          "type": "r"
+        },
+        {
+          "id": "d",
+          "type": "r"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "an empty or null remainder is an empty element",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "",
+          "anonymous": 0
+        },
+        {
+          "element_id": "b",
+          "z": 1,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": null,
+          "anonymous": 0
+        },
+        {
+          "element_id": "c",
+          "z": 2,
+          "type": "r"
+        }
+      ],
+      "expect": [
+        {
+          "id": "a",
+          "type": "r"
+        },
+        {
+          "id": "b",
+          "type": "r"
+        },
+        {
+          "id": "c",
+          "type": "r"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "whitespace around the remainder is fine",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": " \n {\"k\": 1}\t",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "k": 1,
+          "id": "a",
+          "type": "r"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a remainder with a duplicate key: the later wins",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"k\": 1, \"k\": 2}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "k": 2,
+          "id": "a",
+          "type": "r"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "a remainder with escapes",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"t\": \"caf\\u00e9 \\ud83d\\ude00 \\n\"}",
+          "anonymous": 0
+        }
+      ],
+      "expect": [
+        {
+          "t": "caf\u00e9 \ud83d\ude00 \n",
+          "id": "a",
+          "type": "r"
+        }
+      ]
+    },
+    {
+      "fn": "reassemble",
+      "name": "extra keys on a row are ignored",
+      "rows": [
+        {
+          "element_id": "a",
+          "z": 0,
+          "type": "r",
+          "x": null,
+          "y": null,
+          "width": null,
+          "height": null,
+          "angle": null,
+          "json": "{\"k\": 1}",
+          "anonymous": 0,
+          "extra": "x",
+          "id": 9
+        }
+      ],
+      "expect": [
+        {
+          "k": 1,
+          "id": "a",
+          "type": "r"
+        }
+      ]
+    }
+  ]
+}

@@ -82,6 +82,28 @@ for the browser's skeleton pipeline (see the vault's Geometry-Module note),
 so a Python test that reads them is skipped, with the reason, the way the
 parity tests already do elsewhere in this repository.
 
+## Generated from the Python half (`elements/`, `scene/`, `fidelity/`, `drawio/`)
+
+The fixtures the TypeScript half's v0.13.0 twins are fixed against. Unlike
+the geometry files, the reference implementation here is excalicore's own
+Python half: every `expect` was produced by running it, through the scripts in
+`python/tools/` (`gen_corpus_elements.py`, `gen_corpus_scene.py`,
+`gen_corpus_fidelity.py`, `gen_corpus_drawio.py`; run them with `python3`
+from `python/`). Each Python suite replays its files too, so a change to
+either half that the other does not make fails a test. Same `{doc, cases}`
+shape as `geometry/`; each file's `doc` says what its cases carry.
+
+| Files | What they are for |
+| --- | --- |
+| `elements/text.json`, `elements/fontmetrics.json` | text width, measuring and wrapping in every font family, including accented Latin, CJK and emoji, ties that `round` breaks to even, and the edges of every East Asian wide range. |
+| `elements/builders.json`, `elements/labels.json`, `elements/arrows.json` | every builder, a label bound and fitted into each container kind, arrows routed to a shape's edge, bound, refitted after a move and detached. Built under a fixed id/seed/clock source (`set_source`), so whole elements compare. |
+| `scene/compact.json`, `scene/strokes.json`, `scene/stencils.json`, `scene/patch.json` | `compact` over every captured scene and its options, stroke summaries, stencil folding, and `extract_patch`/`valid_patch` over every captured reply plus the edge cases. |
+| `fidelity/explode.json`, `fidelity/reassemble.json`, `fidelity/assets.json` | the round trip, rows read by either column spelling, and the file references asset collection starts from. |
+| `drawio/cases.json` | diagrams with their exact `.drawio` and `.drawio.svg` text (compared byte for byte), and the diagrams the builder must refuse, with the error. |
+
+Regenerate a file only on purpose, after a deliberate change to the Python
+behaviour, and port the same change to the TypeScript twin in the same commit.
+
 ## Replies (`replies/*.txt`)
 
 Model replies as they actually arrive: fenced and unfenced patches, two patches

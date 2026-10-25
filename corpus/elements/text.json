@@ -1,0 +1,2034 @@
+{
+  "doc": "measureText, textWidth, wrapText, textRoom, containerHeightFor and lineHeight, executed from python/excalicore/elements.py, across the five font families and an unknown one, Latin-1 and Latin Extended-A letters, CJK, fullwidth forms, emoji and symbols the glyph tables lack. Pure functions: each case is its inputs and an `expect` (a number, a [width, height] pair or a string). `charEm` is the opt-in flat estimate. Text is counted by codepoint, as Python counts it.",
+  "cases": [
+    {
+      "fn": "lineHeight",
+      "name": "line height of font 1",
+      "font": 1,
+      "expect": 1.25
+    },
+    {
+      "fn": "lineHeight",
+      "name": "line height of font 2",
+      "font": 2,
+      "expect": 1.15
+    },
+    {
+      "fn": "lineHeight",
+      "name": "line height of font 3",
+      "font": 3,
+      "expect": 1.2
+    },
+    {
+      "fn": "lineHeight",
+      "name": "line height of font 5",
+      "font": 5,
+      "expect": 1.25
+    },
+    {
+      "fn": "lineHeight",
+      "name": "line height of font 6",
+      "font": 6,
+      "expect": 1.35
+    },
+    {
+      "fn": "lineHeight",
+      "name": "line height of font 99 (unknown, falls back)",
+      "font": 99,
+      "expect": 1.25
+    },
+    {
+      "fn": "measureText",
+      "name": "a short ASCII word, font 1, 20px",
+      "text": "Hello",
+      "size": 20,
+      "font": 1,
+      "expect": [43.56, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a short ASCII word, font 2, 20px",
+      "text": "Hello",
+      "size": 20,
+      "font": 2,
+      "expect": [45.56, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "a short ASCII word, font 3, 20px",
+      "text": "Hello",
+      "size": 20,
+      "font": 3,
+      "expect": [58.6, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "a short ASCII word, font 5, 20px",
+      "text": "Hello",
+      "size": 20,
+      "font": 5,
+      "expect": [43.2, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a short ASCII word, font 6, 20px",
+      "text": "Hello",
+      "size": 20,
+      "font": 6,
+      "expect": [49.2, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "capitals and punctuation, wider than the flat estimate, font 1, 20px",
+      "text": "THE BASTION (proposed)",
+      "size": 20,
+      "font": 1,
+      "expect": [253.5, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "capitals and punctuation, wider than the flat estimate, font 2, 20px",
+      "text": "THE BASTION (proposed)",
+      "size": 20,
+      "font": 2,
+      "expect": [235.62, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "capitals and punctuation, wider than the flat estimate, font 3, 20px",
+      "text": "THE BASTION (proposed)",
+      "size": 20,
+      "font": 3,
+      "expect": [257.84, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "capitals and punctuation, wider than the flat estimate, font 5, 20px",
+      "text": "THE BASTION (proposed)",
+      "size": 20,
+      "font": 5,
+      "expect": [260.22, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "capitals and punctuation, wider than the flat estimate, font 6, 20px",
+      "text": "THE BASTION (proposed)",
+      "size": 20,
+      "font": 6,
+      "expect": [236.1, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "narrow glyphs, font 1, 20px",
+      "text": "iiii",
+      "size": 20,
+      "font": 1,
+      "expect": [17.52, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "narrow glyphs, font 2, 20px",
+      "text": "iiii",
+      "size": 20,
+      "font": 2,
+      "expect": [17.76, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "narrow glyphs, font 3, 20px",
+      "text": "iiii",
+      "size": 20,
+      "font": 3,
+      "expect": [46.88, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "narrow glyphs, font 5, 20px",
+      "text": "iiii",
+      "size": 20,
+      "font": 5,
+      "expect": [19.52, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "narrow glyphs, font 6, 20px",
+      "text": "iiii",
+      "size": 20,
+      "font": 6,
+      "expect": [18.96, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "wide glyphs, font 1, 20px",
+      "text": "MMMM",
+      "size": 20,
+      "font": 1,
+      "expect": [61.28, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "wide glyphs, font 2, 20px",
+      "text": "MMMM",
+      "size": 20,
+      "font": 2,
+      "expect": [66.64, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "wide glyphs, font 3, 20px",
+      "text": "MMMM",
+      "size": 20,
+      "font": 3,
+      "expect": [46.88, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "wide glyphs, font 5, 20px",
+      "text": "MMMM",
+      "size": 20,
+      "font": 5,
+      "expect": [61.28, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "wide glyphs, font 6, 20px",
+      "text": "MMMM",
+      "size": 20,
+      "font": 6,
+      "expect": [68.64, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "Swedish letters from Latin-1, font 1, 20px",
+      "text": "Åsa Öberg lät åka äpplen",
+      "size": 20,
+      "font": 1,
+      "expect": [256.48, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "Swedish letters from Latin-1, font 2, 20px",
+      "text": "Åsa Öberg lät åka äpplen",
+      "size": 20,
+      "font": 2,
+      "expect": [225.68, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "Swedish letters from Latin-1, font 3, 20px",
+      "text": "Åsa Öberg lät åka äpplen",
+      "size": 20,
+      "font": 3,
+      "expect": [281.28, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "Swedish letters from Latin-1, font 5, 20px",
+      "text": "Åsa Öberg lät åka äpplen",
+      "size": 20,
+      "font": 5,
+      "expect": [241.92, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "Swedish letters from Latin-1, font 6, 20px",
+      "text": "Åsa Öberg lät åka äpplen",
+      "size": 20,
+      "font": 6,
+      "expect": [230.4, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "accents from Latin-1, font 1, 20px",
+      "text": "café résumé naïve",
+      "size": 20,
+      "font": 1,
+      "expect": [182, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "accents from Latin-1, font 2, 20px",
+      "text": "café résumé naïve",
+      "size": 20,
+      "font": 2,
+      "expect": [164.52, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "accents from Latin-1, font 3, 20px",
+      "text": "café résumé naïve",
+      "size": 20,
+      "font": 3,
+      "expect": [199.24, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "accents from Latin-1, font 5, 20px",
+      "text": "café résumé naïve",
+      "size": 20,
+      "font": 5,
+      "expect": [172.08, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "accents from Latin-1, font 6, 20px",
+      "text": "café résumé naïve",
+      "size": 20,
+      "font": 6,
+      "expect": [162.6, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "Latin Extended-A, font 1, 20px",
+      "text": "Łódź Žižek",
+      "size": 20,
+      "font": 1,
+      "expect": [112.38, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "Latin Extended-A, font 2, 20px",
+      "text": "Łódź Žižek",
+      "size": 20,
+      "font": 2,
+      "expect": [96.7, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "Latin Extended-A, font 3, 20px",
+      "text": "Łódź Žižek",
+      "size": 20,
+      "font": 3,
+      "expect": [117.2, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "Latin Extended-A, font 5, 20px",
+      "text": "Łódź Žižek",
+      "size": 20,
+      "font": 5,
+      "expect": [109.72, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "Latin Extended-A, font 6, 20px",
+      "text": "Łódź Žižek",
+      "size": 20,
+      "font": 6,
+      "expect": [95.2, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "CJK ideographs, which take a full em, font 1, 20px",
+      "text": "中文标签 label",
+      "size": 20,
+      "font": 1,
+      "expect": [134.96, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "CJK ideographs, which take a full em, font 2, 20px",
+      "text": "中文标签 label",
+      "size": 20,
+      "font": 2,
+      "expect": [127.8, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "CJK ideographs, which take a full em, font 3, 20px",
+      "text": "中文标签 label",
+      "size": 20,
+      "font": 3,
+      "expect": [150.32, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "CJK ideographs, which take a full em, font 5, 20px",
+      "text": "中文标签 label",
+      "size": 20,
+      "font": 5,
+      "expect": [130.36, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "CJK ideographs, which take a full em, font 6, 20px",
+      "text": "中文标签 label",
+      "size": 20,
+      "font": 6,
+      "expect": [130.34, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "kana and kanji, font 1, 20px",
+      "text": "日本語のラベル",
+      "size": 20,
+      "font": 1,
+      "expect": [140, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "kana and kanji, font 2, 20px",
+      "text": "日本語のラベル",
+      "size": 20,
+      "font": 2,
+      "expect": [140, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "kana and kanji, font 3, 20px",
+      "text": "日本語のラベル",
+      "size": 20,
+      "font": 3,
+      "expect": [140, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "kana and kanji, font 5, 20px",
+      "text": "日本語のラベル",
+      "size": 20,
+      "font": 5,
+      "expect": [140, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "kana and kanji, font 6, 20px",
+      "text": "日本語のラベル",
+      "size": 20,
+      "font": 6,
+      "expect": [140, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "Hangul syllables, font 1, 20px",
+      "text": "한국어",
+      "size": 20,
+      "font": 1,
+      "expect": [60, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "Hangul syllables, font 2, 20px",
+      "text": "한국어",
+      "size": 20,
+      "font": 2,
+      "expect": [60, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "Hangul syllables, font 3, 20px",
+      "text": "한국어",
+      "size": 20,
+      "font": 3,
+      "expect": [60, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "Hangul syllables, font 5, 20px",
+      "text": "한국어",
+      "size": 20,
+      "font": 5,
+      "expect": [60, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "Hangul syllables, font 6, 20px",
+      "text": "한국어",
+      "size": 20,
+      "font": 6,
+      "expect": [60, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "fullwidth Latin letters (East Asian width F), font 1, 20px",
+      "text": "ＦＵＬＬ ｗｉｄｔｈ",
+      "size": 20,
+      "font": 1,
+      "expect": [190, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "fullwidth Latin letters (East Asian width F), font 2, 20px",
+      "text": "ＦＵＬＬ ｗｉｄｔｈ",
+      "size": 20,
+      "font": 2,
+      "expect": [185.56, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "fullwidth Latin letters (East Asian width F), font 3, 20px",
+      "text": "ＦＵＬＬ ｗｉｄｔｈ",
+      "size": 20,
+      "font": 3,
+      "expect": [191.72, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "fullwidth Latin letters (East Asian width F), font 5, 20px",
+      "text": "ＦＵＬＬ ｗｉｄｔｈ",
+      "size": 20,
+      "font": 5,
+      "expect": [188, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "fullwidth Latin letters (East Asian width F), font 6, 20px",
+      "text": "ＦＵＬＬ ｗｉｄｔｈ",
+      "size": 20,
+      "font": 6,
+      "expect": [185.22, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "halfwidth katakana (East Asian width H, so narrow), font 1, 20px",
+      "text": "ｶﾅ half",
+      "size": 20,
+      "font": 1,
+      "expect": [70.68, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "halfwidth katakana (East Asian width H, so narrow), font 2, 20px",
+      "text": "ｶﾅ half",
+      "size": 20,
+      "font": 2,
+      "expect": [58.88, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "halfwidth katakana (East Asian width H, so narrow), font 3, 20px",
+      "text": "ｶﾅ half",
+      "size": 20,
+      "font": 3,
+      "expect": [82.04, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "halfwidth katakana (East Asian width H, so narrow), font 5, 20px",
+      "text": "ｶﾅ half",
+      "size": 20,
+      "font": 5,
+      "expect": [68.1, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "halfwidth katakana (East Asian width H, so narrow), font 6, 20px",
+      "text": "ｶﾅ half",
+      "size": 20,
+      "font": 6,
+      "expect": [61.66, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "an emoji outside the Basic Multilingual Plane, font 1, 20px",
+      "text": "Ping 😀 pong",
+      "size": 20,
+      "font": 1,
+      "expect": [117.26, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "an emoji outside the Basic Multilingual Plane, font 2, 20px",
+      "text": "Ping 😀 pong",
+      "size": 20,
+      "font": 2,
+      "expect": [115.62, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "an emoji outside the Basic Multilingual Plane, font 3, 20px",
+      "text": "Ping 😀 pong",
+      "size": 20,
+      "font": 3,
+      "expect": [137.2, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "an emoji outside the Basic Multilingual Plane, font 5, 20px",
+      "text": "Ping 😀 pong",
+      "size": 20,
+      "font": 5,
+      "expect": [120.82, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "an emoji outside the Basic Multilingual Plane, font 6, 20px",
+      "text": "Ping 😀 pong",
+      "size": 20,
+      "font": 6,
+      "expect": [117.34, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "symbols the tables lack, narrow fallback, font 1, 20px",
+      "text": "☃ snowman ❤",
+      "size": 20,
+      "font": 1,
+      "expect": [121.28, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "symbols the tables lack, narrow fallback, font 2, 20px",
+      "text": "☃ snowman ❤",
+      "size": 20,
+      "font": 2,
+      "expect": [117.78, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "symbols the tables lack, narrow fallback, font 3, 20px",
+      "text": "☃ snowman ❤",
+      "size": 20,
+      "font": 3,
+      "expect": [128.92, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "symbols the tables lack, narrow fallback, font 5, 20px",
+      "text": "☃ snowman ❤",
+      "size": 20,
+      "font": 5,
+      "expect": [121.34, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "symbols the tables lack, narrow fallback, font 6, 20px",
+      "text": "☃ snowman ❤",
+      "size": 20,
+      "font": 6,
+      "expect": [120.46, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "a combining mark counted as its own codepoint, font 1, 20px",
+      "text": "é combining",
+      "size": 20,
+      "font": 1,
+      "expect": [113.58, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a combining mark counted as its own codepoint, font 2, 20px",
+      "text": "é combining",
+      "size": 20,
+      "font": 2,
+      "expect": [118.36, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "a combining mark counted as its own codepoint, font 3, 20px",
+      "text": "é combining",
+      "size": 20,
+      "font": 3,
+      "expect": [140.64, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "a combining mark counted as its own codepoint, font 5, 20px",
+      "text": "é combining",
+      "size": 20,
+      "font": 5,
+      "expect": [118.48, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a combining mark counted as its own codepoint, font 6, 20px",
+      "text": "é combining",
+      "size": 20,
+      "font": 6,
+      "expect": [120.28, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "a tab, which the tables lack, font 1, 20px",
+      "text": "tab\there",
+      "size": 20,
+      "font": 1,
+      "expect": [86.4, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a tab, which the tables lack, font 2, 20px",
+      "text": "tab\there",
+      "size": 20,
+      "font": 2,
+      "expect": [78.36, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "a tab, which the tables lack, font 3, 20px",
+      "text": "tab\there",
+      "size": 20,
+      "font": 3,
+      "expect": [93.76, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "a tab, which the tables lack, font 5, 20px",
+      "text": "tab\there",
+      "size": 20,
+      "font": 5,
+      "expect": [86.14, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a tab, which the tables lack, font 6, 20px",
+      "text": "tab\there",
+      "size": 20,
+      "font": 6,
+      "expect": [80.42, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty string, font 1, 20px",
+      "text": "",
+      "size": 20,
+      "font": 1,
+      "expect": [11, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty string, font 2, 20px",
+      "text": "",
+      "size": 20,
+      "font": 2,
+      "expect": [11, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty string, font 3, 20px",
+      "text": "",
+      "size": 20,
+      "font": 3,
+      "expect": [11, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty string, font 5, 20px",
+      "text": "",
+      "size": 20,
+      "font": 5,
+      "expect": [11, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty string, font 6, 20px",
+      "text": "",
+      "size": 20,
+      "font": 6,
+      "expect": [11, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "a line break, font 1, 20px",
+      "text": "two\nlines",
+      "size": 20,
+      "font": 1,
+      "expect": [40.78, 50]
+    },
+    {
+      "fn": "measureText",
+      "name": "a line break, font 2, 20px",
+      "text": "two\nlines",
+      "size": 20,
+      "font": 2,
+      "expect": [41.12, 46]
+    },
+    {
+      "fn": "measureText",
+      "name": "a line break, font 3, 20px",
+      "text": "two\nlines",
+      "size": 20,
+      "font": 3,
+      "expect": [58.6, 48]
+    },
+    {
+      "fn": "measureText",
+      "name": "a line break, font 5, 20px",
+      "text": "two\nlines",
+      "size": 20,
+      "font": 5,
+      "expect": [41.5, 50]
+    },
+    {
+      "fn": "measureText",
+      "name": "a line break, font 6, 20px",
+      "text": "two\nlines",
+      "size": 20,
+      "font": 6,
+      "expect": [42.54, 54]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty line between, font 1, 20px",
+      "text": "a\n\nb",
+      "size": 20,
+      "font": 1,
+      "expect": [13.34, 75]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty line between, font 2, 20px",
+      "text": "a\n\nb",
+      "size": 20,
+      "font": 2,
+      "expect": [11.12, 69]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty line between, font 3, 20px",
+      "text": "a\n\nb",
+      "size": 20,
+      "font": 3,
+      "expect": [11.72, 72]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty line between, font 5, 20px",
+      "text": "a\n\nb",
+      "size": 20,
+      "font": 5,
+      "expect": [11.52, 75]
+    },
+    {
+      "fn": "measureText",
+      "name": "an empty line between, font 6, 20px",
+      "text": "a\n\nb",
+      "size": 20,
+      "font": 6,
+      "expect": [11.74, 81]
+    },
+    {
+      "fn": "measureText",
+      "name": "only a line break, font 1, 20px",
+      "text": "\n",
+      "size": 20,
+      "font": 1,
+      "expect": [11, 50]
+    },
+    {
+      "fn": "measureText",
+      "name": "only a line break, font 2, 20px",
+      "text": "\n",
+      "size": 20,
+      "font": 2,
+      "expect": [11, 46]
+    },
+    {
+      "fn": "measureText",
+      "name": "only a line break, font 3, 20px",
+      "text": "\n",
+      "size": 20,
+      "font": 3,
+      "expect": [11, 48]
+    },
+    {
+      "fn": "measureText",
+      "name": "only a line break, font 5, 20px",
+      "text": "\n",
+      "size": 20,
+      "font": 5,
+      "expect": [11, 50]
+    },
+    {
+      "fn": "measureText",
+      "name": "only a line break, font 6, 20px",
+      "text": "\n",
+      "size": 20,
+      "font": 6,
+      "expect": [11, 54]
+    },
+    {
+      "fn": "measureText",
+      "name": "a zero-width space, font 1, 20px",
+      "text": "Zero​width",
+      "size": 20,
+      "font": 1,
+      "expect": [106.92, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a zero-width space, font 2, 20px",
+      "text": "Zero​width",
+      "size": 20,
+      "font": 2,
+      "expect": [98.34, 23]
+    },
+    {
+      "fn": "measureText",
+      "name": "a zero-width space, font 3, 20px",
+      "text": "Zero​width",
+      "size": 20,
+      "font": 3,
+      "expect": [117.2, 24]
+    },
+    {
+      "fn": "measureText",
+      "name": "a zero-width space, font 5, 20px",
+      "text": "Zero​width",
+      "size": 20,
+      "font": 5,
+      "expect": [112.26, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a zero-width space, font 6, 20px",
+      "text": "Zero​width",
+      "size": 20,
+      "font": 6,
+      "expect": [103.76, 27]
+    },
+    {
+      "fn": "measureText",
+      "name": "a short ASCII word, flat 0.55 em estimate",
+      "text": "Hello",
+      "size": 16,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": [44, 20]
+    },
+    {
+      "fn": "measureText",
+      "name": "capitals and punctuation, wider than the flat estimate, flat 0.55 em estimate",
+      "text": "THE BASTION (proposed)",
+      "size": 16,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": [193.6, 20]
+    },
+    {
+      "fn": "measureText",
+      "name": "narrow glyphs, flat 0.55 em estimate",
+      "text": "iiii",
+      "size": 16,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": [35.2, 20]
+    },
+    {
+      "fn": "measureText",
+      "name": "wide glyphs, flat 0.55 em estimate",
+      "text": "MMMM",
+      "size": 16,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": [35.2, 20]
+    },
+    {
+      "fn": "measureText",
+      "name": "Swedish letters from Latin-1, flat 0.55 em estimate",
+      "text": "Åsa Öberg lät åka äpplen",
+      "size": 16,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": [211.2, 20]
+    },
+    {
+      "fn": "measureText",
+      "name": "accents from Latin-1, flat 0.55 em estimate",
+      "text": "café résumé naïve",
+      "size": 16,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": [149.6, 20]
+    },
+    {
+      "fn": "measureText",
+      "name": "CJK ideographs, which take a full em, flat 0.55 em estimate",
+      "text": "中文标签 label",
+      "size": 16,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": [88, 20]
+    },
+    {
+      "fn": "measureText",
+      "name": "an unknown font falls back to Excalifont's widths and Excalifont's line height factor 1.25",
+      "text": "Fallback test",
+      "size": 20,
+      "font": 99,
+      "expect": [128.82, 25]
+    },
+    {
+      "fn": "measureText",
+      "name": "28px text",
+      "text": "Scaled headline",
+      "size": 28,
+      "font": 2,
+      "expect": [199.22, 32.2]
+    },
+    {
+      "fn": "measureText",
+      "name": "a fractional size",
+      "text": "Fractional",
+      "size": 13.5,
+      "font": 1,
+      "expect": [66.26, 16.88]
+    },
+    {
+      "fn": "measureText",
+      "name": "a width of exactly 0.125: the tie goes to the even hundredth",
+      "text": "a",
+      "size": 1,
+      "font": 5,
+      "charEm": 0.125,
+      "expect": [0.12, 1.25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a width of exactly 0.375: the tie goes to the even hundredth",
+      "text": "a",
+      "size": 1,
+      "font": 5,
+      "charEm": 0.375,
+      "expect": [0.38, 1.25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a width of exactly 0.625: the tie goes to the even hundredth",
+      "text": "a",
+      "size": 1,
+      "font": 5,
+      "charEm": 0.625,
+      "expect": [0.62, 1.25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a width of exactly 0.875: the tie goes to the even hundredth",
+      "text": "a",
+      "size": 1,
+      "font": 5,
+      "charEm": 0.875,
+      "expect": [0.88, 1.25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a width of exactly 1.125: the tie goes to the even hundredth",
+      "text": "a",
+      "size": 1,
+      "font": 5,
+      "charEm": 1.125,
+      "expect": [1.12, 1.25]
+    },
+    {
+      "fn": "measureText",
+      "name": "a height of exactly 0.125: the tie goes to the even hundredth",
+      "text": "a",
+      "size": 0.1,
+      "font": 5,
+      "expect": [0.06, 0.12]
+    },
+    {
+      "fn": "measureText",
+      "name": "a 1.5 em flat estimate",
+      "text": "wide",
+      "size": 10,
+      "font": 3,
+      "charEm": 1.5,
+      "expect": [60, 12]
+    },
+    {
+      "fn": "textWidth",
+      "name": "capitals line in font 1",
+      "line": "MMMM",
+      "size": 20,
+      "font": 1,
+      "expect": 61.28
+    },
+    {
+      "fn": "textWidth",
+      "name": "capitals line in font 2",
+      "line": "MMMM",
+      "size": 20,
+      "font": 2,
+      "expect": 66.64
+    },
+    {
+      "fn": "textWidth",
+      "name": "capitals line in font 3",
+      "line": "MMMM",
+      "size": 20,
+      "font": 3,
+      "expect": 46.88
+    },
+    {
+      "fn": "textWidth",
+      "name": "capitals line in font 5",
+      "line": "MMMM",
+      "size": 20,
+      "font": 5,
+      "expect": 61.28
+    },
+    {
+      "fn": "textWidth",
+      "name": "capitals line in font 6",
+      "line": "MMMM",
+      "size": 20,
+      "font": 6,
+      "expect": 68.64
+    },
+    {
+      "fn": "textWidth",
+      "name": "capitals line, flat estimate counts codepoints",
+      "line": "MMMM",
+      "size": 20,
+      "font": 5,
+      "charEm": 0.6,
+      "expect": 48
+    },
+    {
+      "fn": "textWidth",
+      "name": "narrow line in font 1",
+      "line": "iiii",
+      "size": 20,
+      "font": 1,
+      "expect": 17.52
+    },
+    {
+      "fn": "textWidth",
+      "name": "narrow line in font 2",
+      "line": "iiii",
+      "size": 20,
+      "font": 2,
+      "expect": 17.76
+    },
+    {
+      "fn": "textWidth",
+      "name": "narrow line in font 3",
+      "line": "iiii",
+      "size": 20,
+      "font": 3,
+      "expect": 46.88
+    },
+    {
+      "fn": "textWidth",
+      "name": "narrow line in font 5",
+      "line": "iiii",
+      "size": 20,
+      "font": 5,
+      "expect": 19.52
+    },
+    {
+      "fn": "textWidth",
+      "name": "narrow line in font 6",
+      "line": "iiii",
+      "size": 20,
+      "font": 6,
+      "expect": 18.96
+    },
+    {
+      "fn": "textWidth",
+      "name": "narrow line, flat estimate counts codepoints",
+      "line": "iiii",
+      "size": 20,
+      "font": 5,
+      "charEm": 0.6,
+      "expect": 48
+    },
+    {
+      "fn": "textWidth",
+      "name": "CJK line in font 1",
+      "line": "中文",
+      "size": 20,
+      "font": 1,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "CJK line in font 2",
+      "line": "中文",
+      "size": 20,
+      "font": 2,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "CJK line in font 3",
+      "line": "中文",
+      "size": 20,
+      "font": 3,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "CJK line in font 5",
+      "line": "中文",
+      "size": 20,
+      "font": 5,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "CJK line in font 6",
+      "line": "中文",
+      "size": 20,
+      "font": 6,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "CJK line, flat estimate counts codepoints",
+      "line": "中文",
+      "size": 20,
+      "font": 5,
+      "charEm": 0.6,
+      "expect": 24
+    },
+    {
+      "fn": "textWidth",
+      "name": "emoji line in font 1",
+      "line": "😀😀",
+      "size": 20,
+      "font": 1,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "emoji line in font 2",
+      "line": "😀😀",
+      "size": 20,
+      "font": 2,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "emoji line in font 3",
+      "line": "😀😀",
+      "size": 20,
+      "font": 3,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "emoji line in font 5",
+      "line": "😀😀",
+      "size": 20,
+      "font": 5,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "emoji line in font 6",
+      "line": "😀😀",
+      "size": 20,
+      "font": 6,
+      "expect": 40
+    },
+    {
+      "fn": "textWidth",
+      "name": "emoji line, flat estimate counts codepoints",
+      "line": "😀😀",
+      "size": 20,
+      "font": 5,
+      "charEm": 0.6,
+      "expect": 24
+    },
+    {
+      "fn": "textWidth",
+      "name": "empty line in font 1",
+      "line": "",
+      "size": 20,
+      "font": 1,
+      "expect": 0
+    },
+    {
+      "fn": "textWidth",
+      "name": "empty line in font 2",
+      "line": "",
+      "size": 20,
+      "font": 2,
+      "expect": 0
+    },
+    {
+      "fn": "textWidth",
+      "name": "empty line in font 3",
+      "line": "",
+      "size": 20,
+      "font": 3,
+      "expect": 0
+    },
+    {
+      "fn": "textWidth",
+      "name": "empty line in font 5",
+      "line": "",
+      "size": 20,
+      "font": 5,
+      "expect": 0
+    },
+    {
+      "fn": "textWidth",
+      "name": "empty line in font 6",
+      "line": "",
+      "size": 20,
+      "font": 6,
+      "expect": 0
+    },
+    {
+      "fn": "textWidth",
+      "name": "empty line, flat estimate counts codepoints",
+      "line": "",
+      "size": 20,
+      "font": 5,
+      "charEm": 0.6,
+      "expect": 0
+    },
+    {
+      "fn": "wrapText",
+      "name": "words that fit are kept whole",
+      "text": "aaa bbb ccc ddd",
+      "width": 70,
+      "size": 20,
+      "font": 1,
+      "expect": "aaa\nbbb\nccc\nddd"
+    },
+    {
+      "fn": "wrapText",
+      "name": "capitals wrapped by pixels",
+      "text": "SUGGESTED ORDER OF WORK",
+      "width": 200,
+      "size": 20,
+      "font": 5,
+      "expect": "SUGGESTED\nORDER OF WORK"
+    },
+    {
+      "fn": "wrapText",
+      "name": "line breaks and an empty line are kept",
+      "text": "one\n\ntwo",
+      "width": 100,
+      "size": 20,
+      "font": 2,
+      "expect": "one\n\ntwo"
+    },
+    {
+      "fn": "wrapText",
+      "name": "a word wider than the box is broken",
+      "text": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+      "width": 100,
+      "size": 20,
+      "font": 3,
+      "expect": "xxxxxxxx\nxxxxxxxx\nxxxxxxxx\nx"
+    },
+    {
+      "fn": "wrapText",
+      "name": "a box narrower than any glyph, one glyph a line",
+      "text": "anything",
+      "width": 1,
+      "size": 20,
+      "font": 5,
+      "expect": "a\nn\ny\nt\nh\ni\nn\ng"
+    },
+    {
+      "fn": "wrapText",
+      "name": "a long sentence in Nunito",
+      "text": "A rather long label that cannot possibly fit on the one line",
+      "width": 120,
+      "size": 20,
+      "font": 6,
+      "expect": "A rather\nlong label\nthat cannot\npossibly fit\non the one\nline"
+    },
+    {
+      "fn": "wrapText",
+      "name": "Swedish letters",
+      "text": "Åsa Öberg lät åka äpplen hem",
+      "width": 150,
+      "size": 20,
+      "font": 5,
+      "expect": "Åsa Öberg lät\nåka äpplen hem"
+    },
+    {
+      "fn": "wrapText",
+      "name": "CJK wraps every five em",
+      "text": "中文标签中文标签中文",
+      "width": 100,
+      "size": 20,
+      "font": 5,
+      "expect": "中文标签中\n文标签中文"
+    },
+    {
+      "fn": "wrapText",
+      "name": "emoji are broken between codepoints, never within one",
+      "text": "😀😀😀😀😀😀😀😀😀😀😀😀",
+      "width": 100,
+      "size": 20,
+      "font": 5,
+      "expect": "😀😀😀😀😀\n😀😀😀😀😀\n😀😀"
+    },
+    {
+      "fn": "wrapText",
+      "name": "CJK among words",
+      "text": "mixed 中文 and words together",
+      "width": 130,
+      "size": 20,
+      "font": 2,
+      "expect": "mixed 中文\nand words\ntogether"
+    },
+    {
+      "fn": "wrapText",
+      "name": "a double space gives an empty word",
+      "text": "two  spaces",
+      "width": 200,
+      "size": 20,
+      "font": 5,
+      "expect": "two  spaces"
+    },
+    {
+      "fn": "wrapText",
+      "name": "a trailing space",
+      "text": "trailing ",
+      "width": 200,
+      "size": 20,
+      "font": 5,
+      "expect": "trailing "
+    },
+    {
+      "fn": "wrapText",
+      "name": "a leading space",
+      "text": " leading",
+      "width": 200,
+      "size": 20,
+      "font": 5,
+      "expect": "leading"
+    },
+    {
+      "fn": "wrapText",
+      "name": "an empty string",
+      "text": "",
+      "width": 100,
+      "size": 20,
+      "font": 5,
+      "expect": ""
+    },
+    {
+      "fn": "wrapText",
+      "name": "room to spare",
+      "text": "short",
+      "width": 1000,
+      "size": 20,
+      "font": 5,
+      "expect": "short"
+    },
+    {
+      "fn": "wrapText",
+      "name": "combining marks are codepoints too",
+      "text": "éééééé",
+      "width": 40,
+      "size": 20,
+      "font": 5,
+      "expect": "ée\ńé\née\ńé"
+    },
+    {
+      "fn": "wrapText",
+      "name": "thirty short words in the room of an ellipse",
+      "text": "word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word ",
+      "width": 301,
+      "size": 20,
+      "font": 5,
+      "expect": "word word word word word\nword word word word word\nword word word word word\nword word word word word\nword word word word word\nword word word word word "
+    },
+    {
+      "fn": "wrapText",
+      "name": "the default font is Excalifont",
+      "text": "aaa bbb ccc ddd eee",
+      "width": 90,
+      "size": 20,
+      "expect": "aaa bbb\nccc ddd\neee"
+    },
+    {
+      "fn": "wrapText",
+      "name": "flat estimate: words kept whole",
+      "text": "aaa bbb ccc ddd",
+      "width": 110,
+      "size": 20,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": "aaa bbb\nccc ddd"
+    },
+    {
+      "fn": "wrapText",
+      "name": "flat estimate: breaks kept",
+      "text": "one\n\ntwo",
+      "width": 110,
+      "size": 20,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": "one\n\ntwo"
+    },
+    {
+      "fn": "wrapText",
+      "name": "flat estimate: a long word broken",
+      "text": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+      "width": 110,
+      "size": 20,
+      "font": 5,
+      "charEm": 0.55,
+      "expect": "xxxxxxxxx\nxxxxxxxxx\nxxxxxxx"
+    },
+    {
+      "fn": "textRoom",
+      "name": "a rectangle container 440 by 190",
+      "container": {
+        "id": "box",
+        "type": "rectangle",
+        "x": 40,
+        "y": 960,
+        "width": 440,
+        "height": 190
+      },
+      "expect": [430, 180, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a rectangle container 200 by 80",
+      "container": {
+        "id": "box",
+        "type": "rectangle",
+        "x": 40,
+        "y": 960,
+        "width": 200,
+        "height": 80
+      },
+      "expect": [190, 70, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a rectangle container 101 by 41",
+      "container": {
+        "id": "box",
+        "type": "rectangle",
+        "x": 40,
+        "y": 960,
+        "width": 101,
+        "height": 41
+      },
+      "expect": [91, 31, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a rectangle container 90.5 by 33.3",
+      "container": {
+        "id": "box",
+        "type": "rectangle",
+        "x": 40,
+        "y": 960,
+        "width": 90.5,
+        "height": 33.3
+      },
+      "expect": [80.5, 23.3, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a rectangle container with padding 0",
+      "container": {
+        "id": "box",
+        "type": "rectangle",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 0,
+      "expect": [200, 80, 100, 100]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a rectangle container with padding 8",
+      "container": {
+        "id": "box",
+        "type": "rectangle",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 8,
+      "expect": [184, 64, 108, 108]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a ellipse container 440 by 190",
+      "container": {
+        "id": "box",
+        "type": "ellipse",
+        "x": 40,
+        "y": 960,
+        "width": 440,
+        "height": 190
+      },
+      "expect": [301, 124, 109.436508, 992.824856]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a ellipse container 200 by 80",
+      "container": {
+        "id": "box",
+        "type": "ellipse",
+        "x": 40,
+        "y": 960,
+        "width": 200,
+        "height": 80
+      },
+      "expect": [131, 47, 74.289322, 976.715729]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a ellipse container 101 by 41",
+      "container": {
+        "id": "box",
+        "type": "ellipse",
+        "x": 40,
+        "y": 960,
+        "width": 101,
+        "height": 41
+      },
+      "expect": [61, 19, 59.791108, 971.004311]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a ellipse container 90.5 by 33.3",
+      "container": {
+        "id": "box",
+        "type": "ellipse",
+        "x": 40,
+        "y": 960,
+        "width": 90.5,
+        "height": 33.3
+      },
+      "expect": [54, 14, 58.253418, 969.876672]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a ellipse container with padding 0",
+      "container": {
+        "id": "box",
+        "type": "ellipse",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 0,
+      "expect": [141, 57, 129.289322, 111.715729]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a ellipse container with padding 8",
+      "container": {
+        "id": "box",
+        "type": "ellipse",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 8,
+      "expect": [125, 41, 137.289322, 119.715729]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a diamond container 440 by 190",
+      "container": {
+        "id": "box",
+        "type": "diamond",
+        "x": 40,
+        "y": 960,
+        "width": 440,
+        "height": 190
+      },
+      "expect": [210, 85, 155, 1012.5]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a diamond container 200 by 80",
+      "container": {
+        "id": "box",
+        "type": "diamond",
+        "x": 40,
+        "y": 960,
+        "width": 200,
+        "height": 80
+      },
+      "expect": [90, 30, 95, 985]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a diamond container 101 by 41",
+      "container": {
+        "id": "box",
+        "type": "diamond",
+        "x": 40,
+        "y": 960,
+        "width": 101,
+        "height": 41
+      },
+      "expect": [41, 11, 70.25, 975.25]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a diamond container 90.5 by 33.3",
+      "container": {
+        "id": "box",
+        "type": "diamond",
+        "x": 40,
+        "y": 960,
+        "width": 90.5,
+        "height": 33.3
+      },
+      "expect": [35, 7, 67.625, 973.325]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a diamond container with padding 0",
+      "container": {
+        "id": "box",
+        "type": "diamond",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 0,
+      "expect": [100, 40, 150, 120]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a diamond container with padding 8",
+      "container": {
+        "id": "box",
+        "type": "diamond",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 8,
+      "expect": [84, 24, 158, 128]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a frame container 440 by 190",
+      "container": {
+        "id": "box",
+        "type": "frame",
+        "x": 40,
+        "y": 960,
+        "width": 440,
+        "height": 190
+      },
+      "expect": [430, 180, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a frame container 200 by 80",
+      "container": {
+        "id": "box",
+        "type": "frame",
+        "x": 40,
+        "y": 960,
+        "width": 200,
+        "height": 80
+      },
+      "expect": [190, 70, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a frame container 101 by 41",
+      "container": {
+        "id": "box",
+        "type": "frame",
+        "x": 40,
+        "y": 960,
+        "width": 101,
+        "height": 41
+      },
+      "expect": [91, 31, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a frame container 90.5 by 33.3",
+      "container": {
+        "id": "box",
+        "type": "frame",
+        "x": 40,
+        "y": 960,
+        "width": 90.5,
+        "height": 33.3
+      },
+      "expect": [80.5, 23.3, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a frame container with padding 0",
+      "container": {
+        "id": "box",
+        "type": "frame",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 0,
+      "expect": [200, 80, 100, 100]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a frame container with padding 8",
+      "container": {
+        "id": "box",
+        "type": "frame",
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 8,
+      "expect": [184, 64, 108, 108]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a typeless container 440 by 190",
+      "container": {
+        "id": "box",
+        "x": 40,
+        "y": 960,
+        "width": 440,
+        "height": 190
+      },
+      "expect": [430, 180, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a typeless container 200 by 80",
+      "container": {
+        "id": "box",
+        "x": 40,
+        "y": 960,
+        "width": 200,
+        "height": 80
+      },
+      "expect": [190, 70, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a typeless container 101 by 41",
+      "container": {
+        "id": "box",
+        "x": 40,
+        "y": 960,
+        "width": 101,
+        "height": 41
+      },
+      "expect": [91, 31, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a typeless container 90.5 by 33.3",
+      "container": {
+        "id": "box",
+        "x": 40,
+        "y": 960,
+        "width": 90.5,
+        "height": 33.3
+      },
+      "expect": [80.5, 23.3, 45, 965]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a typeless container with padding 0",
+      "container": {
+        "id": "box",
+        "type": null,
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 0,
+      "expect": [200, 80, 100, 100]
+    },
+    {
+      "fn": "textRoom",
+      "name": "a typeless container with padding 8",
+      "container": {
+        "id": "box",
+        "type": null,
+        "x": 100,
+        "y": 100,
+        "width": 200,
+        "height": 80
+      },
+      "padding": 8,
+      "expect": [184, 64, 108, 108]
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23 high in a rectangle container",
+      "textHeight": 23,
+      "kind": "rectangle",
+      "expect": 33
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23.1 high in a rectangle container",
+      "textHeight": 23.1,
+      "kind": "rectangle",
+      "expect": 34
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 45 high in a rectangle container",
+      "textHeight": 45,
+      "kind": "rectangle",
+      "expect": 55
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 69.5 high in a rectangle container",
+      "textHeight": 69.5,
+      "kind": "rectangle",
+      "expect": 80
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 0 high in a rectangle container",
+      "textHeight": 0,
+      "kind": "rectangle",
+      "expect": 10
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 46 high in a rectangle container, padding 12",
+      "textHeight": 46,
+      "kind": "rectangle",
+      "padding": 12,
+      "expect": 70
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23 high in a ellipse container",
+      "textHeight": 23,
+      "kind": "ellipse",
+      "expect": 47
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23.1 high in a ellipse container",
+      "textHeight": 23.1,
+      "kind": "ellipse",
+      "expect": 48
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 45 high in a ellipse container",
+      "textHeight": 45,
+      "kind": "ellipse",
+      "expect": 78
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 69.5 high in a ellipse container",
+      "textHeight": 69.5,
+      "kind": "ellipse",
+      "expect": 113
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 0 high in a ellipse container",
+      "textHeight": 0,
+      "kind": "ellipse",
+      "expect": 14
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 46 high in a ellipse container, padding 12",
+      "textHeight": 46,
+      "kind": "ellipse",
+      "padding": 12,
+      "expect": 99
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23 high in a diamond container",
+      "textHeight": 23,
+      "kind": "diamond",
+      "expect": 66
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23.1 high in a diamond container",
+      "textHeight": 23.1,
+      "kind": "diamond",
+      "expect": 68
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 45 high in a diamond container",
+      "textHeight": 45,
+      "kind": "diamond",
+      "expect": 110
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 69.5 high in a diamond container",
+      "textHeight": 69.5,
+      "kind": "diamond",
+      "expect": 160
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 0 high in a diamond container",
+      "textHeight": 0,
+      "kind": "diamond",
+      "expect": 20
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 46 high in a diamond container, padding 12",
+      "textHeight": 46,
+      "kind": "diamond",
+      "padding": 12,
+      "expect": 140
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23 high in a typeless container",
+      "textHeight": 23,
+      "kind": null,
+      "expect": 33
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 23.1 high in a typeless container",
+      "textHeight": 23.1,
+      "kind": null,
+      "expect": 34
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 45 high in a typeless container",
+      "textHeight": 45,
+      "kind": null,
+      "expect": 55
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 69.5 high in a typeless container",
+      "textHeight": 69.5,
+      "kind": null,
+      "expect": 80
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 0 high in a typeless container",
+      "textHeight": 0,
+      "kind": null,
+      "expect": 10
+    },
+    {
+      "fn": "containerHeightFor",
+      "name": "text 46 high in a typeless container, padding 12",
+      "textHeight": 46,
+      "kind": null,
+      "padding": 12,
+      "expect": 70
+    }
+  ]
+}
